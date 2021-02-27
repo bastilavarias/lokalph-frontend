@@ -7,12 +7,15 @@
     >
         <v-card>
             <v-card-title>
-                <span class="font-weight-bold">Log in to Lokal PH</span>
                 <v-spacer></v-spacer>
                 <v-btn @click="isLoginDialogOpenLocal = false" icon>
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </v-card-title>
+            <v-card-title class="font-weight-bold">
+                Log in to Lokal PH
+            </v-card-title>
+            <v-card-subtitle>Lorem ipsum dolor sit amet.</v-card-subtitle>
             <v-card-text>
                 <v-row dense>
                     <v-col cols="12">
