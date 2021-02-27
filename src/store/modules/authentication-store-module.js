@@ -1,5 +1,6 @@
 import {
     AUTHENTICATION_LOGIN,
+    AUTHENTICATION_REGISTER,
     AUTHENTICATION_SET_AUTHENTICATION,
     AUTHENTICATION_SET_LOGOUT,
     AUTHENTICATION_VALIDATE_USER,
@@ -60,6 +61,29 @@ const authenticationStoreModule = {
                 commit(AUTHENTICATION_SET_AUTHENTICATION, payload);
             } catch (_) {
                 commit(AUTHENTICATION_SET_LOGOUT);
+            }
+        },
+
+        async [AUTHENTICATION_REGISTER](
+            { commit },
+            { firstName, lastName, birthDate, password, email }
+        ) {
+            try {
+                const result = await authenticationRepository.register({
+                    firstName,
+                    lastName,
+                    birthDate,
+                    password,
+                    email,
+                });
+                const payload = {
+                    accessToken: result.data.token,
+                    user: result.data.user,
+                };
+                commit(AUTHENTICATION_SET_AUTHENTICATION, payload);
+                return result;
+            } catch (error) {
+                return error.response.data;
             }
         },
     },

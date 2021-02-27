@@ -15,6 +15,21 @@ const authenticationRepository = {
         );
         return response.data;
     },
+
+    async register({ firstName, lastName, birthDate, password, email }) {
+        const payload = {
+            first_name: firstName,
+            last_name: lastName,
+            birth_date: birthDate,
+            password,
+            email,
+        };
+        const response = await axiosService.post(
+            "/authentication/register",
+            payload
+        );
+        return response.data;
+    },
 };
 
 export default authenticationRepository;
