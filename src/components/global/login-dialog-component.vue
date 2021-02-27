@@ -62,6 +62,8 @@
                                 >Don't have an account?
                                 <span
                                     class="primary--text font-weight-bold text-decoration-underline"
+                                    @click="openRegisterDialog"
+                                    :style="{ cursor: 'pointer' }"
                                     >Register here.</span
                                 ></span
                             >
@@ -74,7 +76,10 @@
 </template>
 
 <script>
-import { GLOBAL_SET_IS_LOGIN_DIALOG_OPEN } from "@/store/types/global-store-type";
+import {
+    GLOBAL_SET_IS_LOGIN_DIALOG_OPEN,
+    GLOBAL_SET_IS_REGISTER_DIALOG_OPEN,
+} from "@/store/types/global-store-type";
 import { AUTHENTICATION_LOGIN } from "@/store/types/authentication-store-type";
 
 const defaultForm = {
@@ -136,6 +141,11 @@ export default {
                 this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, false);
                 this.form = Object.assign({}, defaultForm);
             }
+        },
+
+        openRegisterDialog() {
+            this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, false);
+            this.$store.commit(GLOBAL_SET_IS_REGISTER_DIALOG_OPEN, true);
         },
     },
 };
