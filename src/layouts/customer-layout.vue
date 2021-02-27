@@ -4,11 +4,56 @@
             <v-container>
                 <v-row justify="space-between" align="center">
                     <v-spacer></v-spacer>
-                    <div>
-                        <v-btn small text class="text-capitalize"
+                    <div v-if="isAuthenticated">
+                        <v-btn text tile>
+                            <v-icon :size="20" color="white"
+                                >mdi-heart-outline</v-icon
+                            >
+                        </v-btn>
+                        <v-btn text tile>
+                            <v-icon :size="20" color="white"
+                                >mdi-message-outline</v-icon
+                            >
+                        </v-btn>
+                        <v-menu offset-y open-on-hover>
+                            <template v-slot:activator="{ on }">
+                                <v-btn text v-on="on" tile>
+                                    <span class="text-capitalize mr-1">{{
+                                        user.profile.first_name
+                                    }}</span>
+                                    <v-icon :size="20" color="white">
+                                        mdi-chevron-down
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item @click="logout">
+                                    <v-list-item-icon>
+                                        <v-icon color="secondary">
+                                            mdi-logout
+                                        </v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            class="font-weight-medium"
+                                            >Log out</v-list-item-title
+                                        >
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </div>
+                    <div v-if="!isAuthenticated">
+                        <v-btn tile text class="text-capitalize"
                             >Register</v-btn
                         >
-                        <v-btn small text class="text-capitalize">Login</v-btn>
+                        <v-btn
+                            tile
+                            text
+                            class="text-capitalize"
+                            @click="openLoginDialog"
+                            >Login</v-btn
+                        >
                     </div>
                 </v-row>
             </v-container>
@@ -34,12 +79,44 @@
                 </v-row>
             </v-container>
         </v-app-bar>
+        <v-main>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-main>
+        <global-login-dialog-component></global-login-dialog-component>
     </v-app>
 </template>
 
 <script>
+import { GLOBAL_SET_IS_LOGIN_DIALOG_OPEN } from "@/store/types/global-store-type";
+import GlobalLoginDialogComponent from "@/components/global/login-dialog-component";
+import { AUTHENTICATION_SET_LOGOUT } from "@/store/types/authentication-store-type";
+
 export default {
     name: "customer-layout",
+
+    components: { GlobalLoginDialogComponent },
+
+    computed: {
+        isAuthenticated() {
+            return this.$store.state.authentication.isAuthenticated;
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
+        },
+    },
+
+    methods: {
+        openLoginDialog() {
+            this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, true);
+        },
+
+        logout() {
+            this.$store.commit(AUTHENTICATION_SET_LOGOUT);
+        },
+    },
 };
 </script>
 
