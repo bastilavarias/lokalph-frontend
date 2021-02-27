@@ -2,6 +2,7 @@ import {
     AUTHENTICATION_LOGIN,
     AUTHENTICATION_SET_AUTHENTICATION,
     AUTHENTICATION_SET_LOGOUT,
+    AUTHENTICATION_VALIDATE_USER,
 } from "@/store/types/authentication-store-type";
 import authenticationRepository from "@/repositories/authentication-repository";
 import cookieService from "@/services/cookie-service";
@@ -43,6 +44,22 @@ const authenticationStoreModule = {
                 return result;
             } catch (error) {
                 return error.response.data;
+            }
+        },
+
+        async [AUTHENTICATION_VALIDATE_USER]({ commit }) {
+            const accessToken = cookieService.get("access_token");
+            if (!accessToken) return commit(AUTHENTICATION_SET_LOGOUT);
+            try {
+                axiosService.setHeader();
+                const result = await authenticationRepository.validateUser();
+                const payload = {
+                    accessToken: result.data.token,
+                    user: result.data.user,
+                };
+                commit(AUTHENTICATION_SET_AUTHENTICATION, payload);
+            } catch (_) {
+                commit(AUTHENTICATION_SET_LOGOUT);
             }
         },
     },

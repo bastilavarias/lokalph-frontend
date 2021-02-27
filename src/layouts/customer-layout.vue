@@ -66,6 +66,11 @@
                 </v-row>
             </v-container>
         </v-app-bar>
+        <v-main>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-main>
         <global-login-dialog-component></global-login-dialog-component>
     </v-app>
 </template>

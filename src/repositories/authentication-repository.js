@@ -8,6 +8,13 @@ const authenticationRepository = {
         });
         return response.data;
     },
+
+    async validateUser() {
+        const response = await axiosService.get(
+            "/authentication/validate-user"
+        );
+        return response.data;
+    },
 };
 
 export default authenticationRepository;
