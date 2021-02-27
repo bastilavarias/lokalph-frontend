@@ -4,7 +4,33 @@
             <v-container>
                 <v-row justify="space-between" align="center">
                     <v-spacer></v-spacer>
-                    <div>
+                    <div v-if="isAuthenticated">
+                        <v-menu offset-y>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn small text v-bind="attrs" v-on="on">
+                                    <span class="text-capitalize mr-1">{{
+                                        user.profile.first_name
+                                    }}</span>
+                                    <v-icon small> mdi-chevron-down </v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list dense>
+                                <v-list-item>
+                                    <v-list-item-icon>
+                                        <v-icon small color="secondary">
+                                            mdi-logout
+                                        </v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            >Log out</v-list-item-title
+                                        >
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </div>
+                    <div v-if="!isAuthenticated">
                         <v-btn small text class="text-capitalize"
                             >Register</v-btn
                         >
@@ -50,7 +76,19 @@ import GlobalLoginDialogComponent from "@/components/global/login-dialog-compone
 
 export default {
     name: "customer-layout",
+
     components: { GlobalLoginDialogComponent },
+
+    computed: {
+        isAuthenticated() {
+            return this.$store.state.authentication.isAuthenticated;
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
+        },
+    },
+
     methods: {
         openLoginDialog() {
             this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, true);
