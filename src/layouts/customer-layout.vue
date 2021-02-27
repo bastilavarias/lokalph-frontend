@@ -8,7 +8,13 @@
                         <v-btn small text class="text-capitalize"
                             >Register</v-btn
                         >
-                        <v-btn small text class="text-capitalize">Login</v-btn>
+                        <v-btn
+                            small
+                            text
+                            class="text-capitalize"
+                            @click="openLoginDialog"
+                            >Login</v-btn
+                        >
                     </div>
                 </v-row>
             </v-container>
@@ -34,12 +40,22 @@
                 </v-row>
             </v-container>
         </v-app-bar>
+        <global-login-dialog-component></global-login-dialog-component>
     </v-app>
 </template>
 
 <script>
+import { GLOBAL_SET_IS_LOGIN_DIALOG_OPEN } from "@/store/types/global-store-type";
+import GlobalLoginDialogComponent from "@/components/global/login-dialog-component";
+
 export default {
     name: "customer-layout",
+    components: { GlobalLoginDialogComponent },
+    methods: {
+        openLoginDialog() {
+            this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, true);
+        },
+    },
 };
 </script>
 
