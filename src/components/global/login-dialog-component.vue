@@ -18,14 +18,25 @@
             <v-card-subtitle>Lorem ipsum dolor sit amet.</v-card-subtitle>
             <v-card-text>
                 <v-row dense>
+                    <v-col cols="12" v-if="isErrorAlertOpen">
+                        <v-alert type="error">
+                            {{ errorAlertMessage }}
+                        </v-alert>
+                    </v-col>
                     <v-col cols="12">
-                        <v-text-field outlined label="Email"></v-text-field>
+                        <v-text-field
+                            outlined
+                            label="Email"
+                            v-model="form.email"
+                        ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                         <v-text-field
                             outlined
                             label="Password"
                             type="password"
+                            v-model="form.password"
+                            @keyup.enter="login"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -35,6 +46,8 @@
                             depressed
                             class="text-capitalize"
                             large
+                            :loading="isLoginStart"
+                            @click="login"
                             >Login</v-btn
                         >
                     </v-col>
@@ -61,6 +74,12 @@
 
 <script>
 import { GLOBAL_SET_IS_LOGIN_DIALOG_OPEN } from "@/store/types/global-store-type";
+import { AUTHENTICATION_LOGIN } from "@/store/types/authentication-store-type";
+
+const defaultForm = {
+    email: null,
+    password: null,
+};
 
 export default {
     name: "global-login-dialog-component",
@@ -68,6 +87,10 @@ export default {
     data() {
         return {
             isLoginDialogOpenLocal: false,
+            isLoginStart: false,
+            form: Object.assign({}, defaultForm),
+            isErrorAlertOpen: false,
+            errorAlertMessage: null,
         };
     },
 
@@ -79,12 +102,39 @@ export default {
 
     watch: {
         isLoginDialogOpen(isOpen) {
-            console.log(isOpen);
             this.isLoginDialogOpenLocal = isOpen;
         },
 
         isLoginDialogOpenLocal(isOpen) {
             this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, isOpen);
+        },
+    },
+
+    methods: {
+        async login() {
+            this.isLoginStart = true;
+            const payload = {
+                email: this.form.email,
+                password: this.form.password,
+            };
+            const {
+                success,
+                error,
+                error_message,
+            } = await this.$store.dispatch(AUTHENTICATION_LOGIN, payload);
+            if (error) {
+                this.isErrorAlertOpen = true;
+                this.errorAlertMessage = error_message;
+                this.isLoginStart = false;
+                return;
+            }
+            if (success) {
+                this.isErrorAlertOpen = false;
+                this.errorAlertMessage = null;
+                this.isLoginStart = false;
+                this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, false);
+                this.form = Object.assign({}, defaultForm);
+            }
         },
     },
 };

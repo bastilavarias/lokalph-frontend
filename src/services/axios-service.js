@@ -6,13 +6,15 @@ import cookieService from "@/services/cookie-service";
 const axiosService = {
     init() {
         Vue.use(vueAxios, axios);
-        Vue.axios.defaults.baseURL = "/api";
+        Vue.axios.defaults.baseURL =
+            "https://lokalph-development.herokuapp.com/api";
     },
 
     setHeader() {
-        Vue.axios.defaults.headers.common["Authorization"] = cookieService.get(
-            "access_token"
-        );
+        const accessToken = cookieService.get("access_token");
+        Vue.axios.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${accessToken}`;
     },
 
     async get(route, body) {
