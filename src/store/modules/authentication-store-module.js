@@ -1,6 +1,7 @@
 import {
     AUTHENTICATION_LOGIN,
     AUTHENTICATION_SET_AUTHENTICATION,
+    AUTHENTICATION_SET_LOGOUT,
 } from "@/store/types/authentication-store-type";
 import authenticationRepository from "@/repositories/authentication-repository";
 import cookieService from "@/services/cookie-service";
@@ -18,6 +19,12 @@ const authenticationStoreModule = {
             state.isAuthenticated = true;
             cookieService.save("access_token", accessToken);
             axiosService.setHeader();
+        },
+
+        [AUTHENTICATION_SET_LOGOUT](state) {
+            state.isAuthenticated = false;
+            state.user = null;
+            cookieService.remove("access_token");
         },
     },
 

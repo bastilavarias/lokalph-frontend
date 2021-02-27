@@ -5,9 +5,9 @@
                 <v-row justify="space-between" align="center">
                     <v-spacer></v-spacer>
                     <div v-if="isAuthenticated">
-                        <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn small text v-bind="attrs" v-on="on">
+                        <v-menu offset-y open-on-hover>
+                            <template v-slot:activator="{ on }">
+                                <v-btn small text v-on="on">
                                     <span class="text-capitalize mr-1">{{
                                         user.profile.first_name
                                     }}</span>
@@ -15,7 +15,7 @@
                                 </v-btn>
                             </template>
                             <v-list dense>
-                                <v-list-item>
+                                <v-list-item @click="logout">
                                     <v-list-item-icon>
                                         <v-icon small color="secondary">
                                             mdi-logout
@@ -73,6 +73,7 @@
 <script>
 import { GLOBAL_SET_IS_LOGIN_DIALOG_OPEN } from "@/store/types/global-store-type";
 import GlobalLoginDialogComponent from "@/components/global/login-dialog-component";
+import { AUTHENTICATION_SET_LOGOUT } from "@/store/types/authentication-store-type";
 
 export default {
     name: "customer-layout",
@@ -92,6 +93,10 @@ export default {
     methods: {
         openLoginDialog() {
             this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, true);
+        },
+
+        logout() {
+            this.$store.commit(AUTHENTICATION_SET_LOGOUT);
         },
     },
 };
