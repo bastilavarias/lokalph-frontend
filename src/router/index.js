@@ -32,12 +32,12 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
     await store.dispatch(AUTHENTICATION_VALIDATE_USER);
     const isAuthenticated = store.state.authentication.isAuthenticated;
-    const { account_type } = store.state.authentication.user;
+    const user = store.state.authentication.user;
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
     const roles = to.meta.roles;
     if (requiresAuth && !isAuthenticated)
         return next({ name: from.name || "Home View" });
-    if (!roles.includes(account_type.type))
+    if (user && !roles.includes(user.account_type.type))
         return next({ name: from.name || "Home View" });
     next();
 });

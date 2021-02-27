@@ -5,24 +5,37 @@
                 <v-row justify="space-between" align="center">
                     <v-spacer></v-spacer>
                     <div v-if="isAuthenticated">
+                        <v-btn text tile>
+                            <v-icon :size="20" color="white"
+                                >mdi-heart-outline</v-icon
+                            >
+                        </v-btn>
+                        <v-btn text tile>
+                            <v-icon :size="20" color="white"
+                                >mdi-message-outline</v-icon
+                            >
+                        </v-btn>
                         <v-menu offset-y open-on-hover>
                             <template v-slot:activator="{ on }">
-                                <v-btn small text v-on="on">
+                                <v-btn text v-on="on" tile>
                                     <span class="text-capitalize mr-1">{{
                                         user.profile.first_name
                                     }}</span>
-                                    <v-icon small> mdi-chevron-down </v-icon>
+                                    <v-icon :size="20" color="white">
+                                        mdi-chevron-down
+                                    </v-icon>
                                 </v-btn>
                             </template>
-                            <v-list dense>
+                            <v-list>
                                 <v-list-item @click="logout">
                                     <v-list-item-icon>
-                                        <v-icon small color="secondary">
+                                        <v-icon color="secondary">
                                             mdi-logout
                                         </v-icon>
                                     </v-list-item-icon>
                                     <v-list-item-content>
                                         <v-list-item-title
+                                            class="font-weight-medium"
                                             >Log out</v-list-item-title
                                         >
                                     </v-list-item-content>
@@ -31,11 +44,11 @@
                         </v-menu>
                     </div>
                     <div v-if="!isAuthenticated">
-                        <v-btn small text class="text-capitalize"
+                        <v-btn tile text class="text-capitalize"
                             >Register</v-btn
                         >
                         <v-btn
-                            small
+                            tile
                             text
                             class="text-capitalize"
                             @click="openLoginDialog"
