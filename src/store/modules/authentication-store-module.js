@@ -38,7 +38,7 @@ const authenticationStoreModule = {
                     password
                 );
                 const payload = {
-                    accessToken: result.data.token,
+                    accessToken: result.data.access_token,
                     user: result.data.user,
                 };
                 commit(AUTHENTICATION_SET_AUTHENTICATION, payload);
@@ -55,7 +55,7 @@ const authenticationStoreModule = {
                 axiosService.setHeader();
                 const result = await authenticationRepository.validateUser();
                 const payload = {
-                    accessToken: result.data.token,
+                    accessToken: result.data.access_token,
                     user: result.data.user,
                 };
                 commit(AUTHENTICATION_SET_AUTHENTICATION, payload);
@@ -77,7 +77,7 @@ const authenticationStoreModule = {
                     email,
                 });
                 const payload = {
-                    accessToken: result.data.token,
+                    accessToken: result.data.access_token,
                     user: result.data.user,
                 };
                 commit(AUTHENTICATION_SET_AUTHENTICATION, payload);

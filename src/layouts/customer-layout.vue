@@ -18,6 +18,11 @@
                         <v-menu offset-y open-on-hover>
                             <template v-slot:activator="{ on }">
                                 <v-btn text v-on="on" tile>
+                                    <v-avatar :size="25">
+                                        <v-img
+                                            :src="user.profile.image_url"
+                                        ></v-img>
+                                    </v-avatar>
                                     <span class="text-capitalize mr-1">{{
                                         user.profile.first_name
                                     }}</span>
