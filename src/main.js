@@ -12,8 +12,8 @@ axiosService.init();
 Vue.use(VueMeta);
 Vue.use(VuetifyAlgoliaPlaces, {
     algolia: {
-        appId: "plN18NJ07I8D",
-        apiKey: "f693daecd680aeb18bb06c39b59dfbee",
+        appId: process.env.VUE_APP_ALGOLIA_ID,
+        apiKey: process.env.VUE_APP_ALGOLIA_APP_API_KEY,
     },
 });
 
