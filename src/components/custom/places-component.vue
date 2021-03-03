@@ -1,17 +1,5 @@
 <template>
     <div>
-        <!--                <v-text-field-->
-        <!--                    type="text"-->
-        <!--                    :outlined="outlined"-->
-        <!--                    :label="label"-->
-        <!--                    v-model="search"-->
-        <!--                    append-icon="mdi-map-marker-outline"-->
-        <!--                ></v-text-field>-->
-        <!--                <ul>-->
-        <!--                    <li v-for="(result, i) in searchResults" :key="i">-->
-        <!--                        {{ result }}-->
-        <!--                    </li>-->
-        <!--                </ul>-->
         <v-autocomplete
             :search-input.sync="search"
             :items="searchResults"
@@ -19,7 +7,13 @@
             :label="label"
             append-icon="mdi-map-marker-outline"
             item-text="description"
+            item-value="place_id"
             autocomplete="new"
+            clearable
+            @click:clear="placeId = null"
+            hint="We use Google's places autocomplete to find your address."
+            persistent-hint
+            v-model="placeId"
         ></v-autocomplete>
     </div>
 </template>
@@ -30,6 +24,7 @@ export default {
 
     data() {
         return {
+            placeId: null,
             search: null,
             searchResults: [],
             service: null,
@@ -70,7 +65,6 @@ export default {
                 this.searchResults = [];
                 return;
             }
-            console.log(predictions);
             this.searchResults = predictions;
         },
     },
@@ -88,6 +82,21 @@ export default {
                     this.displaySuggestions
                 );
             }
+        },
+
+        async placeId(value) {
+            // const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${value}&key=${process.env.VUE_APP_GOOGLE_SECRET_KEY}`;
+            // const request = {
+            //     placeId: value,
+            // };
+            // this.service.getDetails(request, function (place, status) {
+            //     if (
+            //         status !== window.google.maps.places.PlacesServiceStatus.OK
+            //     ) {
+            //         return;
+            //     }
+            //     console.log(place);
+            // });
         },
     },
 };
