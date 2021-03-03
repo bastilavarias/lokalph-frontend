@@ -27,7 +27,10 @@
                         <span class="subtitle-2">Shop Contact</span>
                     </v-col>
                     <v-col cols="12">
-                        <v-text-field label="Address" outlined></v-text-field>
+                        <custom-places-component
+                            outlined
+                            label="Address"
+                        ></custom-places-component>
                     </v-col>
                     <v-col cols="12">
                         <v-text-field
@@ -77,9 +80,10 @@
 </template>
 
 <script>
+import CustomPlacesComponent from "@/components/custom/places-component";
 export default {
     name: "profile-shop-create-form-dialog-component",
-
+    components: { CustomPlacesComponent },
     props: {
         isOpen: {
             type: Boolean,
