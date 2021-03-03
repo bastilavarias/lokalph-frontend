@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "deploy:development": "npm run build && netlify deploy"
+    "deploy:development": "npm run build && netlify deploy -p"
   },
   "dependencies": {
     "algoliasearch": "^3.35.1",
