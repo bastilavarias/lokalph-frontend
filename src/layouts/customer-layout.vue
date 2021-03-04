@@ -18,6 +18,11 @@
                         <v-menu offset-y open-on-hover>
                             <template v-slot:activator="{ on }">
                                 <v-btn text v-on="on" tile>
+                                    <v-avatar :size="25" class="mr-2">
+                                        <v-img
+                                            :src="user.profile.image_url"
+                                        ></v-img>
+                                    </v-avatar>
                                     <span class="text-capitalize mr-1">{{
                                         user.profile.first_name
                                     }}</span>
@@ -27,6 +32,24 @@
                                 </v-btn>
                             </template>
                             <v-list>
+                                <v-list-item
+                                    :to="{
+                                        name: 'profile-view',
+                                        params: { email: user.email },
+                                    }"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon color="secondary">
+                                            mdi-account-outline
+                                        </v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            class="font-weight-medium"
+                                            >Profile</v-list-item-title
+                                        >
+                                    </v-list-item-content>
+                                </v-list-item>
                                 <v-list-item @click="logout">
                                     <v-list-item-icon>
                                         <v-icon color="secondary">
@@ -77,8 +100,8 @@
                     >
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" depressed>
-                        <v-icon>mdi-cart</v-icon>
+                    <v-btn icon color="primary" depressed>
+                        <v-icon large>mdi-cart-outline</v-icon>
                     </v-btn>
                 </v-row>
             </v-container>
@@ -90,6 +113,7 @@
         </v-main>
         <global-login-dialog-component></global-login-dialog-component>
         <global-register-dialog-component></global-register-dialog-component>
+        <global-snackbar></global-snackbar>
     </v-app>
 </template>
 
@@ -101,11 +125,16 @@ import {
 import GlobalLoginDialogComponent from "@/components/global/login-dialog-component";
 import { AUTHENTICATION_SET_LOGOUT } from "@/store/types/authentication-store-type";
 import GlobalRegisterDialogComponent from "@/components/global/register-dialog-component";
+import GlobalSnackbar from "@/components/global/snackbar-component";
 
 export default {
     name: "customer-layout",
 
-    components: { GlobalRegisterDialogComponent, GlobalLoginDialogComponent },
+    components: {
+        GlobalSnackbar,
+        GlobalRegisterDialogComponent,
+        GlobalLoginDialogComponent,
+    },
 
     computed: {
         isAuthenticated() {
@@ -126,7 +155,7 @@ export default {
             this.$store.commit(GLOBAL_SET_IS_REGISTER_DIALOG_OPEN, true);
         },
 
-        logout() {
+        async logout() {
             this.$store.commit(AUTHENTICATION_SET_LOGOUT);
         },
     },

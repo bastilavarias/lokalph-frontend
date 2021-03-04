@@ -154,11 +154,11 @@ export default {
         async register() {
             this.isRegisterStart = true;
             const payload = {
-                firstName: this.form.firstName,
-                lastName: this.form.lastName,
-                birthDate: this.form.birthDate,
-                email: this.form.email,
-                password: this.form.password,
+                firstName: this.form.firstName || null,
+                lastName: this.form.lastName || null,
+                birthDate: this.form.birthDate || null,
+                email: this.form.email || null,
+                password: this.form.password || null,
             };
             const {
                 success,

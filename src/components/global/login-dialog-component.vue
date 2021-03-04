@@ -120,8 +120,8 @@ export default {
         async login() {
             this.isLoginStart = true;
             const payload = {
-                email: this.form.email,
-                password: this.form.password,
+                email: this.form.email || null,
+                password: this.form.password || null,
             };
             const {
                 success,

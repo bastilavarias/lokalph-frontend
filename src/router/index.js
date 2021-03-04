@@ -19,6 +19,44 @@ const routes = [
                     roles: ["customer", "seller", "admin"],
                 },
             },
+
+            {
+                path: "profile/:email",
+                component: () => import("@/views/profile/Profile"),
+                children: [
+                    {
+                        path: "",
+                        name: "profile-view",
+                        component: () => import("@/views/profile/ProfileShop"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+
+                    {
+                        path: "product",
+                        name: "profile-product-view",
+                        component: () =>
+                            import("@/views/profile/ProfileProduct"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+
+                    {
+                        path: "review",
+                        name: "profile-review-view",
+                        component: () =>
+                            import("@/views/profile/ProfileReview"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+                ],
+            },
         ],
     },
 ];
