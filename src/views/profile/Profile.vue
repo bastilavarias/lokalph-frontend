@@ -11,12 +11,14 @@
             <v-col cols="12" v-if="!isGetAccountDetailsStart && account">
                 <v-card outlined flat min-height="150">
                     <v-img
-                        src="https://mweb-cdn.karousell.com/build/profile-bg-aad22dfdb89aedb82568258e36764416.jpg"
+                        :src="
+                            require('@/assets/images/red-background-hero.webp')
+                        "
                         height="150"
                         :style="{ position: 'relative' }"
                     >
                         <v-avatar :size="100" class="floating-avatar">
-                            <v-img :src="user.profile.image_url"></v-img>
+                            <v-img :src="account.profile.image_url"></v-img>
                         </v-avatar>
                     </v-img>
                     <v-card-text>
@@ -24,10 +26,12 @@
                             <div>
                                 <span
                                     class="text-capitalize title black--text d-block"
-                                    >{{ user.profile.first_name }}
-                                    {{ user.profile.last_name }}</span
+                                    >{{ account.profile.first_name }}
+                                    {{ account.profile.last_name }}</span
                                 >
-                                <span class="subtitle-2">{{ user.email }}</span>
+                                <span class="subtitle-2">{{
+                                    account.email
+                                }}</span>
                             </div>
                             <v-spacer></v-spacer>
                             <v-btn
@@ -37,6 +41,17 @@
                                 >Edit Profile</v-btn
                             >
                         </div>
+                    </v-card-text>
+                    <v-card-text>
+                        <span v-if="account.profile.introduction">{{
+                            account.profile.introduction
+                        }}</span>
+                        <span
+                            v-if="!account.profile.introduction"
+                            class="font-italic"
+                        >
+                            No introduction.
+                        </span>
                     </v-card-text>
                     <v-tabs fixed-tabs>
                         <template v-for="(tab, index) in tabs">
@@ -73,10 +88,6 @@ export default {
     },
 
     computed: {
-        user() {
-            return this.$store.state.authentication.user;
-        },
-
         tabs() {
             return [
                 {
