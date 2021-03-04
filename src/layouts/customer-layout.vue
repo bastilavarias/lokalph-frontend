@@ -113,6 +113,7 @@
         </v-main>
         <global-login-dialog-component></global-login-dialog-component>
         <global-register-dialog-component></global-register-dialog-component>
+        <global-snackbar></global-snackbar>
     </v-app>
 </template>
 
@@ -124,11 +125,16 @@ import {
 import GlobalLoginDialogComponent from "@/components/global/login-dialog-component";
 import { AUTHENTICATION_SET_LOGOUT } from "@/store/types/authentication-store-type";
 import GlobalRegisterDialogComponent from "@/components/global/register-dialog-component";
+import GlobalSnackbar from "@/components/global/snackbar-component";
 
 export default {
     name: "customer-layout",
 
-    components: { GlobalRegisterDialogComponent, GlobalLoginDialogComponent },
+    components: {
+        GlobalSnackbar,
+        GlobalRegisterDialogComponent,
+        GlobalLoginDialogComponent,
+    },
 
     computed: {
         isAuthenticated() {

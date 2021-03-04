@@ -100,6 +100,7 @@
 <script>
 import CustomPlacesComponent from "@/components/custom/places-component";
 import { SHOP_CREATE } from "@/store/types/shop-store-type";
+import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
 
 const defaultForm = {
     name: null,
@@ -150,6 +151,7 @@ export default {
             };
             const {
                 success,
+                success_message,
                 data,
                 error,
                 error_message,
@@ -162,8 +164,16 @@ export default {
             }
             if (success) {
                 console.log(data);
-                this.isOpenLocal = false;
+                this.isErrorAlertOpen = false;
+                this.errorAlertMessage = null;
                 this.isCreateShopStart = false;
+                this.isOpenLocal = false;
+                this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
+                    isOpen: true,
+                    text: success_message,
+                    color: "success",
+                });
+                this.form = Object.assign({}, this.defaultForm);
             }
         },
     },
