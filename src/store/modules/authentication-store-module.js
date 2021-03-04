@@ -34,8 +34,8 @@ const authenticationStoreModule = {
         async [AUTHENTICATION_LOGIN]({ commit }, { email, password }) {
             try {
                 const result = await authenticationRepository.login(
-                    email,
-                    password
+                    email.toString(),
+                    password.toString()
                 );
                 const payload = {
                     accessToken: result.data.access_token,
@@ -69,18 +69,19 @@ const authenticationStoreModule = {
             { firstName, lastName, birthDate, password, email }
         ) {
             try {
-                const result = await authenticationRepository.register({
-                    firstName,
-                    lastName,
+                const payload = {
+                    firstName: firstName.toString(),
+                    lastName: lastName.toString(),
                     birthDate,
                     password,
-                    email,
-                });
-                const payload = {
+                    email: email.toString(),
+                };
+                const result = await authenticationRepository.register(payload);
+                const authPayload = {
                     accessToken: result.data.access_token,
                     user: result.data.user,
                 };
-                commit(AUTHENTICATION_SET_AUTHENTICATION, payload);
+                commit(AUTHENTICATION_SET_AUTHENTICATION, authPayload);
                 return result;
             } catch (error) {
                 return error.response.data;
