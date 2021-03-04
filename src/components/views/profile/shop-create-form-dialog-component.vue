@@ -71,10 +71,12 @@
                         <v-text-field
                             label="Publishable Key"
                             outlined
+                            v-model="form.publishableKey"
                         ></v-text-field>
                         <v-text-field
                             label="Secret Key"
                             outlined
+                            v-model="form.secretKey"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -107,6 +109,8 @@ const defaultForm = {
     introduction: null,
     address: null,
     contactNumber: null,
+    publishableKey: null,
+    secretKey: null,
 };
 
 export default {
@@ -130,6 +134,12 @@ export default {
         };
     },
 
+    computed: {
+        user() {
+            return this.$store.state.authentication.user;
+        },
+    },
+
     watch: {
         isOpen(value) {
             this.isOpenLocal = value;
@@ -140,6 +150,13 @@ export default {
         },
     },
 
+    mounted() {
+        if (this.user.stripe) {
+            this.form.publishableKey = this.user.stripe.publishable_key;
+            this.form.secretKey = this.user.stripe.secret_key;
+        }
+    },
+
     methods: {
         async createShop() {
             this.isCreateShopStart = true;
@@ -148,6 +165,8 @@ export default {
                 introduction: this.form.introduction || null,
                 address: this.form.address || null,
                 contactNumber: this.form.contactNumber || null,
+                publishableKey: this.form.publishableKey || null,
+                secretKey: this.form.secretKey || null,
             };
             const {
                 success,
@@ -173,7 +192,11 @@ export default {
                     text: success_message,
                     color: "success",
                 });
-                this.form = Object.assign({}, this.defaultForm);
+                this.form = Object.assign(this.form, {
+                    name: null,
+                    introduction: null,
+                    contactNumber: null,
+                });
             }
         },
     },

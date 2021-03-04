@@ -3,7 +3,17 @@ import shopRepository from "@/repositories/shop-repository";
 
 const shopStoreModule = {
     actions: {
-        async [SHOP_CREATE](_, { name, introduction, address, contactNumber }) {
+        async [SHOP_CREATE](
+            _,
+            {
+                name,
+                introduction,
+                address,
+                contactNumber,
+                publishableKey,
+                secretKey,
+            }
+        ) {
             try {
                 const payload = {
                     name: name.toString(),
@@ -22,6 +32,8 @@ const shopStoreModule = {
                         postcode: address.postcode,
                     },
                     contact_number: contactNumber.toString(),
+                    publishable_key: publishableKey,
+                    secret_key: secretKey,
                 };
                 return await shopRepository.createShop(payload);
             } catch (error) {
