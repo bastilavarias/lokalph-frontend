@@ -1,7 +1,14 @@
 <template>
     <section>
         <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" v-if="isGetAccountDetailsStart">
+                <v-card outlined>
+                    <v-skeleton-loader
+                        type="image, list-item-two-line"
+                    ></v-skeleton-loader>
+                </v-card>
+            </v-col>
+            <v-col cols="12" v-if="!isGetAccountDetailsStart && account">
                 <v-card outlined flat min-height="150">
                     <v-img
                         src="https://mweb-cdn.karousell.com/build/profile-bg-aad22dfdb89aedb82568258e36764416.jpg"
@@ -55,7 +62,16 @@
 </template>
 
 <script>
+import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
+
 export default {
+    data() {
+        return {
+            account: null,
+            isGetAccountDetailsStart: false,
+        };
+    },
+
     computed: {
         user() {
             return this.$store.state.authentication.user;
@@ -82,6 +98,27 @@ export default {
                 },
             ];
         },
+    },
+
+    methods: {
+        async getAccountDetails() {
+            const email = this.$route.params.email || null;
+            if (!email) return this.$router.go(-1);
+            this.isGetAccountDetailsStart = true;
+            const { success, data, error } = await this.$store.dispatch(
+                GET_ACCOUNT_DETAILS_BY_EMAIL,
+                email
+            );
+            this.isGetAccountDetailsStart = false;
+            if (error) return this.$router.go(-1);
+            if (success) {
+                this.account = Object.assign({}, data);
+            }
+        },
+    },
+
+    async created() {
+        await this.getAccountDetails();
     },
 };
 </script>
