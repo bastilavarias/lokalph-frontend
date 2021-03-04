@@ -25,17 +25,24 @@ export default {
             type: String,
             required: false,
         },
+        place: {
+            required: true,
+        },
     },
 
     data() {
         return {
-            placeLocal: null,
+            placeLocal: this.place,
         };
     },
 
     watch: {
+        place(value) {
+            this.placeLocal = value;
+        },
+
         placeLocal(value) {
-            console.log(value);
+            this.$emit("update:place", value);
         },
     },
 };
