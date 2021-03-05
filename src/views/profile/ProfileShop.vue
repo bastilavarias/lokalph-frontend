@@ -3,14 +3,14 @@
         <v-card-title>
             <span class="font-weight-bold headline">Shops</span>
             <v-spacer></v-spacer>
-            <v-btn
-                color="primary"
-                depressed
-                class="text-capitalize"
-                @click="isCreateShopOpen = true"
-                v-if="isOwner"
-                >Create Shop</v-btn
-            >
+            <!--            <v-btn-->
+            <!--                color="primary"-->
+            <!--                depressed-->
+            <!--                class="text-capitalize"-->
+            <!--                @click="isCreateShopOpen = true"-->
+            <!--                v-if="isOwner"-->
+            <!--                >Create Shop</v-btn-->
+            <!--            >-->
         </v-card-title>
         <v-card-text>
             <v-row dense>
