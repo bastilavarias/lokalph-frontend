@@ -1,4 +1,4 @@
-import { SHOP_CREATE } from "@/store/types/shop-store-type";
+import { SHOP_CREATE, GET_SHOP_ACCOUNTS } from "@/store/types/shop-store-type";
 import shopRepository from "@/repositories/shop-repository";
 
 const shopStoreModule = {
@@ -36,6 +36,19 @@ const shopStoreModule = {
                     secret_key: secretKey,
                 };
                 return await shopRepository.createShop(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_SHOP_ACCOUNTS](_commit, { accountId, page, perPage }) {
+            try {
+                const payload = {
+                    accountId,
+                    page,
+                    per_page: perPage,
+                };
+                return await shopRepository.getAccountShops(payload);
             } catch (error) {
                 return error.response.data;
             }

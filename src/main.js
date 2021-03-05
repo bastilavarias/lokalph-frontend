@@ -6,6 +6,7 @@ import vuetify from "./plugins/vuetify";
 import axiosService from "@/services/axios-service";
 import VueMeta from "vue-meta";
 import VuetifyAlgoliaPlaces from "vuetify-algolia-places";
+import InfiniteLoading from "vue-infinite-loading";
 
 Vue.config.productionTip = false;
 axiosService.init();
@@ -16,6 +17,7 @@ Vue.use(VuetifyAlgoliaPlaces, {
         apiKey: process.env.VUE_APP_ALGOLIA_APP_API_KEY,
     },
 });
+Vue.use(InfiniteLoading);
 
 new Vue({
     router,

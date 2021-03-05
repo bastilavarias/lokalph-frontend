@@ -3,15 +3,43 @@
         <v-card-title>
             <span class="font-weight-bold headline">Shops</span>
             <v-spacer></v-spacer>
-            <v-btn
-                color="primary"
-                depressed
-                class="text-capitalize"
-                @click="isCreateShopOpen = true"
-                v-if="isOwner"
-                >Create Shop</v-btn
-            >
+            <!--            <v-btn-->
+            <!--                color="primary"-->
+            <!--                depressed-->
+            <!--                class="text-capitalize"-->
+            <!--                @click="isCreateShopOpen = true"-->
+            <!--                v-if="isOwner"-->
+            <!--                >Create Shop</v-btn-->
+            <!--            >-->
         </v-card-title>
+        <v-card-text>
+            <v-row dense>
+                <template v-for="(shop, index) in shops">
+                    <v-col :key="index" cols="12" md="6">
+                        <global-shop-preview-component
+                            :image-url="shop.image_url"
+                            :name="shop.name"
+                            :introduction="shop.introduction"
+                            :created-at="shop.created_at"
+                            :address="shop.address.value"
+                            :contact-number="shop.contact_number"
+                            :store-owner="shop.account"
+                        ></global-shop-preview-component>
+                    </v-col>
+                </template>
+            </v-row>
+        </v-card-text>
+        <infinite-loading @infinite="getShops" v-if="this.account">
+            <template v-slot:spinner>
+                <custom-loading-spinner-component></custom-loading-spinner-component>
+            </template>
+            <template v-slot:no-more>
+                <span></span>
+            </template>
+            <template v-slot:no-results-more>
+                <span></span>
+            </template>
+        </infinite-loading>
         <profile-shop-create-form-dialog-component
             :is-open.sync="isCreateShopOpen"
         ></profile-shop-create-form-dialog-component>
@@ -21,14 +49,24 @@
 <script>
 import ProfileShopCreateFormDialogComponent from "@/components/views/profile/shop-create-form-dialog-component";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
+import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
+import { GET_SHOP_ACCOUNTS } from "@/store/types/shop-store-type";
+import GlobalShopPreviewComponent from "@/components/global/shop-preview-component";
 export default {
-    components: { ProfileShopCreateFormDialogComponent },
+    components: {
+        GlobalShopPreviewComponent,
+        CustomLoadingSpinnerComponent,
+        ProfileShopCreateFormDialogComponent,
+    },
 
     data() {
         return {
             isCreateShopOpen: false,
             account: null,
             isGetAccountDetailsStart: false,
+            shops: [],
+            page: 1,
+            perPage: 5,
         };
     },
 
@@ -58,6 +96,26 @@ export default {
             if (success) {
                 this.account = Object.assign({}, data);
             }
+        },
+
+        async getShops($state) {
+            const payload = {
+                accountId: this.account.id,
+                page: this.page,
+                perPage: this.perPage,
+            };
+            const { data } = await this.$store.dispatch(
+                GET_SHOP_ACCOUNTS,
+                payload
+            );
+            if (data.length === this.perPage) {
+                this.shops = [...this.shops, ...data];
+                $state.loaded();
+                this.page += 1;
+                return;
+            }
+            this.shops = [...this.shops, ...data];
+            $state.complete();
         },
     },
 
