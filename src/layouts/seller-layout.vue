@@ -50,6 +50,26 @@
                                         >
                                     </v-list-item-content>
                                 </v-list-item>
+                                <v-list-item
+                                    :to="{
+                                        name: 'seller-dashboard-view',
+                                    }"
+                                    v-if="isSeller"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon color="secondary">
+                                            mdi-view-dashboard-outline
+                                        </v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            class="font-weight-medium"
+                                        >
+                                            Dashboard</v-list-item-title
+                                        >
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-divider></v-divider>
                                 <v-list-item @click="logout">
                                     <v-list-item-icon>
                                         <v-icon color="secondary">
@@ -117,6 +137,10 @@ export default {
 
         user() {
             return this.$store.state.authentication.user;
+        },
+
+        isSeller() {
+            return this.user && this.user.account_type.type === "seller";
         },
     },
 
