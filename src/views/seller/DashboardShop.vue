@@ -13,6 +13,17 @@
             :loading="isGetShopsStart"
             :items="shops"
         >
+            <template v-slot:top>
+                <v-card-text>
+                    <v-text-field
+                        filled
+                        rounded
+                        placeholder="Search"
+                        append-icon="mdi-magnify"
+                        autofocus
+                    ></v-text-field>
+                </v-card-text>
+            </template>
             <template v-slot:item.name="{ item }">
                 <span class="text-capitalize font-weight-bold">{{
                     item.name
