@@ -12,10 +12,17 @@
                                     <v-list-item-subtitle class="subtitle-2"
                                         >Product Name</v-list-item-subtitle
                                     >
-                                    <v-list-item-subtitle class="subtitle-2"
-                                        >Current Stocks:
+                                    <v-list-item-subtitle>
+                                        Current Stocks:
                                         <span class="font-weight-bold">
-                                            {{ n }}
+                                            {{ n }} ·
+                                            <v-btn
+                                                text
+                                                x-small
+                                                class="text-capitalize"
+                                                color="primary"
+                                                >Manage</v-btn
+                                            >
                                         </span></v-list-item-subtitle
                                     >
                                 </v-list-item-content>
@@ -38,7 +45,7 @@
                                     <v-list-item :key="n" two-line>
                                         <v-list-item-content>
                                             <v-list-item-subtitle
-                                                class="subtitle-2 text-decoration-underline"
+                                                class="subtitle-2"
                                             >
                                                 Product name review by John Doe.
                                             </v-list-item-subtitle>
@@ -49,7 +56,7 @@
                                                     x-small
                                                     class="text-capitalize"
                                                     color="primary"
-                                                    >Reply</v-btn
+                                                    >View</v-btn
                                                 ></v-list-item-subtitle
                                             >
                                         </v-list-item-content>
@@ -69,7 +76,7 @@
                                     <v-list-item :key="n" two-line>
                                         <v-list-item-content>
                                             <v-list-item-subtitle
-                                                class="subtitle-2 text-decoration-underline"
+                                                class="subtitle-2"
                                             >
                                                 Product name inquiry by John
                                                 Doe.
@@ -81,7 +88,7 @@
                                                     x-small
                                                     class="text-capitalize"
                                                     color="primary"
-                                                    >Reply</v-btn
+                                                    >View</v-btn
                                                 >
                                             </v-list-item-subtitle>
                                         </v-list-item-content>
