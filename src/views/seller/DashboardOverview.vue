@@ -5,12 +5,7 @@
             <v-spacer> </v-spacer>
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        text
-                        v-bind="attrs"
-                        v-on="on"
-                        class="text-capitalize"
-                    >
+                    <v-btn text v-bind="attrs" v-on="on">
                         <span class="text-capitalize mr-1 font-weight-bold"
                             >Shop 1</span
                         >
@@ -198,7 +193,32 @@
                 </v-col>
                 <v-col cols="12">
                     <v-card outlined height="300">
-                        <v-card-subtitle>Business Graph</v-card-subtitle>
+                        <v-card-subtitle
+                            class="d-flex justify-space-between align-center"
+                        >
+                            <span>Business Graph</span>
+                            <v-spacer></v-spacer>
+                            <v-menu offset-y>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        text
+                                        small
+                                        class="v-card__subtitle"
+                                    >
+                                        <span class="text-capitalize mr-1"
+                                            >Sales</span
+                                        >
+                                        <v-icon>mdi-chevron-down</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item> Sales </v-list-item>
+                                    <v-list-item> Engagements </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </v-card-subtitle>
                     </v-card>
                 </v-col>
             </v-row>
