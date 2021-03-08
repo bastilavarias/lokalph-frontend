@@ -1,6 +1,29 @@
 <template>
     <v-card outlined>
-        <v-card-title>Overview</v-card-title>
+        <v-card-title>
+            <span>Overview</span>
+            <v-spacer> </v-spacer>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        text
+                        v-bind="attrs"
+                        v-on="on"
+                        class="text-capitalize"
+                    >
+                        <span class="text-capitalize mr-1 font-weight-bold"
+                            >Shop 1</span
+                        >
+                        <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <template v-for="n in 5">
+                        <v-list-item :key="n">Shop {{ n }}</v-list-item>
+                    </template>
+                </v-list>
+            </v-menu>
+        </v-card-title>
         <v-card-text>
             <v-row dense>
                 <v-col cols="12" md="6">
@@ -10,7 +33,7 @@
                             <v-list-item :key="n" two-line>
                                 <v-list-item-content>
                                     <v-list-item-subtitle class="subtitle-2"
-                                        >Product Name</v-list-item-subtitle
+                                        >Product {{ n }}</v-list-item-subtitle
                                     >
                                     <v-list-item-subtitle>
                                         Current Stocks:
@@ -47,7 +70,8 @@
                                             <v-list-item-subtitle
                                                 class="subtitle-2"
                                             >
-                                                Product name review by John Doe.
+                                                Product {{ n }} review by John
+                                                Doe.
                                             </v-list-item-subtitle>
                                             <v-list-item-subtitle
                                                 >Reviewed a day ago ·
@@ -78,7 +102,7 @@
                                             <v-list-item-subtitle
                                                 class="subtitle-2"
                                             >
-                                                Product name inquiry by John
+                                                Product {{ n }} inquiry by John
                                                 Doe.
                                             </v-list-item-subtitle>
                                             <v-list-item-subtitle
