@@ -1,6 +1,17 @@
 <template>
     <v-card outlined>
-        <v-card-title> Shops </v-card-title>
+        <v-card-title>
+            <span>Shops</span>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="primary"
+                depressed
+                :to="{ name: 'seller-dashboard-shop' }"
+                class="text-capitalize"
+                v-if="isOwner"
+                >Manage
+            </v-btn>
+        </v-card-title>
         <v-card-text>
             <v-row dense>
                 <template v-for="(shop, index) in shops">
@@ -61,6 +72,18 @@ export default {
         };
     },
 
+    computed: {
+        user() {
+            return this.$store.state.authentication.user;
+        },
+
+        isOwner() {
+            return (
+                this.user && this.account && this.user.id === this.account.id
+            );
+        },
+    },
+
     methods: {
         async getAccountDetails() {
             const email = this.$route.params.email || null;
@@ -82,18 +105,20 @@ export default {
                 accountId: this.account.id,
                 page: this.page,
                 perPage: this.perPage,
+                sort: "desc",
             };
             const { data } = await this.$store.dispatch(
                 GET_SHOP_ACCOUNTS,
                 payload
             );
-            if (data.length === this.perPage) {
-                this.shops = [...this.shops, ...data];
+            const shops = data.shops;
+            if (shops.length === this.perPage) {
+                this.shops = [...this.shops, ...shops];
                 $state.loaded();
                 this.page += 1;
                 return;
             }
-            this.shops = [...this.shops, ...data];
+            this.shops = [...this.shops, ...shops];
             $state.complete();
         },
     },

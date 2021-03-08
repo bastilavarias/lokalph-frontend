@@ -123,8 +123,7 @@ export default {
                 payload
             );
             this.isGetShopsStart = false;
-            console.log(data);
-            this.shops = data;
+            this.shops = data.shops;
         },
     },
 
