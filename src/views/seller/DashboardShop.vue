@@ -8,7 +8,22 @@
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
         </v-card-title>
-        <v-data-table :headers="tableHeaders" :loading="isGetShopsStart">
+        <v-data-table
+            :headers="tableHeaders"
+            :loading="isGetShopsStart"
+            :items="shops"
+        >
+            <template v-slot:item.name="{ item }">
+                <span class="text-capitalize font-weight-bold">{{
+                    item.name
+                }}</span>
+            </template>
+            <template v-slot:item.contactNumber="{ item }">
+                {{ item.contact_number }}
+            </template>
+            <template v-slot:item.address="{ item }">
+                {{ item.address.value }}
+            </template>
             <template v-slot:item.actions>
                 <v-btn icon class="mr-1">
                     <v-icon>mdi-pencil-outline</v-icon>
