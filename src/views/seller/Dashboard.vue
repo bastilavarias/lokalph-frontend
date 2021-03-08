@@ -7,7 +7,7 @@
                 </v-card-title>
                 <v-tabs v-model="tab" fixed-tabs>
                     <template v-for="(tab, index) in tabs">
-                        <v-tab :key="index">
+                        <v-tab :key="index" :to="tab.to">
                             <v-icon class="mr-1">{{ tab.icon }}</v-icon>
                             <span class="text-capitalize">{{ tab.text }}</span>
                         </v-tab>
@@ -37,6 +37,7 @@ export default {
                 {
                     text: "Dashboard",
                     icon: "mdi-view-dashboard",
+                    to: { name: "seller-dashboard-view" },
                 },
                 {
                     text: "Shops",
