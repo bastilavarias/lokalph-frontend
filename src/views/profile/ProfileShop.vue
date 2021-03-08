@@ -1,6 +1,6 @@
 <template>
     <v-card outlined>
-        <v-card-title class="font-weight-bold headline"> Shops </v-card-title>
+        <v-card-title> Shops </v-card-title>
         <v-card-text>
             <v-row dense>
                 <template v-for="(shop, index) in shops">

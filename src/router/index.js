@@ -73,11 +73,18 @@ const routes = [
             {
                 path: "",
                 component: () => import("@/views/seller/Dashboard"),
-                name: "seller-dashboard-view",
-                meta: {
-                    requiresAuth: true,
-                    roles: ["seller"],
-                },
+                children: [
+                    {
+                        path: "",
+                        component: () =>
+                            import("@/views/seller/DashboardOverview"),
+                        name: "seller-dashboard-view",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+                ],
             },
         ],
     },
