@@ -98,7 +98,7 @@
                         dense
                         single-line
                         label="Search for a Product"
-                        outlined
+                        rounded
                         filled
                         append-icon="mdi-magnify"
                     >
