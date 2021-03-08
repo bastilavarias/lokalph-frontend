@@ -24,11 +24,6 @@
                                         mdi-arrow-down-bold
                                     </v-icon>
                                 </v-list-item-icon>
-                                <v-list-item-icon v-if="n >= 10">
-                                    <v-icon color="success">
-                                        mdi-arrow-up-bold
-                                    </v-icon>
-                                </v-list-item-icon>
                             </v-list-item>
                             <v-divider v-if="n !== 20"></v-divider>
                         </template>
