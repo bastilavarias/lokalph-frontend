@@ -28,7 +28,24 @@
             <v-row dense>
                 <v-col cols="12" md="6">
                     <v-card outlined height="300" class="overflow-auto">
-                        <v-card-subtitle>Product Stocks</v-card-subtitle>
+                        <v-card-subtitle
+                            class="d-flex justify-space-between align-center"
+                        >
+                            <span>
+                                Product Stocks (<span class="font-weight-bold"
+                                    >20</span
+                                >)
+                            </span>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="primary"
+                                small
+                                depressed
+                                class="text-capitalize"
+                                >View All</v-btn
+                            >
+                        </v-card-subtitle>
+
                         <template v-for="n in 20">
                             <v-list-item :key="n" two-line>
                                 <v-list-item-content>
@@ -63,7 +80,24 @@
                     <v-row dense>
                         <v-col cols="12">
                             <v-card outlined height="146" class="overflow-auto">
-                                <v-card-subtitle>Reviews</v-card-subtitle>
+                                <v-card-subtitle
+                                    class="d-flex justify-space-between align-center"
+                                >
+                                    <span>
+                                        Reviews (<span class="font-weight-bold"
+                                            >20</span
+                                        >)
+                                    </span>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="primary"
+                                        small
+                                        depressed
+                                        class="text-capitalize"
+                                        >View All</v-btn
+                                    >
+                                </v-card-subtitle>
+
                                 <template v-for="n in 20">
                                     <v-list-item :key="n" two-line>
                                         <v-list-item-content>
@@ -95,7 +129,25 @@
 
                         <v-col cols="12">
                             <v-card outlined height="146" class="overflow-auto">
-                                <v-card-subtitle>Inquiries</v-card-subtitle>
+                                <v-card-subtitle
+                                    class="d-flex justify-space-between align-center"
+                                >
+                                    <span>
+                                        Inquiries (<span
+                                            class="font-weight-bold"
+                                            >20</span
+                                        >)
+                                    </span>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="primary"
+                                        small
+                                        depressed
+                                        class="text-capitalize"
+                                        >View All</v-btn
+                                    >
+                                </v-card-subtitle>
+
                                 <template v-for="n in 20">
                                     <v-list-item :key="n" two-line>
                                         <v-list-item-content>
@@ -125,7 +177,23 @@
                 </v-col>
                 <v-col cols="12">
                     <v-card outlined height="300">
-                        <v-card-subtitle>Recent Orders</v-card-subtitle>
+                        <v-card-subtitle
+                            class="d-flex justify-space-between align-center"
+                        >
+                            <span> Recent Orders </span>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="primary"
+                                small
+                                depressed
+                                class="text-capitalize"
+                                >View All</v-btn
+                            >
+                        </v-card-subtitle>
+                        <v-data-table
+                            :headers="recentOrdersTableHeaders"
+                            height="180"
+                        ></v-data-table>
                     </v-card>
                 </v-col>
                 <v-col cols="12">
@@ -141,5 +209,30 @@
 import GlobalReviewRatingChipComponent from "@/components/global/review-rating-chip-component";
 export default {
     components: { GlobalReviewRatingChipComponent },
+
+    computed: {
+        recentOrdersTableHeaders() {
+            return [
+                {
+                    text: "Product",
+                },
+                {
+                    text: "Quantity",
+                },
+                {
+                    text: "Customer",
+                },
+                {
+                    text: "Payment Method",
+                },
+                {
+                    text: "Ordered At",
+                },
+                {
+                    text: "Status",
+                },
+            ];
+        },
+    },
 };
 </script>
