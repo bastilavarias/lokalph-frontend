@@ -84,6 +84,49 @@ const routes = [
                             roles: ["seller"],
                         },
                     },
+
+                    {
+                        path: "shop",
+                        component: () => import("@/views/seller/DashboardShop"),
+                        name: "seller-dashboard-shop",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "product",
+                        component: () =>
+                            import("@/views/seller/DashboardProduct"),
+                        name: "seller-dashboard-product",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "review-inquiry",
+                        component: () =>
+                            import("@/views/seller/DashboardReviewInquiry"),
+                        name: "seller-dashboard-review-inquiry",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "order",
+                        component: () =>
+                            import("@/views/seller/DashboardOrder"),
+                        name: "seller-dashboard-order",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
                 ],
             },
         ],

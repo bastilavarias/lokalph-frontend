@@ -192,13 +192,13 @@
                         </v-card-subtitle>
                         <v-data-table
                             :headers="recentOrdersTableHeaders"
-                            height="180"
+                            height="175"
                         ></v-data-table>
                     </v-card>
                 </v-col>
                 <v-col cols="12">
                     <v-card outlined height="300">
-                        <v-card-subtitle>Business Insights</v-card-subtitle>
+                        <v-card-subtitle>Business Graph</v-card-subtitle>
                     </v-card>
                 </v-col>
             </v-row>
