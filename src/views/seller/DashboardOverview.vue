@@ -38,7 +38,7 @@
                                     <v-list-item :key="n">
                                         <v-list-item-content>
                                             <v-list-item-subtitle
-                                                class="subtitle-2 font-weight-bold text-decoration-underline"
+                                                class="subtitle-2 text-decoration-underline"
                                             >
                                                 Product name review by John Doe.
                                             </v-list-item-subtitle>
