@@ -50,26 +50,6 @@
                                         >
                                     </v-list-item-content>
                                 </v-list-item>
-                                <v-list-item
-                                    :to="{
-                                        name: 'seller-dashboard-view',
-                                    }"
-                                    v-if="isSeller"
-                                >
-                                    <v-list-item-icon>
-                                        <v-icon color="secondary">
-                                            mdi-view-dashboard-outline
-                                        </v-icon>
-                                    </v-list-item-icon>
-                                    <v-list-item-content>
-                                        <v-list-item-title
-                                            class="font-weight-medium"
-                                        >
-                                            Dashboard</v-list-item-title
-                                        >
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-divider></v-divider>
                                 <v-list-item @click="logout">
                                     <v-list-item-icon>
                                         <v-icon color="secondary">
@@ -85,22 +65,6 @@
                                 </v-list-item>
                             </v-list>
                         </v-menu>
-                    </div>
-                    <div v-if="!isAuthenticated">
-                        <v-btn
-                            tile
-                            text
-                            class="text-capitalize"
-                            @click="openRegisterDialog"
-                            >Register</v-btn
-                        >
-                        <v-btn
-                            tile
-                            text
-                            class="text-capitalize"
-                            @click="openLoginDialog"
-                            >Login</v-btn
-                        >
                     </div>
                 </v-row>
             </v-container>
@@ -131,29 +95,19 @@
                 <router-view></router-view>
             </v-container>
         </v-main>
-        <global-login-dialog-component></global-login-dialog-component>
-        <global-register-dialog-component></global-register-dialog-component>
         <global-snackbar></global-snackbar>
     </v-app>
 </template>
 
 <script>
-import {
-    GLOBAL_SET_IS_LOGIN_DIALOG_OPEN,
-    GLOBAL_SET_IS_REGISTER_DIALOG_OPEN,
-} from "@/store/types/global-store-type";
-import GlobalLoginDialogComponent from "@/components/global/login-dialog-component";
 import { AUTHENTICATION_SET_LOGOUT } from "@/store/types/authentication-store-type";
-import GlobalRegisterDialogComponent from "@/components/global/register-dialog-component";
 import GlobalSnackbar from "@/components/global/snackbar-component";
 
 export default {
-    name: "customer-layout",
+    name: "seller-layout",
 
     components: {
         GlobalSnackbar,
-        GlobalRegisterDialogComponent,
-        GlobalLoginDialogComponent,
     },
 
     computed: {
@@ -164,21 +118,9 @@ export default {
         user() {
             return this.$store.state.authentication.user;
         },
-
-        isSeller() {
-            return this.user && this.user.account_type.type === "seller";
-        },
     },
 
     methods: {
-        openLoginDialog() {
-            this.$store.commit(GLOBAL_SET_IS_LOGIN_DIALOG_OPEN, true);
-        },
-
-        openRegisterDialog() {
-            this.$store.commit(GLOBAL_SET_IS_REGISTER_DIALOG_OPEN, true);
-        },
-
         async logout() {
             this.$store.commit(AUTHENTICATION_SET_LOGOUT);
         },

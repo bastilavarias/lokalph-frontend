@@ -1,17 +1,6 @@
 <template>
     <v-card outlined>
-        <v-card-title>
-            <span class="font-weight-bold headline">Shops</span>
-            <v-spacer></v-spacer>
-            <!--            <v-btn-->
-            <!--                color="primary"-->
-            <!--                depressed-->
-            <!--                class="text-capitalize"-->
-            <!--                @click="isCreateShopOpen = true"-->
-            <!--                v-if="isOwner"-->
-            <!--                >Create Shop</v-btn-->
-            <!--            >-->
-        </v-card-title>
+        <v-card-title class="font-weight-bold headline"> Shops </v-card-title>
         <v-card-text>
             <v-row dense>
                 <template v-for="(shop, index) in shops">
@@ -28,18 +17,20 @@
                     </v-col>
                 </template>
             </v-row>
+            <infinite-loading @infinite="getShops" v-if="this.account">
+                <template v-slot:spinner>
+                    <custom-loading-spinner-component></custom-loading-spinner-component>
+                </template>
+                <template v-slot:no-more>
+                    <span></span>
+                </template>
+                <template v-slot:no-results>
+                    <div class="text-center py-5">
+                        <span class="font-italic">No shops available.</span>
+                    </div>
+                </template>
+            </infinite-loading>
         </v-card-text>
-        <infinite-loading @infinite="getShops" v-if="this.account">
-            <template v-slot:spinner>
-                <custom-loading-spinner-component></custom-loading-spinner-component>
-            </template>
-            <template v-slot:no-more>
-                <span></span>
-            </template>
-            <template v-slot:no-results-more>
-                <span></span>
-            </template>
-        </infinite-loading>
         <profile-shop-create-form-dialog-component
             :is-open.sync="isCreateShopOpen"
         ></profile-shop-create-form-dialog-component>
@@ -68,18 +59,6 @@ export default {
             page: 1,
             perPage: 5,
         };
-    },
-
-    computed: {
-        user() {
-            return this.$store.state.authentication.user;
-        },
-
-        isOwner() {
-            if (!this.user) return false;
-            if (!this.account) return false;
-            return this.account.id === this.user.id;
-        },
     },
 
     methods: {
