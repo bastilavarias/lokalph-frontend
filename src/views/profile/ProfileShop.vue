@@ -42,14 +42,10 @@
                 </template>
             </infinite-loading>
         </v-card-text>
-        <profile-shop-create-form-dialog-component
-            :is-open.sync="isCreateShopOpen"
-        ></profile-shop-create-form-dialog-component>
     </v-card>
 </template>
 
 <script>
-import ProfileShopCreateFormDialogComponent from "@/components/views/profile/shop-create-form-dialog-component";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
@@ -58,7 +54,6 @@ export default {
     components: {
         GlobalShopPreviewComponent,
         CustomLoadingSpinnerComponent,
-        ProfileShopCreateFormDialogComponent,
     },
 
     data() {

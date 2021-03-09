@@ -72,12 +72,15 @@ const routes = [
         children: [
             {
                 path: "",
-                component: () => import("@/views/seller/SellerDashboard"),
+                component: () =>
+                    import("@/views/seller-dashboard/SellerDashboard"),
                 children: [
                     {
                         path: "",
                         component: () =>
-                            import("@/views/seller/SellerDashboardOverview"),
+                            import(
+                                "@/views/seller-dashboard/SellerDashboardOverview"
+                            ),
                         name: "seller-dashboard-view",
                         meta: {
                             requiresAuth: true,
@@ -87,18 +90,42 @@ const routes = [
 
                     {
                         path: "shop",
-                        component: () => import("@/views/seller/SellerDashboardShop"),
-                        name: "seller-dashboard-shop",
-                        meta: {
-                            requiresAuth: true,
-                            roles: ["seller"],
-                        },
+                        component: () => import("@/layouts/router-view-layout"),
+                        children: [
+                            {
+                                path: "",
+                                component: () =>
+                                    import(
+                                        "@/views/seller-dashboard/shop/Table"
+                                    ),
+                                name: "seller-dashboard-shop",
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+
+                            {
+                                path: "form/:operation",
+                                component: () =>
+                                    import(
+                                        "@/views/seller-dashboard/shop/Form"
+                                    ),
+                                name: "seller-dashboard-shop-form",
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+                        ],
                     },
 
                     {
                         path: "product",
                         component: () =>
-                            import("@/views/seller/SellerDashboardProduct"),
+                            import(
+                                "@/views/seller-dashboard/SellerDashboardProduct"
+                            ),
                         name: "seller-dashboard-product",
                         meta: {
                             requiresAuth: true,
@@ -109,7 +136,9 @@ const routes = [
                     {
                         path: "review-inquiry",
                         component: () =>
-                            import("@/views/seller/SellerDashboardReviewInquiry"),
+                            import(
+                                "@/views/seller-dashboard/SellerDashboardReviewInquiry"
+                            ),
                         name: "seller-dashboard-review-inquiry",
                         meta: {
                             requiresAuth: true,
@@ -120,7 +149,9 @@ const routes = [
                     {
                         path: "order",
                         component: () =>
-                            import("@/views/seller/SellerDashboardOrder"),
+                            import(
+                                "@/views/seller-dashboard/SellerDashboardOrder"
+                            ),
                         name: "seller-dashboard-order",
                         meta: {
                             requiresAuth: true,

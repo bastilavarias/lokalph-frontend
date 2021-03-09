@@ -5,9 +5,9 @@
                 <v-card-title class="font-weight-bold headline">
                     Seller Dashboard
                 </v-card-title>
-                <v-tabs v-model="tab" fixed-tabs>
+                <v-tabs fixed-tabs>
                     <template v-for="(tab, index) in tabs">
-                        <v-tab :key="index" :to="tab.to" exact>
+                        <v-tab :key="index" :to="tab.to">
                             <v-icon class="mr-1">{{ tab.icon }}</v-icon>
                             <span class="text-capitalize">{{ tab.text }}</span>
                         </v-tab>
@@ -25,12 +25,6 @@
 
 <script>
 export default {
-    data() {
-        return {
-            tab: null,
-        };
-    },
-
     computed: {
         tabs() {
             return [

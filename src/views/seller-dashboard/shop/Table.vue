@@ -3,7 +3,14 @@
         <v-card-title>
             <span>Shop Management</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" depressed>
+            <v-btn
+                color="primary"
+                depressed
+                :to="{
+                    name: 'seller-dashboard-shop-form',
+                    params: { operation: 'create' },
+                }"
+            >
                 <span class="text-capitalize mr-1">Create</span>
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
