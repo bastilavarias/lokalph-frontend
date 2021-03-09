@@ -12,6 +12,12 @@
             :headers="tableHeaders"
             :loading="isGetShopsStart"
             :items="shops"
+            :server-items-length="pagination.totalCount"
+            :items-per-page.sync="pagination.perPage"
+            :page.sync="pagination.page"
+            :footer-props="{
+                'items-per-page-options': pagination.rowsPerPageItems,
+            }"
         >
             <template v-slot:top>
                 <v-card-text>
@@ -21,6 +27,7 @@
                         placeholder="Search"
                         append-icon="mdi-magnify"
                         autofocus
+                        v-model="search"
                     ></v-text-field>
                 </v-card-text>
             </template>
@@ -49,7 +56,7 @@
 
 <script>
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
-import { GET_SHOP_ACCOUNTS } from "@/store/types/shop-store-type";
+import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 
 export default {
     data() {
@@ -57,10 +64,37 @@ export default {
             shops: [],
             account: null,
             isGetAccountDetailsStart: false,
-            page: 1,
-            perPage: 5,
             isGetShopsStart: false,
+            search: null,
+            pagination: {
+                page: 1,
+                perPage: 5,
+                totalCount: null,
+                rowsPerPageItems: [10, 25, 50],
+            },
         };
+    },
+
+    watch: {
+        search() {
+            let timer = 0;
+            clearTimeout(timer);
+            timer = setTimeout(
+                async function () {
+                    await this.getShops();
+                }.bind(this),
+                800
+            );
+        },
+
+        async "pagination.page"() {
+            await this.getShops();
+        },
+
+        async "pagination.perPage"(value) {
+            console.log(value);
+            await this.getShops();
+        },
     },
 
     computed: {
@@ -114,16 +148,19 @@ export default {
         async getShops() {
             const payload = {
                 accountId: this.account.id,
-                page: this.page,
-                perPage: this.perPage,
+                page: this.pagination.page,
+                perPage: this.pagination.perPage,
+                search: this.search,
             };
             this.isGetShopsStart = true;
             const { data } = await this.$store.dispatch(
-                GET_SHOP_ACCOUNTS,
+                GET_SHOP_ACCOUNT_SHOPS,
                 payload
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
+            if (!this.search) this.pagination.totalCount = data.total_count;
+            if (this.search) this.pagination.totalCount = this.shops.length;
         },
     },
 
