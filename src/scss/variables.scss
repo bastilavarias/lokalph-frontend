@@ -14,4 +14,4 @@ $typoOptions: display-4, display-3, display-2, display-1, headline, title, subti
 
 $container-max-widths: map-merge($container-max-widths, (
         'xl': map-get($grid-breakpoints, 'md') * 0.9375
-))
+));

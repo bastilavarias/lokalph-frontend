@@ -50,7 +50,7 @@
                             v-if="!account.profile.introduction"
                             class="font-italic"
                         >
-                            No introduction.
+                            No introduction available.
                         </span>
                     </v-card-text>
                     <v-tabs fixed-tabs>

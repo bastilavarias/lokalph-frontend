@@ -19,9 +19,15 @@ const routes = [
                     roles: ["customer", "seller", "admin"],
                 },
             },
+        ],
+    },
 
+    {
+        path: "/profile/:email",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
             {
-                path: "profile/:email",
+                path: "",
                 component: () => import("@/views/profile/Profile"),
                 children: [
                     {
@@ -59,6 +65,72 @@ const routes = [
             },
         ],
     },
+
+    {
+        path: "/seller",
+        component: () => import("@/layouts/seller-layout"),
+        children: [
+            {
+                path: "",
+                component: () => import("@/views/seller/Dashboard"),
+                children: [
+                    {
+                        path: "",
+                        component: () =>
+                            import("@/views/seller/DashboardOverview"),
+                        name: "seller-dashboard-view",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "shop",
+                        component: () => import("@/views/seller/DashboardShop"),
+                        name: "seller-dashboard-shop",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "product",
+                        component: () =>
+                            import("@/views/seller/DashboardProduct"),
+                        name: "seller-dashboard-product",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "review-inquiry",
+                        component: () =>
+                            import("@/views/seller/DashboardReviewInquiry"),
+                        name: "seller-dashboard-review-inquiry",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "order",
+                        component: () =>
+                            import("@/views/seller/DashboardOrder"),
+                        name: "seller-dashboard-order",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 const router = new VueRouter({
@@ -74,9 +146,9 @@ router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
     const roles = to.meta.roles;
     if (requiresAuth && !isAuthenticated)
-        return next({ name: from.name || "Home View" });
+        return next({ name: from.name || "home-view" });
     if (user && !roles.includes(user.account_type.type))
-        return next({ name: from.name || "Home View" });
+        return next({ name: from.name || "home-view" });
     next();
 });
 

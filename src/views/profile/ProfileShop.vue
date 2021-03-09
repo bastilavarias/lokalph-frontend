@@ -1,16 +1,16 @@
 <template>
     <v-card outlined>
         <v-card-title>
-            <span class="font-weight-bold headline">Shops</span>
+            <span>Shops</span>
             <v-spacer></v-spacer>
-            <!--            <v-btn-->
-            <!--                color="primary"-->
-            <!--                depressed-->
-            <!--                class="text-capitalize"-->
-            <!--                @click="isCreateShopOpen = true"-->
-            <!--                v-if="isOwner"-->
-            <!--                >Create Shop</v-btn-->
-            <!--            >-->
+            <v-btn
+                color="primary"
+                depressed
+                :to="{ name: 'seller-dashboard-shop' }"
+                class="text-capitalize"
+                v-if="isOwner"
+                >Manage
+            </v-btn>
         </v-card-title>
         <v-card-text>
             <v-row dense>
@@ -28,18 +28,20 @@
                     </v-col>
                 </template>
             </v-row>
+            <infinite-loading @infinite="getShops" v-if="this.account">
+                <template v-slot:spinner>
+                    <custom-loading-spinner-component></custom-loading-spinner-component>
+                </template>
+                <template v-slot:no-more>
+                    <span></span>
+                </template>
+                <template v-slot:no-results>
+                    <div class="text-center py-5">
+                        <span class="font-italic">No shops available.</span>
+                    </div>
+                </template>
+            </infinite-loading>
         </v-card-text>
-        <infinite-loading @infinite="getShops" v-if="this.account">
-            <template v-slot:spinner>
-                <custom-loading-spinner-component></custom-loading-spinner-component>
-            </template>
-            <template v-slot:no-more>
-                <span></span>
-            </template>
-            <template v-slot:no-results-more>
-                <span></span>
-            </template>
-        </infinite-loading>
         <profile-shop-create-form-dialog-component
             :is-open.sync="isCreateShopOpen"
         ></profile-shop-create-form-dialog-component>
@@ -76,9 +78,9 @@ export default {
         },
 
         isOwner() {
-            if (!this.user) return false;
-            if (!this.account) return false;
-            return this.account.id === this.user.id;
+            return (
+                this.user && this.account && this.user.id === this.account.id
+            );
         },
     },
 
@@ -103,18 +105,20 @@ export default {
                 accountId: this.account.id,
                 page: this.page,
                 perPage: this.perPage,
+                sort: "desc",
             };
             const { data } = await this.$store.dispatch(
                 GET_SHOP_ACCOUNTS,
                 payload
             );
-            if (data.length === this.perPage) {
-                this.shops = [...this.shops, ...data];
+            const shops = data.shops;
+            if (shops.length === this.perPage) {
+                this.shops = [...this.shops, ...shops];
                 $state.loaded();
                 this.page += 1;
                 return;
             }
-            this.shops = [...this.shops, ...data];
+            this.shops = [...this.shops, ...shops];
             $state.complete();
         },
     },
