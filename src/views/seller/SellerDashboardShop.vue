@@ -12,6 +12,9 @@
             :headers="tableHeaders"
             :loading="isGetShopsStart"
             :items="shops"
+            :server-items-length="pagination.totalCount"
+            :items-per-page="pagination.perPage"
+            :page.sync="pagination.page"
         >
             <template v-slot:top>
                 <v-card-text>
@@ -58,10 +61,14 @@ export default {
             shops: [],
             account: null,
             isGetAccountDetailsStart: false,
-            page: 1,
-            perPage: 5,
             isGetShopsStart: false,
             search: null,
+            pagination: {
+                page: 1,
+                perPage: 5,
+                totalCount: null,
+                rowsPerPageItems: [5],
+            },
         };
     },
 
@@ -75,6 +82,15 @@ export default {
                 }.bind(this),
                 800
             );
+        },
+
+        async "pagination.page"() {
+            await this.getShops();
+        },
+
+        async "pagination.perPage"(value) {
+            console.log(value);
+            await this.getShops();
         },
     },
 
@@ -129,8 +145,8 @@ export default {
         async getShops() {
             const payload = {
                 accountId: this.account.id,
-                page: this.page,
-                perPage: this.perPage,
+                page: this.pagination.page,
+                perPage: this.pagination.perPage,
                 search: this.search,
             };
             this.isGetShopsStart = true;
@@ -140,6 +156,8 @@ export default {
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
+            if (!this.search) this.pagination.totalCount = data.total_count;
+            if (this.search) this.pagination.totalCount = this.shops.length;
         },
     },
 
