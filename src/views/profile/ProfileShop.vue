@@ -52,7 +52,7 @@
 import ProfileShopCreateFormDialogComponent from "@/components/views/profile/shop-create-form-dialog-component";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
-import { GET_SHOP_ACCOUNTS } from "@/store/types/shop-store-type";
+import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import GlobalShopPreviewComponent from "@/components/global/shop-preview-component";
 export default {
     components: {
@@ -108,7 +108,7 @@ export default {
                 sort: "desc",
             };
             const { data } = await this.$store.dispatch(
-                GET_SHOP_ACCOUNTS,
+                GET_SHOP_ACCOUNT_SHOPS,
                 payload
             );
             const shops = data.shops;

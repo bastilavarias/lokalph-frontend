@@ -1,4 +1,7 @@
-import { SHOP_CREATE, GET_SHOP_ACCOUNTS } from "@/store/types/shop-store-type";
+import {
+    SHOP_CREATE,
+    GET_SHOP_ACCOUNT_SHOPS,
+} from "@/store/types/shop-store-type";
 import shopRepository from "@/repositories/shop-repository";
 
 const shopStoreModule = {
@@ -41,12 +44,16 @@ const shopStoreModule = {
             }
         },
 
-        async [GET_SHOP_ACCOUNTS](_commit, { accountId, page, perPage }) {
+        async [GET_SHOP_ACCOUNT_SHOPS](
+            _commit,
+            { accountId, page, perPage, search }
+        ) {
             try {
                 const payload = {
                     accountId,
                     page,
                     per_page: perPage,
+                    search,
                 };
                 return await shopRepository.getAccountShops(payload);
             } catch (error) {

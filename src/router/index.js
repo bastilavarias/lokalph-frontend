@@ -72,12 +72,12 @@ const routes = [
         children: [
             {
                 path: "",
-                component: () => import("@/views/seller/Dashboard"),
+                component: () => import("@/views/seller/SellerDashboard"),
                 children: [
                     {
                         path: "",
                         component: () =>
-                            import("@/views/seller/DashboardOverview"),
+                            import("@/views/seller/SellerDashboardOverview"),
                         name: "seller-dashboard-view",
                         meta: {
                             requiresAuth: true,
@@ -87,7 +87,7 @@ const routes = [
 
                     {
                         path: "shop",
-                        component: () => import("@/views/seller/DashboardShop"),
+                        component: () => import("@/views/seller/SellerDashboardShop"),
                         name: "seller-dashboard-shop",
                         meta: {
                             requiresAuth: true,
@@ -98,7 +98,7 @@ const routes = [
                     {
                         path: "product",
                         component: () =>
-                            import("@/views/seller/DashboardProduct"),
+                            import("@/views/seller/SellerDashboardProduct"),
                         name: "seller-dashboard-product",
                         meta: {
                             requiresAuth: true,
@@ -109,7 +109,7 @@ const routes = [
                     {
                         path: "review-inquiry",
                         component: () =>
-                            import("@/views/seller/DashboardReviewInquiry"),
+                            import("@/views/seller/SellerDashboardReviewInquiry"),
                         name: "seller-dashboard-review-inquiry",
                         meta: {
                             requiresAuth: true,
@@ -120,7 +120,7 @@ const routes = [
                     {
                         path: "order",
                         component: () =>
-                            import("@/views/seller/DashboardOrder"),
+                            import("@/views/seller/SellerDashboardOrder"),
                         name: "seller-dashboard-order",
                         meta: {
                             requiresAuth: true,

@@ -21,6 +21,7 @@
                         placeholder="Search"
                         append-icon="mdi-magnify"
                         autofocus
+                        v-model="search"
                     ></v-text-field>
                 </v-card-text>
             </template>
@@ -49,7 +50,7 @@
 
 <script>
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
-import { GET_SHOP_ACCOUNTS } from "@/store/types/shop-store-type";
+import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 
 export default {
     data() {
@@ -60,7 +61,21 @@ export default {
             page: 1,
             perPage: 5,
             isGetShopsStart: false,
+            search: null,
         };
+    },
+
+    watch: {
+        search() {
+            let timer = 0;
+            clearTimeout(timer);
+            timer = setTimeout(
+                async function () {
+                    await this.getShops();
+                }.bind(this),
+                800
+            );
+        },
     },
 
     computed: {
@@ -116,10 +131,11 @@ export default {
                 accountId: this.account.id,
                 page: this.page,
                 perPage: this.perPage,
+                search: this.search,
             };
             this.isGetShopsStart = true;
             const { data } = await this.$store.dispatch(
-                GET_SHOP_ACCOUNTS,
+                GET_SHOP_ACCOUNT_SHOPS,
                 payload
             );
             this.isGetShopsStart = false;
