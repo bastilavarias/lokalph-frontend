@@ -1,10 +1,6 @@
 <template>
-    <v-card outlined>
-        <v-card-title>
-            <span>Create a new Shop</span>
-            <v-spacer></v-spacer>
-        </v-card-title>
-        <v-card-subtitle>Lorem ipsum dolor sit amet.</v-card-subtitle>
+    <seller-dashboard-form-card-component outlined>
+        <template v-slot:title>Create a new Shop</template>
         <v-card-text>
             <v-row dense>
                 <v-col cols="12" v-if="isErrorAlertOpen">
@@ -20,6 +16,7 @@
                         label="Name"
                         outlined
                         v-model="form.name"
+                        autofocus
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -93,13 +90,14 @@
                 </v-col>
             </v-row>
         </v-card-text>
-    </v-card>
+    </seller-dashboard-form-card-component>
 </template>
 
 <script>
 import CustomPlacesComponent from "@/components/custom/places-component";
 import { SHOP_CREATE } from "@/store/types/shop-store-type";
 import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
+import SellerDashboardFormCardComponent from "@/components/global/seller-dashboard-content-card-component";
 
 const defaultForm = {
     name: null,
@@ -111,7 +109,10 @@ const defaultForm = {
 };
 
 export default {
-    components: { CustomPlacesComponent },
+    components: {
+        SellerDashboardFormCardComponent,
+        CustomPlacesComponent,
+    },
 
     data() {
         return {
@@ -166,11 +167,7 @@ export default {
                     text: success_message,
                     color: "success",
                 });
-                this.form = Object.assign(this.form, {
-                    name: null,
-                    introduction: null,
-                    contactNumber: null,
-                });
+                await this.$router.go(-1);
             }
         },
     },

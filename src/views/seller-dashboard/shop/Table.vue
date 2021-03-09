@@ -39,9 +39,7 @@
                 </v-card-text>
             </template>
             <template v-slot:item.name="{ item }">
-                <span class="text-capitalize font-weight-bold">{{
-                    item.name
-                }}</span>
+                <span class="font-weight-bold">{{ item.name }}</span>
             </template>
             <template v-slot:item.contactNumber="{ item }">
                 {{ item.contact_number }}
@@ -75,7 +73,7 @@ export default {
             search: null,
             pagination: {
                 page: 1,
-                perPage: 5,
+                perPage: 10,
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
