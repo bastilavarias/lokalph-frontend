@@ -13,8 +13,11 @@
             :loading="isGetShopsStart"
             :items="shops"
             :server-items-length="pagination.totalCount"
-            :items-per-page="pagination.perPage"
+            :items-per-page.sync="pagination.perPage"
             :page.sync="pagination.page"
+            :footer-props="{
+                'items-per-page-options': pagination.rowsPerPageItems,
+            }"
         >
             <template v-slot:top>
                 <v-card-text>
@@ -67,7 +70,7 @@ export default {
                 page: 1,
                 perPage: 5,
                 totalCount: null,
-                rowsPerPageItems: [5],
+                rowsPerPageItems: [10, 25, 50],
             },
         };
     },
