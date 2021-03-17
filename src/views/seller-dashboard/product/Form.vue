@@ -4,6 +4,15 @@
         <v-card-text>
             <v-row dense>
                 <v-col cols="12">
+                    <span class="subtitle-2">Shop Information</span>
+                </v-col>
+                <v-col cols="12">
+                    <v-autocomplete outlined label="Shop"></v-autocomplete>
+                </v-col>
+                <v-col cols="12">
+                    <span class="subtitle-2">Product Details</span>
+                </v-col>
+                <v-col cols="12">
                     <custom-image-input-component
                         label="Images"
                         outlined

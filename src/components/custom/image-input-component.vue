@@ -4,8 +4,8 @@
             <div class="subtitle-2 font-weight-regular mb-5">
                 {{
                     operation === "create"
-                        ? "Image Preview(s)"
-                        : "Current Image(s)"
+                        ? "Image Previews:"
+                        : "Current Images"
                 }}
             </div>
             <v-slide-group v-if="operation === 'create'">
