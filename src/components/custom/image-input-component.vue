@@ -2,9 +2,13 @@
     <div>
         <div v-if="files.length > 0" class="mb-5">
             <div class="subtitle-2 font-weight-regular mb-5">
-                Current Images
+                {{
+                    operation === "create"
+                        ? "Image Preview(s)"
+                        : "Current Image(s)"
+                }}
             </div>
-            <v-slide-group>
+            <v-slide-group v-if="operation === 'create'">
                 <template v-for="(file, index) in files">
                     <v-slide-item :key="index" class="mr-2">
                         <v-avatar
@@ -36,6 +40,7 @@
             :outlined="outlined"
             :show-size="1000"
             accept="image/png, image/jpeg, image/bmp"
+            v-if="operation === 'create'"
         >
             <template v-slot:selection="{ index, text }">
                 <v-chip v-if="index < 2" color="primary" dark label small>
@@ -66,6 +71,11 @@ export default {
         outlined: {
             type: Boolean,
             required: false,
+        },
+
+        operation: {
+            type: String,
+            required: true,
         },
     },
 

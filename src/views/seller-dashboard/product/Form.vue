@@ -7,6 +7,7 @@
                     <custom-image-input-component
                         label="Images"
                         outlined
+                        operation="create"
                     ></custom-image-input-component>
                 </v-col>
             </v-row>
