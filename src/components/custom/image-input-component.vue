@@ -1,14 +1,27 @@
 <template>
     <div>
-        <div v-if="previews.length > 0" class="mb-5">
+        <div v-if="files.length > 0" class="mb-5">
             <div class="subtitle-2 font-weight-regular mb-5">
                 Current Images
             </div>
             <v-slide-group>
-                <template v-for="(preview, index) in previews">
+                <template v-for="(file, index) in files">
                     <v-slide-item :key="index" class="mr-2">
-                        <v-avatar :size="150" tile>
-                            <v-img :src="preview"></v-img>
+                        <v-avatar
+                            :size="150"
+                            tile
+                            :style="{ position: 'relative' }"
+                        >
+                            <v-img :src="getFilePreview(file)"></v-img>
+                            <v-btn
+                                x-small
+                                fab
+                                light
+                                class="preview-remove-button"
+                                @click="removeFile(index)"
+                            >
+                                <v-icon color="primary">mdi-trash-can</v-icon>
+                            </v-btn>
                         </v-avatar>
                     </v-slide-item>
                 </template>
@@ -62,18 +75,27 @@ export default {
         };
     },
 
-    computed: {
-        previews() {
-            if (this.files.length > 0) {
-                const urls = this.files.map((file) =>
-                    URL.createObjectURL(file)
-                );
-                URL.revokeObjectURL(this.files);
-                return urls;
-            } else {
-                return [];
-            }
+    methods: {
+        getFilePreview(file) {
+            const url = URL.createObjectURL(file);
+            URL.revokeObjectURL(file);
+            return url;
+        },
+
+        removeFile(index) {
+            this.files = this.files.filter(
+                (_, fileIndex) => index !== fileIndex
+            );
         },
     },
 };
 </script>
+
+<style scoped>
+.preview-remove-button {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    transform: translate(-2%, -2%);
+}
+</style>
