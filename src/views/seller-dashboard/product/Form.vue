@@ -37,6 +37,25 @@
                 <v-col cols="12">
                     <custom-stocks-input-component></custom-stocks-input-component>
                 </v-col>
+                <v-col cols="12">
+                    <v-select outlined label="Condition"></v-select>
+                </v-col>
+                <v-col cols="12">
+                    <v-select
+                        outlined
+                        label="Preferred Shipping Method"
+                        persistent-hint
+                        hint="You can select multiple shipping methods."
+                    ></v-select>
+                </v-col>
+                <v-col cols="12">
+                    <custom-combobox-component
+                        label="Keywords"
+                        outlined
+                        hint="You can add up to 3 keywords"
+                        persistent-hint
+                    ></custom-combobox-component>
+                </v-col>
             </v-row>
         </v-card-text>
         <v-card-actions>
@@ -51,8 +70,10 @@
 import SellerDashboardFormCardComponent from "@/components/global/seller-dashboard-content-card-component";
 import CustomImageInputComponent from "@/components/custom/image-input-component";
 import CustomStocksInputComponent from "@/components/custom/stocks-input-component";
+import CustomComboboxComponent from "@/components/custom/combobox-component";
 export default {
     components: {
+        CustomComboboxComponent,
         CustomStocksInputComponent,
         CustomImageInputComponent,
         SellerDashboardFormCardComponent,
