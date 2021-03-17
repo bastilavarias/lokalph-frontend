@@ -15,6 +15,7 @@
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
         </v-card-title>
+
         <v-data-table
             :headers="tableHeaders"
             :loading="isGetShopsStart"

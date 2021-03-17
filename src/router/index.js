@@ -118,13 +118,34 @@ const routes = [
 
                     {
                         path: "product",
-                        component: () =>
-                            import("@/views/seller-dashboard/Product"),
-                        name: "seller-dashboard-product",
-                        meta: {
-                            requiresAuth: true,
-                            roles: ["seller"],
-                        },
+                        component: () => import("@/layouts/router-view-layout"),
+                        children: [
+                            {
+                                path: "",
+                                name: "seller-dashboard-product",
+                                component: () =>
+                                    import(
+                                        "@/views/seller-dashboard/product/Table"
+                                    ),
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+
+                            {
+                                path: "form/:operation",
+                                name: "seller-dashboard-product-form",
+                                component: () =>
+                                    import(
+                                        "@/views/seller-dashboard/product/Form"
+                                    ),
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+                        ],
                     },
 
                     {
