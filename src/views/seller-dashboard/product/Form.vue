@@ -7,7 +7,31 @@
                     <span class="subtitle-2">Shop Information</span>
                 </v-col>
                 <v-col cols="12">
-                    <v-autocomplete outlined label="Shop"></v-autocomplete>
+                    <v-autocomplete
+                        outlined
+                        label="Shop"
+                        :loading="isGetShopsStart"
+                        :items="shops"
+                        item-value="id"
+                        item-text="name"
+                    >
+                        <template v-slot:item="{ item }">
+                            <v-list-item-avatar :size="50">
+                                <v-img :src="item.image_url"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>{{
+                                    item.name
+                                }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{ item.introduction }}
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle>
+                                    {{ item.address.value }}
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </template>
+                    </v-autocomplete>
                 </v-col>
                 <v-col cols="12">
                     <span class="subtitle-2">Product Details</span>
@@ -99,6 +123,7 @@ import CustomImageInputComponent from "@/components/custom/image-input-component
 import CustomStocksInputComponent from "@/components/custom/stocks-input-component";
 import CustomComboboxComponent from "@/components/custom/combobox-component";
 import { GET_PRODUCT_CATEGORIES } from "@/store/types/product-store-type";
+import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 export default {
     components: {
         CustomComboboxComponent,
@@ -111,7 +136,15 @@ export default {
         return {
             categories: [],
             isGetProductCategoriesStart: false,
+            shops: [],
+            isGetShopsStart: false,
         };
+    },
+
+    computed: {
+        user() {
+            return this.$store.state.authentication.user;
+        },
     },
 
     methods: {
@@ -121,10 +154,26 @@ export default {
             this.categories = data;
             this.isGetProductCategoriesStart = false;
         },
+
+        async getShops() {
+            const payload = {
+                accountId: this.user.id,
+                perPage: 999,
+            };
+            this.isGetShopsStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_SHOP_ACCOUNT_SHOPS,
+                payload
+            );
+            this.isGetShopsStart = false;
+            console.log(data.shops);
+            this.shops = data.shops;
+        },
     },
 
     async created() {
         await this.getProductCategories();
+        await this.getShops();
     },
 };
 </script>
