@@ -45,7 +45,7 @@ const shopStoreModule = {
         },
 
         async [GET_SHOP_ACCOUNT_SHOPS](
-            _commit,
+            _,
             { accountId, page, perPage, search }
         ) {
             try {

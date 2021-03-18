@@ -34,7 +34,25 @@
                     ></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                    <v-autocomplete outlined label="Category"></v-autocomplete>
+                    <v-autocomplete
+                        outlined
+                        label="Category"
+                        :loading="isGetProductCategoriesStart"
+                        :items="categories"
+                        item-text="label"
+                        item-value="id"
+                    >
+                        <template v-slot:item="{ item }">
+                            <v-list-item-avatar :size="50">
+                                <v-img :src="item.image_url"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>{{
+                                    item.label
+                                }}</v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+                    </v-autocomplete>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
@@ -80,12 +98,33 @@ import SellerDashboardFormCardComponent from "@/components/global/seller-dashboa
 import CustomImageInputComponent from "@/components/custom/image-input-component";
 import CustomStocksInputComponent from "@/components/custom/stocks-input-component";
 import CustomComboboxComponent from "@/components/custom/combobox-component";
+import { GET_PRODUCT_CATEGORIES } from "@/store/types/product-store-type";
 export default {
     components: {
         CustomComboboxComponent,
         CustomStocksInputComponent,
         CustomImageInputComponent,
         SellerDashboardFormCardComponent,
+    },
+
+    data() {
+        return {
+            categories: [],
+            isGetProductCategoriesStart: false,
+        };
+    },
+
+    methods: {
+        async getProductCategories() {
+            this.isGetProductCategoriesStart = true;
+            const { data } = await this.$store.dispatch(GET_PRODUCT_CATEGORIES);
+            this.categories = data;
+            this.isGetProductCategoriesStart = false;
+        },
+    },
+
+    async created() {
+        await this.getProductCategories();
     },
 };
 </script>
