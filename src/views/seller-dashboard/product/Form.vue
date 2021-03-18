@@ -166,7 +166,6 @@ export default {
                 payload
             );
             this.isGetShopsStart = false;
-            console.log(data.shops);
             this.shops = data.shops;
         },
     },
