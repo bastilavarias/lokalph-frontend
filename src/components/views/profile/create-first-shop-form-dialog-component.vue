@@ -3,13 +3,13 @@
         persistent
         width="480"
         transition="dialog-top-transition"
-        v-model="isDialogOpen"
+        v-model="isOpen"
     >
         <v-card>
             <v-card-title>
                 <span> Create your first Shop! </span>
                 <v-spacer></v-spacer>
-                <v-btn @click="isDialogOpenLocal = false" icon>
+                <v-btn @click="isOpenLocal = false" icon>
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </v-card-title>
@@ -138,7 +138,7 @@ export default {
     name: "profile-view-create-first-shop-form-dialog-component",
 
     props: {
-        isDialogOpen: {
+        isOpen: {
             type: Boolean,
             required: true,
         },
@@ -155,7 +155,7 @@ export default {
             isCreateShopStart: false,
             isErrorAlertOpen: false,
             errorAlertMessage: null,
-            isDialogOpenLocal: this.isDialogOpen,
+            isOpenLocal: this.isOpen,
         };
     },
 
@@ -185,12 +185,12 @@ export default {
     },
 
     watch: {
-        isDialogOpen(value) {
-            this.isDialogOpenLocal = value;
+        isOpen(value) {
+            this.isOpenLocal = value;
         },
 
-        isDialogOpenLocal(value) {
-            this.$emit("update:isDialogOpen", value);
+        isOpenLocal(value) {
+            this.$emit("update:isOpen", value);
         },
     },
 
@@ -223,7 +223,9 @@ export default {
                     text: success_message,
                     color: "success",
                 });
-                await this.$router.go(-1);
+                await this.$router.push({
+                    name: "seller-dashboard-shop",
+                });
             }
         },
     },
