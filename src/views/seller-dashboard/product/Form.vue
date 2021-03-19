@@ -48,8 +48,8 @@
                 <v-col cols="12">
                     <v-text-field
                         outlined
-                        label="Title"
-                        v-model="form.title"
+                        label="Name"
+                        v-model="form.name"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -160,7 +160,7 @@ import CustomStockInputComponent from "@/components/custom/stock-input-component
 const defaultForm = {
     shopId: null,
     images: [],
-    title: null,
+    name: null,
     description: null,
     categoryId: null,
     price: null,
