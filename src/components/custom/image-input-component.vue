@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="files.length > 0" class="mb-5">
+        <div v-if="imagesLocal.length > 0" class="mb-5">
             <div class="subtitle-2 font-weight-regular mb-5">
                 {{
                     operation === "create"
@@ -9,7 +9,7 @@
                 }}
             </div>
             <v-slide-group v-if="operation === 'create'">
-                <template v-for="(file, index) in files">
+                <template v-for="(file, index) in imagesLocal">
                     <v-slide-item :key="index" class="mr-2">
                         <v-avatar
                             :size="150"
@@ -32,7 +32,7 @@
             </v-slide-group>
         </div>
         <v-file-input
-            v-model="files"
+            v-model="imagesLocal"
             counter
             :label="label"
             multiple
@@ -77,12 +77,27 @@ export default {
             type: String,
             required: true,
         },
+
+        images: {
+            type: Array,
+            required: true,
+        },
     },
 
     data() {
         return {
-            files: [],
+            imagesLocal: this.images,
         };
+    },
+
+    watch: {
+        images(value) {
+            this.imagesLocal = value;
+        },
+
+        imagesLocal(value) {
+            this.$emit("update:images", value);
+        },
     },
 
     methods: {
@@ -93,7 +108,7 @@ export default {
         },
 
         removeFile(index) {
-            this.files = this.files.filter(
+            this.imagesLocal = this.imagesLocal.filter(
                 (_, fileIndex) => index !== fileIndex
             );
         },

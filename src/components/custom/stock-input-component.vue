@@ -6,17 +6,17 @@
             depressed
             tile
             height="56"
-            @click="stocksLocal--"
+            @click="stockLocal--"
         >
             <v-icon>mdi-minus</v-icon>
         </v-btn>
         <v-text-field
-            label="Stocks"
+            label="Stock"
             outlined
             :style="{ borderRadius: '0' }"
             class="centered-input"
             type="number"
-            v-model="stocksLocal"
+            v-model="stockLocal"
         ></v-text-field>
         <v-btn
             x-large
@@ -24,7 +24,7 @@
             depressed
             tile
             height="56"
-            @click="stocksLocal++"
+            @click="stockLocal++"
         >
             <v-icon>mdi-plus</v-icon>
         </v-btn>
@@ -33,22 +33,33 @@
 
 <script>
 export default {
-    name: "custom-stocks-input-component",
+    name: "custom-stock-input-component",
+
+    props: {
+        stock: {
+            required: true,
+        },
+    },
 
     data() {
         return {
-            stocksLocal: 1,
+            stockLocal: this.stock,
         };
     },
 
     watch: {
-        stocksLocal(value) {
+        stock(value) {
+            this.stockLocal = value;
+        },
+
+        stockLocal(value) {
             if (typeof value === "string") {
-                this.stocksLocal = 1;
+                this.stockLocal = 1;
             }
             if (value < 1) {
-                this.stocksLocal = 1;
+                this.stockLocal = 1;
             }
+            this.$emit("update:stock", this.stockLocal);
         },
     },
 };

@@ -14,6 +14,7 @@
                         :items="shops"
                         item-value="id"
                         item-text="name"
+                        v-model="form.shopId"
                     >
                         <template v-slot:item="{ item }">
                             <v-list-item-avatar :size="50">
@@ -41,16 +42,23 @@
                         label="Images"
                         outlined
                         operation="create"
+                        :images.sync="form.images"
                     ></custom-image-input-component>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field outlined label="Title"></v-text-field>
+                    <v-text-field
+                        outlined
+                        label="Title"
+                        v-model="form.title"
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <span class="subtitle-2">Description</span>
                 </v-col>
                 <v-col cols="12">
-                    <custom-rich-text-editor-component></custom-rich-text-editor-component>
+                    <custom-rich-text-editor-component
+                        :editor-content.sync="form.description"
+                    ></custom-rich-text-editor-component>
                 </v-col>
                 <v-col cols="12"></v-col>
                 <v-col cols="12"></v-col>
@@ -64,6 +72,7 @@
                         :items="categories"
                         item-text="label"
                         item-value="id"
+                        v-model="form.categoryId"
                     >
                         <template v-slot:item="{ item }">
                             <v-list-item-avatar :size="50">
@@ -82,10 +91,13 @@
                         type="number"
                         outlined
                         label="Price per unit"
+                        v-model="form.price"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <custom-stocks-input-component></custom-stocks-input-component>
+                    <custom-stock-input-component
+                        :stock.sync="form.stock"
+                    ></custom-stock-input-component>
                 </v-col>
                 <v-col cols="12">
                     <v-select
@@ -95,6 +107,7 @@
                         :items="conditions"
                         item-value="id"
                         item-text="label"
+                        v-model="form.conditionId"
                     ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -107,6 +120,7 @@
                         :items="shippingMethods"
                         item-value="id"
                         item-text="label"
+                        v-model="form.shippingMethodId"
                     ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -115,6 +129,8 @@
                         outlined
                         hint="You can add up to 3 keywords"
                         persistent-hint
+                        :items.sync="form.keywords"
+                        :limit="3"
                     ></custom-combobox-component>
                 </v-col>
             </v-row>
@@ -130,7 +146,6 @@
 <script>
 import SellerDashboardFormCardComponent from "@/components/global/seller-dashboard-content-card-component";
 import CustomImageInputComponent from "@/components/custom/image-input-component";
-import CustomStocksInputComponent from "@/components/custom/stocks-input-component";
 import CustomComboboxComponent from "@/components/custom/combobox-component";
 import {
     GET_PRODUCT_CATEGORIES,
@@ -139,11 +154,26 @@ import {
 } from "@/store/types/product-store-type";
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import CustomRichTextEditorComponent from "@/components/custom/rich-text-editor-component";
+import CustomStockInputComponent from "@/components/custom/stock-input-component";
+
+const defaultForm = {
+    shopId: null,
+    images: [],
+    title: null,
+    description: null,
+    categoryId: null,
+    price: null,
+    stock: 1,
+    conditionId: null,
+    shippingMethodId: null,
+    keywords: [],
+};
+
 export default {
     components: {
+        CustomStockInputComponent,
         CustomRichTextEditorComponent,
         CustomComboboxComponent,
-        CustomStocksInputComponent,
         CustomImageInputComponent,
         SellerDashboardFormCardComponent,
     },
@@ -158,6 +188,8 @@ export default {
             isGetProductConditionsStart: false,
             shippingMethods: [],
             isGetProductShippingMethodsStart: false,
+            form: Object.assign({}, defaultForm),
+            defaultForm,
         };
     },
 

@@ -1,7 +1,6 @@
 <template>
     <v-combobox
-        v-model="select"
-        :items="items"
+        v-model="itemsLocal"
         :label="label"
         multiple
         :outlined="outlined"
@@ -41,13 +40,32 @@ export default {
             type: Boolean,
             required: false,
         },
+
+        items: {
+            required: true,
+        },
+
+        limit: {
+            type: Number,
+            required: false,
+        },
     },
 
     data() {
         return {
             select: [],
-            items: [],
+            itemsLocal: this.items,
         };
+    },
+
+    watch: {
+        items(value) {
+            this.itemsLocal = value;
+        },
+
+        itemsLocal(value) {
+            this.$emit("update:items", value);
+        },
     },
 };
 </script>

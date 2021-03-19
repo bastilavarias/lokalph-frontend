@@ -1,7 +1,7 @@
 <template>
     <div class="editor">
         <ckeditor
-            v-model="editorData"
+            v-model="editorContentLocal"
             :config="editorConfig"
             class="editor"
         ></ckeditor>
@@ -12,9 +12,15 @@
 export default {
     name: "custom-rich-text-editor-component",
 
+    props: {
+        editorContent: {
+            required: true,
+        },
+    },
+
     data() {
         return {
-            editorData: null,
+            editorContentLocal: this.editorContent,
             editorConfig: {
                 toolbar: [
                     ["Bold", "Italic", "Underline", "Strike"],
@@ -24,6 +30,16 @@ export default {
                 ],
             },
         };
+    },
+
+    watch: {
+        editorContent(value) {
+            this.editorContentLocal = value;
+        },
+
+        editorContentLocal(value) {
+            this.$emit("update:editorContent", value);
+        },
     },
 };
 </script>
