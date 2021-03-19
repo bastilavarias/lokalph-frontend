@@ -88,7 +88,14 @@
                     <custom-stocks-input-component></custom-stocks-input-component>
                 </v-col>
                 <v-col cols="12">
-                    <v-select outlined label="Condition"></v-select>
+                    <v-select
+                        outlined
+                        label="Condition"
+                        :loading="isGetProductConditionsStart"
+                        :items="conditions"
+                        item-value="id"
+                        item-text="label"
+                    ></v-select>
                 </v-col>
                 <v-col cols="12">
                     <v-select
@@ -121,7 +128,10 @@ import SellerDashboardFormCardComponent from "@/components/global/seller-dashboa
 import CustomImageInputComponent from "@/components/custom/image-input-component";
 import CustomStocksInputComponent from "@/components/custom/stocks-input-component";
 import CustomComboboxComponent from "@/components/custom/combobox-component";
-import { GET_PRODUCT_CATEGORIES } from "@/store/types/product-store-type";
+import {
+    GET_PRODUCT_CATEGORIES,
+    GET_PRODUCT_CONDITIONS,
+} from "@/store/types/product-store-type";
 import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import CustomRichTextEditorComponent from "@/components/custom/rich-text-editor-component";
 export default {
@@ -139,6 +149,8 @@ export default {
             isGetProductCategoriesStart: false,
             shops: [],
             isGetShopsStart: false,
+            conditions: [],
+            isGetProductConditionsStart: false,
         };
     },
 
@@ -169,11 +181,19 @@ export default {
             this.isGetShopsStart = false;
             this.shops = data.shops;
         },
+
+        async getProductConditions() {
+            this.isGetProductConditionsStart = true;
+            const { data } = await this.$store.dispatch(GET_PRODUCT_CONDITIONS);
+            this.conditions = data;
+            this.isGetProductConditionsStart = false;
+        },
     },
 
     async created() {
-        await this.getProductCategories();
         await this.getShops();
+        await this.getProductCategories();
+        await this.getProductConditions();
     },
 };
 </script>

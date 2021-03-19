@@ -5,6 +5,11 @@ const shopRepository = {
         const response = await axiosService.get("/product/categories");
         return response.data;
     },
+
+    async getProductConditions() {
+        const response = await axiosService.get("/product/conditions");
+        return response.data;
+    },
 };
 
 export default shopRepository;
