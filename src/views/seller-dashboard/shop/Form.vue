@@ -8,6 +8,7 @@
                         {{ errorAlertMessage }}
                     </v-alert>
                 </v-col>
+
                 <v-col cols="12">
                     <span class="subtitle-2">Shop Information</span>
                 </v-col>
@@ -44,7 +45,7 @@
                         v-model="form.contactNumber"
                     ></v-text-field>
                 </v-col>
-                <template v-if="!doesUserHasStripe">
+                <template>
                     <v-col cols="12">
                         <div class="d-flex justify-space-between align-center">
                             <span class="subtitle-2">Stripe Details</span>
@@ -129,14 +130,13 @@ export default {
             return this.$store.state.authentication.user;
         },
 
-        doesUserHasStripe() {
+        stripe() {
             return this.user.stripe;
         },
     },
 
     methods: {
         async createShop() {
-            this.isCreateShopStart = true;
             const payload = {
                 name: this.form.name || null,
                 introduction: this.form.introduction || null,
@@ -145,10 +145,11 @@ export default {
                 publishableKey: this.form.publishableKey || null,
                 secretKey: this.form.secretKey || null,
             };
+            console.log(payload);
+            this.isCreateShopStart = true;
             const {
                 success,
                 success_message,
-                data,
                 error,
                 error_message,
             } = await this.$store.dispatch(SHOP_CREATE, payload);
@@ -167,9 +168,18 @@ export default {
                     text: success_message,
                     color: "success",
                 });
-                await this.$router.go(-1);
+                this.form = Object.assign({}, this.defaultForm);
+                this.isCreateShopStart = false;
             }
         },
+    },
+
+    mounted() {
+        const { publishable_key, secret_key } = this.stripe;
+        this.form = Object.assign(this.form, {
+            publishableKey: publishable_key,
+            secretKey: secret_key,
+        });
     },
 };
 </script>

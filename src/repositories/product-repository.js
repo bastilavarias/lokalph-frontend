@@ -15,6 +15,11 @@ const shopRepository = {
         const response = await axiosService.get("/product/shipping-methods");
         return response.data;
     },
+
+    async createProduct(formData) {
+        const response = await axiosService.post("/product/", formData);
+        return response.data;
+    },
 };
 
 export default shopRepository;

@@ -3,6 +3,11 @@
         <template v-slot:title>Create a new Product</template>
         <v-card-text>
             <v-row dense>
+                <v-col cols="12" v-if="isErrorAlertOpen">
+                    <v-alert type="error">
+                        {{ errorAlertMessage }}
+                    </v-alert>
+                </v-col>
                 <v-col cols="12">
                     <span class="subtitle-2">Shop Information</span>
                 </v-col>
@@ -137,7 +142,13 @@
             </v-row>
         </v-card-text>
         <v-card-actions>
-            <v-btn block color="primary" depressed>
+            <v-btn
+                block
+                color="primary"
+                depressed
+                @click="createProduct"
+                :loading="isCreateProductStart"
+            >
                 <span class="text-capitalize mr-2">Create Product</span>
                 <v-icon>mdi-cart</v-icon>
             </v-btn>
@@ -149,6 +160,7 @@ import SellerDashboardFormCardComponent from "@/components/global/seller-dashboa
 import CustomImageInputComponent from "@/components/custom/image-input-component";
 import CustomComboboxComponent from "@/components/custom/combobox-component";
 import {
+    CREATE_PRODUCT,
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
     GET_PRODUCT_SHIPPING_METHODS,
@@ -156,6 +168,7 @@ import {
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import CustomRichTextEditorComponent from "@/components/custom/rich-text-editor-component";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
+import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
 
 const defaultForm = {
     shopId: null,
@@ -191,6 +204,9 @@ export default {
             isGetProductShippingMethodsStart: false,
             form: Object.assign({}, defaultForm),
             defaultForm,
+            isCreateProductStart: false,
+            isErrorAlertOpen: false,
+            errorAlertMessage: null,
         };
     },
 
@@ -236,6 +252,46 @@ export default {
             );
             this.shippingMethods = data;
             this.isGetProductShippingMethodsStart = false;
+        },
+
+        async createProduct() {
+            const payload = {
+                shopId: this.form.shopId || null,
+                images: this.form.images || [],
+                name: this.form.name || null,
+                description: this.form.description || null,
+                categoryId: this.form.categoryId || null,
+                price: this.form.price || null,
+                stock: this.form.stock || null,
+                conditionId: this.form.conditionId || null,
+                shippingMethodIds: this.form.shippingMethodIds || [],
+                keywords: this.form.keywords || [],
+            };
+            this.isCreateProductStart = true;
+            const {
+                success,
+                success_message,
+                error,
+                error_message,
+            } = await this.$store.dispatch(CREATE_PRODUCT, payload);
+            if (error) {
+                this.isErrorAlertOpen = true;
+                this.errorAlertMessage = error_message;
+                this.isCreateProductStart = false;
+                return;
+            }
+            if (success) {
+                this.isErrorAlertOpen = false;
+                this.errorAlertMessage = null;
+                this.isCreateShopStart = false;
+                this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
+                    isOpen: true,
+                    text: success_message,
+                    color: "success",
+                });
+                this.form = Object.assign({}, this.defaultForm);
+                this.isCreateProductStart = true;
+            }
         },
     },
 
