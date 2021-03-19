@@ -44,19 +44,15 @@
                     ></custom-image-input-component>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field
-                        outlined
-                        label="Title"
-                        :counter="100"
-                    ></v-text-field>
+                    <v-text-field outlined label="Title"></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <v-textarea
-                        outlined
-                        label="Description"
-                        :counter="400"
-                    ></v-textarea>
+                    <custom-rich-text-editor-component></custom-rich-text-editor-component>
                 </v-col>
+                <v-col cols="12"></v-col>
+                <v-col cols="12"></v-col>
+                <v-col cols="12"></v-col>
+                <v-col cols="12"></v-col>
                 <v-col cols="12">
                     <v-autocomplete
                         outlined
@@ -124,8 +120,10 @@ import CustomStocksInputComponent from "@/components/custom/stocks-input-compone
 import CustomComboboxComponent from "@/components/custom/combobox-component";
 import { GET_PRODUCT_CATEGORIES } from "@/store/types/product-store-type";
 import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import CustomRichTextEditorComponent from "@/components/custom/rich-text-editor-component";
 export default {
     components: {
+        CustomRichTextEditorComponent,
         CustomComboboxComponent,
         CustomStocksInputComponent,
         CustomImageInputComponent,
