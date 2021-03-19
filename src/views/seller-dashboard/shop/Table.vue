@@ -62,7 +62,7 @@
 
 <script>
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
-import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 
 export default {
     data() {
@@ -160,7 +160,7 @@ export default {
             };
             this.isGetShopsStart = true;
             const { data } = await this.$store.dispatch(
-                GET_SHOP_ACCOUNT_SHOPS,
+                GET_ACCOUNT_SHOPS,
                 payload
             );
             this.isGetShopsStart = false;

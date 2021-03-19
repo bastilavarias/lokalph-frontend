@@ -137,7 +137,7 @@ import {
     GET_PRODUCT_CONDITIONS,
     GET_PRODUCT_SHIPPING_METHODS,
 } from "@/store/types/product-store-type";
-import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import CustomRichTextEditorComponent from "@/components/custom/rich-text-editor-component";
 export default {
     components: {
@@ -182,7 +182,7 @@ export default {
             };
             this.isGetShopsStart = true;
             const { data } = await this.$store.dispatch(
-                GET_SHOP_ACCOUNT_SHOPS,
+                GET_ACCOUNT_SHOPS,
                 payload
             );
             this.isGetShopsStart = false;
