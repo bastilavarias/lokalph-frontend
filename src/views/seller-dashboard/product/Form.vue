@@ -120,7 +120,8 @@
                         :items="shippingMethods"
                         item-value="id"
                         item-text="label"
-                        v-model="form.shippingMethodId"
+                        v-model="form.shippingMethodIds"
+                        multiple
                     ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -165,7 +166,7 @@ const defaultForm = {
     price: null,
     stock: 1,
     conditionId: null,
-    shippingMethodId: null,
+    shippingMethodIds: [],
     keywords: [],
 };
 
