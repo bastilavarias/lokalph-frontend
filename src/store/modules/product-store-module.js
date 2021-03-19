@@ -71,7 +71,7 @@ const productStoreModule = {
                         formData.append("keywords[]", keyword)
                     );
                 } else {
-                    formData.append("keywords[]", []);
+                    formData.append("keywords", []);
                 }
                 //    Will remove in future
                 if (price) formData.append("sale_price", price);
