@@ -103,6 +103,10 @@
                         label="Preferred Shipping Method"
                         persistent-hint
                         hint="You can select multiple shipping methods."
+                        :loading="isGetProductShippingMethodsStart"
+                        :items="shippingMethods"
+                        item-value="id"
+                        item-text="label"
                     ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -131,6 +135,7 @@ import CustomComboboxComponent from "@/components/custom/combobox-component";
 import {
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
+    GET_PRODUCT_SHIPPING_METHODS,
 } from "@/store/types/product-store-type";
 import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import CustomRichTextEditorComponent from "@/components/custom/rich-text-editor-component";
@@ -151,6 +156,8 @@ export default {
             isGetShopsStart: false,
             conditions: [],
             isGetProductConditionsStart: false,
+            shippingMethods: [],
+            isGetProductShippingMethodsStart: false,
         };
     },
 
@@ -188,12 +195,22 @@ export default {
             this.conditions = data;
             this.isGetProductConditionsStart = false;
         },
+
+        async getProductShippingMethods() {
+            this.isGetProductShippingMethodsStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCT_SHIPPING_METHODS
+            );
+            this.shippingMethods = data;
+            this.isGetProductShippingMethodsStart = false;
+        },
     },
 
     async created() {
         await this.getShops();
         await this.getProductCategories();
         await this.getProductConditions();
+        await this.getProductShippingMethods();
     },
 };
 </script>
