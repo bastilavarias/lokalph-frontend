@@ -14,7 +14,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
-                        label="Name"
+                        label="Name *"
                         outlined
                         v-model="form.name"
                         autofocus
@@ -23,7 +23,7 @@
                 <v-col cols="12">
                     <v-textarea
                         outlined
-                        label="About the Shop"
+                        label="About the Shop *"
                         v-model="form.introduction"
                     ></v-textarea>
                 </v-col>
@@ -33,13 +33,13 @@
                 <v-col cols="12">
                     <custom-places-component
                         outlined
-                        label="Address"
+                        label="Address *"
                         :place.sync="form.address"
                     ></custom-places-component>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
-                        label="Contact Number"
+                        label="Contact Number *"
                         outlined
                         type="tel"
                         v-model="form.contactNumber"
@@ -64,14 +64,14 @@
                     </v-col>
                     <v-col cols="12">
                         <v-text-field
-                            label="Publishable Key"
+                            label="Publishable Key *"
                             outlined
                             v-model="form.publishableKey"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                         <v-text-field
-                            label="Secret Key"
+                            label="Secret Key *"
                             outlined
                             v-model="form.secretKey"
                         ></v-text-field>
@@ -84,6 +84,7 @@
                         depressed
                         @click="createShop"
                         :loading="isCreateShopStart"
+                        :disabled="!isFormValid"
                     >
                         <span class="text-capitalize mr-2">Create Shop</span>
                         <v-icon>mdi-storefront</v-icon>
@@ -133,6 +134,25 @@ export default {
         stripe() {
             return this.user.stripe;
         },
+
+        isFormValid() {
+            const {
+                name,
+                introduction,
+                address,
+                contactNumber,
+                publishableKey,
+                secretKey,
+            } = this.form;
+            return (
+                name &&
+                introduction &&
+                address &&
+                contactNumber &&
+                publishableKey &&
+                secretKey
+            );
+        },
     },
 
     methods: {
@@ -145,7 +165,6 @@ export default {
                 publishableKey: this.form.publishableKey || null,
                 secretKey: this.form.secretKey || null,
             };
-            console.log(payload);
             this.isCreateShopStart = true;
             const {
                 success,
@@ -160,16 +179,12 @@ export default {
                 return;
             }
             if (success) {
-                this.isErrorAlertOpen = false;
-                this.errorAlertMessage = null;
-                this.isCreateShopStart = false;
                 this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
                     isOpen: true,
                     text: success_message,
                     color: "success",
                 });
-                this.form = Object.assign({}, this.defaultForm);
-                this.isCreateShopStart = false;
+                await this.$router.go(-1);
             }
         },
     },
