@@ -53,13 +53,15 @@ export default {
         },
 
         stockLocal(value) {
-            if (typeof value === "string") {
+            try {
+                const stock = parseFloat(value);
+                if (stock < 1) {
+                    this.stockLocal = 1;
+                }
+                this.$emit("update:stock", this.stockLocal);
+            } catch (_) {
                 this.stockLocal = 1;
             }
-            if (value < 1) {
-                this.stockLocal = 1;
-            }
-            this.$emit("update:stock", this.stockLocal);
         },
     },
 };
