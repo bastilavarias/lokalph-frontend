@@ -47,6 +47,9 @@
                     <v-text-field outlined label="Title"></v-text-field>
                 </v-col>
                 <v-col cols="12">
+                    <span class="subtitle-2">Description</span>
+                </v-col>
+                <v-col cols="12">
                     <custom-rich-text-editor-component></custom-rich-text-editor-component>
                 </v-col>
                 <v-col cols="12"></v-col>
