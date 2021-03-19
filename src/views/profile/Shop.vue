@@ -3,12 +3,16 @@
         <v-card-title>
             <span>Shops</span>
             <v-spacer></v-spacer>
+            <v-btn color="primary" depressed v-if="isOwner && isCustomer">
+                <span class="text-capitalize mr-1">Create</span>
+                <v-icon>mdi-plus</v-icon>
+            </v-btn>
             <v-btn
                 color="primary"
                 depressed
                 :to="{ name: 'seller-dashboard-shop' }"
                 class="text-capitalize"
-                v-if="isOwner"
+                v-if="isOwner && isSeller"
                 >Manage
             </v-btn>
         </v-card-title>
@@ -76,6 +80,14 @@ export default {
             return (
                 this.user && this.account && this.user.id === this.account.id
             );
+        },
+
+        isCustomer() {
+            return this.user.account_type.id === 1;
+        },
+
+        isSeller() {
+            return this.user.account_type.id === 2;
         },
     },
 
