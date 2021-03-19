@@ -149,6 +149,7 @@
                 depressed
                 @click="createProduct"
                 :loading="isCreateProductStart"
+                :disabled="!isFormValid"
             >
                 <span class="text-capitalize mr-2">Create Product</span>
                 <v-icon>mdi-cart</v-icon>
@@ -215,6 +216,31 @@ export default {
         user() {
             return this.$store.state.authentication.user;
         },
+
+        isFormValid() {
+            const {
+                shopId,
+                images,
+                name,
+                description,
+                categoryId,
+                price,
+                stock,
+                conditionId,
+                shippingMethodIds,
+            } = this.form;
+            return (
+                shopId &&
+                images.length > 0 &&
+                name &&
+                description &&
+                categoryId &&
+                price &&
+                stock > 0 &&
+                conditionId &&
+                shippingMethodIds.length > 0
+            );
+        },
     },
 
     methods: {
@@ -274,6 +300,7 @@ export default {
                 success_message,
                 error,
                 error_message,
+                data,
             } = await this.$store.dispatch(CREATE_PRODUCT, payload);
             if (error) {
                 this.isErrorAlertOpen = true;
