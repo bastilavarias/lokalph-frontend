@@ -11,7 +11,7 @@
             <v-icon>mdi-minus</v-icon>
         </v-btn>
         <v-text-field
-            label="Stock"
+            :label="label"
             outlined
             :style="{ borderRadius: '0' }"
             class="centered-input"
@@ -38,6 +38,11 @@ export default {
     props: {
         stock: {
             required: true,
+        },
+
+        label: {
+            required: false,
+            type: String,
         },
     },
 

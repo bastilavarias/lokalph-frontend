@@ -14,7 +14,7 @@
                 <v-col cols="12">
                     <v-autocomplete
                         outlined
-                        label="Shop"
+                        label="Shop *"
                         :loading="isGetShopsStart"
                         :items="shops"
                         item-value="id"
@@ -44,7 +44,7 @@
                 </v-col>
                 <v-col cols="12">
                     <custom-image-input-component
-                        label="Images"
+                        label="Images *"
                         outlined
                         operation="create"
                         :images.sync="form.images"
@@ -53,12 +53,12 @@
                 <v-col cols="12">
                     <v-text-field
                         outlined
-                        label="Name"
+                        label="Name *"
                         v-model="form.name"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <span class="subtitle-2">Description</span>
+                    <span class="subtitle-2">Description *</span>
                 </v-col>
                 <v-col cols="12">
                     <custom-rich-text-editor-component
@@ -72,7 +72,7 @@
                 <v-col cols="12">
                     <v-autocomplete
                         outlined
-                        label="Category"
+                        label="Category *"
                         :loading="isGetProductCategoriesStart"
                         :items="categories"
                         item-text="label"
@@ -95,19 +95,20 @@
                     <v-text-field
                         type="number"
                         outlined
-                        label="Price per unit"
+                        label="Price per unit *"
                         v-model="form.price"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <custom-stock-input-component
+                        label="Stock *"
                         :stock.sync="form.stock"
                     ></custom-stock-input-component>
                 </v-col>
                 <v-col cols="12">
                     <v-select
                         outlined
-                        label="Condition"
+                        label="Condition *"
                         :loading="isGetProductConditionsStart"
                         :items="conditions"
                         item-value="id"
@@ -118,7 +119,7 @@
                 <v-col cols="12">
                     <v-select
                         outlined
-                        label="Preferred Shipping Method"
+                        label="Preferred Shipping Method *"
                         persistent-hint
                         hint="You can select multiple shipping methods."
                         :loading="isGetProductShippingMethodsStart"
