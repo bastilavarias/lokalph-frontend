@@ -6,9 +6,18 @@
             <v-btn
                 color="primary"
                 depressed
+                v-if="isOwner && isCustomer"
+                @click="isCreateFirstShopDialogOpen = true"
+            >
+                <span class="text-capitalize mr-1">Create</span>
+                <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <v-btn
+                color="primary"
+                depressed
                 :to="{ name: 'seller-dashboard-shop' }"
                 class="text-capitalize"
-                v-if="isOwner"
+                v-if="isOwner && isSeller"
                 >Manage
             </v-btn>
         </v-card-title>
@@ -42,16 +51,21 @@
                 </template>
             </infinite-loading>
         </v-card-text>
+        <profile-view-create-first-shop-form-dialog-component
+            :is-open.sync="isCreateFirstShopDialogOpen"
+        ></profile-view-create-first-shop-form-dialog-component>
     </v-card>
 </template>
 
 <script>
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
-import { GET_SHOP_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import GlobalShopPreviewComponent from "@/components/global/shop-preview-component";
+import ProfileViewCreateFirstShopFormDialogComponent from "@/components/views/profile/create-first-shop-form-dialog-component";
 export default {
     components: {
+        ProfileViewCreateFirstShopFormDialogComponent,
         GlobalShopPreviewComponent,
         CustomLoadingSpinnerComponent,
     },
@@ -64,6 +78,7 @@ export default {
             shops: [],
             page: 1,
             perPage: 5,
+            isCreateFirstShopDialogOpen: false,
         };
     },
 
@@ -76,6 +91,14 @@ export default {
             return (
                 this.user && this.account && this.user.id === this.account.id
             );
+        },
+
+        isCustomer() {
+            return this.user.account_type.id === 1;
+        },
+
+        isSeller() {
+            return this.user.account_type.id === 2;
         },
     },
 
@@ -103,7 +126,7 @@ export default {
                 sort: "desc",
             };
             const { data } = await this.$store.dispatch(
-                GET_SHOP_ACCOUNT_SHOPS,
+                GET_ACCOUNT_SHOPS,
                 payload
             );
             const shops = data.shops;

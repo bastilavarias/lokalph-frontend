@@ -7,6 +7,7 @@ import axiosService from "@/services/axios-service";
 import VueMeta from "vue-meta";
 import VuetifyAlgoliaPlaces from "vuetify-algolia-places";
 import InfiniteLoading from "vue-infinite-loading";
+import CKEditor from "ckeditor4-vue";
 
 Vue.config.productionTip = false;
 axiosService.init();
@@ -18,6 +19,7 @@ Vue.use(VuetifyAlgoliaPlaces, {
     },
 });
 Vue.use(InfiniteLoading);
+Vue.use(CKEditor);
 
 new Vue({
     router,
