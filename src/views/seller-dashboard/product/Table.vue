@@ -17,11 +17,14 @@
                                 v-if="selectedShop"
                                 >{{ selectedShop.name }}</span
                             >
-                            <span
+                            <v-badge
+                                color="primary"
+                                dot
                                 v-if="!selectedShop"
-                                class="mr-1 text-capitalize font-italic"
-                                >Select Shop</span
+                                class="mr-2 text-capitalize font-italic"
                             >
+                                Select Shop
+                            </v-badge>
                             <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
                     </template>
