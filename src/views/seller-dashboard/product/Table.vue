@@ -58,7 +58,42 @@
                 <span>Create a new Product</span>
             </v-tooltip>
         </v-card-title>
-        <v-data-table></v-data-table>
+        <v-data-table
+            :headers="tableHeaders"
+            :loading="isGetProductsStart"
+            :items="shops"
+            :server-items-length="pagination.totalCount"
+            :items-per-page.sync="pagination.perPage"
+            :page.sync="pagination.page"
+            :footer-props="{
+                'items-per-page-options': pagination.rowsPerPageItems,
+            }"
+        >
+            <template v-slot:top>
+                <v-card-text>
+                    <v-text-field
+                        filled
+                        rounded
+                        placeholder="Search"
+                        append-icon="mdi-magnify"
+                        autofocus
+                        v-model="search"
+                        :disabled="!selectedShop"
+                    ></v-text-field>
+                </v-card-text>
+            </template>
+            <template v-slot:item.name="{ item }">
+                <span class="font-weight-bold">{{ item.name }}</span>
+            </template>
+            <template v-slot:item.actions>
+                <v-btn icon class="mr-1">
+                    <v-icon>mdi-pencil-outline</v-icon>
+                </v-btn>
+                <v-btn icon>
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                </v-btn>
+            </template>
+        </v-data-table>
     </v-card>
 </template>
 
@@ -70,13 +105,77 @@ export default {
         return {
             shops: [],
             isGetShopsStart: false,
+            isGetProductsStart: false,
             selectedShop: null,
+            search: null,
+            pagination: {
+                page: 1,
+                perPage: 10,
+                totalCount: null,
+                rowsPerPageItems: [10, 25, 50],
+            },
         };
     },
 
     computed: {
+        tableHeaders() {
+            return [
+                {
+                    text: "Name",
+                    sortable: false,
+                    value: "name",
+                },
+                {
+                    text: "Category",
+                    sortable: false,
+                    value: "category",
+                },
+                {
+                    text: "Price per unit",
+                    sortable: false,
+                    value: "price",
+                },
+                {
+                    text: "Shipping Methods",
+                    sortable: false,
+                    value: "shippingMethods",
+                },
+                {
+                    text: "Actions",
+                    value: "actions",
+                    sortable: false,
+                    align: "right",
+                },
+            ];
+        },
+
         user() {
             return this.$store.state.authentication.user;
+        },
+    },
+
+    watch: {
+        search() {
+            let timer = 0;
+            clearTimeout(timer);
+            timer = setTimeout(
+                async function () {
+                    await this.getProducts();
+                }.bind(this),
+                800
+            );
+        },
+
+        async "pagination.page"() {
+            await this.getProducts();
+        },
+
+        async "pagination.perPage"(value) {
+            await this.getShops();
+        },
+
+        async selectedShop(value) {
+            if (value) await this.getProducts();
         },
     },
 
@@ -93,6 +192,14 @@ export default {
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
+        },
+
+        async getProducts() {
+            const payload = {
+                page: this.pagination.page,
+                perPage: this.pagination.perPage,
+                search: this.search,
+            };
         },
     },
 
