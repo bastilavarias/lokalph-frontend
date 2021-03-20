@@ -4,6 +4,7 @@ import {
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
     GET_PRODUCT_SHIPPING_METHODS,
+    GET_SHOP_PRODUCTS,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -76,6 +77,20 @@ const productStoreModule = {
                 //    Will remove in future
                 if (price) formData.append("sale_price", price);
                 return await productRepository.createProduct(formData);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_SHOP_PRODUCTS](_, { shopId, page, perPage, search }) {
+            try {
+                const payload = {
+                    shopId,
+                    page,
+                    per_page: perPage,
+                    search,
+                };
+                return await productRepository.getShopProducts(payload);
             } catch (error) {
                 return error.response.data;
             }

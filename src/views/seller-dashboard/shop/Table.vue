@@ -98,7 +98,6 @@ export default {
         },
 
         async "pagination.perPage"(value) {
-            console.log(value);
             await this.getShops();
         },
     },
