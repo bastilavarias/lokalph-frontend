@@ -61,7 +61,7 @@
         <v-data-table
             :headers="tableHeaders"
             :loading="isGetProductsStart"
-            :items="shops"
+            :items="products"
             :server-items-length="pagination.totalCount"
             :items-per-page.sync="pagination.perPage"
             :page.sync="pagination.page"
@@ -85,6 +85,19 @@
             <template v-slot:item.name="{ item }">
                 <span class="font-weight-bold">{{ item.name }}</span>
             </template>
+            <template v-slot:item.category="{ item }">
+                {{ item.category.label }}
+            </template>
+            <template v-slot:item.price="{ item }">
+                {{ formatMoney("PHP", item.price) }}
+            </template>
+            <template v-slot:item.shippingMethods="{ item }">
+                <template v-for="(method, index) in item.shipping_methods">
+                    <v-chip :key="index" small color="primary" class="ma-1">
+                        {{ method.label }}
+                    </v-chip>
+                </template>
+            </template>
             <template v-slot:item.actions>
                 <v-btn icon class="mr-1">
                     <v-icon>mdi-pencil-outline</v-icon>
@@ -99,14 +112,19 @@
 
 <script>
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
+import commonUtility from "@/common/utility";
 
 export default {
+    mixins: [commonUtility],
+
     data() {
         return {
             shops: [],
             isGetShopsStart: false,
             isGetProductsStart: false,
             selectedShop: null,
+            products: [],
             search: null,
             pagination: {
                 page: 1,
@@ -171,7 +189,7 @@ export default {
         },
 
         async "pagination.perPage"(value) {
-            await this.getShops();
+            await this.getProducts();
         },
 
         async selectedShop(value) {
@@ -196,10 +214,20 @@ export default {
 
         async getProducts() {
             const payload = {
+                shopId: this.selectedShop.id,
                 page: this.pagination.page,
                 perPage: this.pagination.perPage,
                 search: this.search,
             };
+            this.isGetProductsStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_SHOP_PRODUCTS,
+                payload
+            );
+            this.isGetProductsStart = false;
+            this.products = data.products;
+            if (!this.search) this.pagination.totalCount = data.total_count;
+            if (this.search) this.pagination.totalCount = this.shops.length;
         },
     },
 
