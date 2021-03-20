@@ -318,7 +318,7 @@ export default {
                     color: "success",
                 });
                 this.form = Object.assign({}, this.defaultForm);
-                this.isCreateProductStart = true;
+                this.isCreateProductStart = false;
             }
         },
     },
