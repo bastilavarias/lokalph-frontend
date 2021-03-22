@@ -179,12 +179,13 @@ export default {
                 return;
             }
             if (success) {
+                this.isCreateShopStart = false;
                 this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
                     isOpen: true,
                     text: success_message,
                     color: "success",
                 });
-                await this.$router.go(-1);
+                await this.$router.push({ name: "seller-dashboard-shop" });
             }
         },
     },
