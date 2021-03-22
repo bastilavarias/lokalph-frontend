@@ -40,6 +40,14 @@
                 </v-menu>
             </div>
             <v-spacer></v-spacer>
+            <v-btn
+                color="primary"
+                depressed
+                :to="{ name: 'seller-dashboard-product' }"
+                class="text-capitalize"
+                v-if="isOwner"
+                >Manage
+            </v-btn>
         </v-card-title>
         <v-card-text>
             <v-row dense>
@@ -130,6 +138,12 @@ export default {
     computed: {
         user() {
             return this.$store.state.authentication.user;
+        },
+
+        isOwner() {
+            return (
+                this.user && this.account && this.user.id === this.account.id
+            );
         },
     },
 
