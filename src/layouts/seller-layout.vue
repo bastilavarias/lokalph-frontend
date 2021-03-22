@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-system-bar app color="secondary" dark :height="40">
+        <v-system-bar app color="accent" dark :height="40">
             <v-container>
                 <v-row justify="space-between" align="center">
                     <v-spacer></v-spacer>
