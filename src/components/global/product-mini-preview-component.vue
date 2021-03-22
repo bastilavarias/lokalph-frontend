@@ -42,28 +42,16 @@
         </v-list-item>
         <v-card-text> product description </v-card-text>
         <v-divider></v-divider>
-        <v-card-text>
-            <div class="d-flex align-center mb-2">
-                <v-icon small class="mr-1">mdi-storefront-outline</v-icon>
-                <span>Shop Name</span>
-            </div>
-            <div class="d-flex align-center mb-2">
-                <v-icon small class="mr-1">mdi-map-marker-outline</v-icon>
-                <span>Shop Address</span>
-            </div>
-            <div class="d-flex align-center mb-2">
-                <v-icon small class="mr-1">mdi-phone-outline</v-icon>
-                <span>0921270968</span>
-            </div>
-            <div class="d-flex align-center">
-                <v-icon small class="mr-1">mdi-clock-outline</v-icon>
-                <span>Posted 4 months ago</span>
-            </div>
-        </v-card-text>
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" outlined class="text-capitalize">View</v-btn>
-        </v-card-actions>
+        <v-list-item two-line>
+            <v-list-item-avatar :size="50">
+                <v-img
+                    src="http://www.clker.com/cliparts/S/e/P/6/M/t/shop-front-icon.svg"
+                ></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+                <v-list-item-subtitle> Shop Name </v-list-item-subtitle>
+            </v-list-item-content>
+        </v-list-item>
     </v-card>
 </template>
 
