@@ -1,13 +1,13 @@
 <template>
-    <v-card outlined>
+    <v-card outlined height="600">
         <div :style="{ position: 'relative' }">
             <v-img
-                src="https://lookingfourapp.s3-ap-southeast-1.amazonaws.com/d_ii/ii_29483_235ffaa3e1a35d595489b9a20c8ba6fa3e56b1bae8993a43a8ada098681c4a3f.jpg"
-                width="100%"
-                height="auto"
+                :src="preview.url"
+                :lazy-src="preview.url"
+                height="280"
             ></v-img>
             <div class="floating-product-meta">
-                <v-chip small color="secondary">Product Category</v-chip>
+                <v-chip small color="secondary">{{ category.label }}</v-chip>
             </div>
             <div class="floating-heart-button">
                 <v-btn fab small>
@@ -18,46 +18,93 @@
         <v-list-item two-line>
             <v-list-item-content>
                 <v-list-item-title>
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                            <span v-bind="attrs" v-on="on">Product Name</span>
-                        </template>
-                        <span>Product Name</span>
-                    </v-tooltip>
+                    <span :title="name">{{ name }}</span>
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                            <span
-                                v-bind="attrs"
-                                v-on="on"
-                                class="primary--text font-weight-bold"
-                                >PHP 30, 000</span
-                            >
-                        </template>
-                        <span>Product Name</span>
-                    </v-tooltip>
+                    <span
+                        :title="formatMoney('PHP', price)"
+                        class="primary--text font-weight-bold"
+                        >PHP {{ formatMoney("PHP", price) }}</span
+                    >
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
-        <v-card-text> product description </v-card-text>
+        <!--        <v-card-text v-html="description"> </v-card-text>-->
         <v-divider></v-divider>
         <v-list-item two-line>
-            <v-list-item-avatar :size="50">
-                <v-img
-                    src="http://www.clker.com/cliparts/S/e/P/6/M/t/shop-front-icon.svg"
-                ></v-img>
+            <v-list-item-avatar :size="40">
+                <v-img :src="shop.image_url" :lazy-src="shop.image_url"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
-                <v-list-item-subtitle> Shop Name </v-list-item-subtitle>
+                <v-list-item-subtitle> {{ shop.name }} </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                    <div class="d-flex align-center">
+                        <div class="d-flex align-center">
+                            <v-icon size="small" class="mr-1"
+                                >mdi-clock-outline</v-icon
+                            >
+                            <span class="caption">{{
+                                formatRelativeTime(createdAt)
+                            }}</span>
+                        </div>
+                        <span class="mx-1">·</span>
+                        <div class="d-flex align-center">
+                            <v-icon size="small" class="mr-1"
+                                >mdi-eye-outline</v-icon
+                            >
+                            <span class="caption">4</span>
+                        </div>
+                    </div>
+                </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
     </v-card>
 </template>
 
 <script>
+import commonUtility from "@/common/utility";
+
 export default {
     name: "global-product-mini-preview-component",
+
+    mixins: [commonUtility],
+
+    props: {
+        category: {
+            type: Object,
+            required: true,
+        },
+
+        preview: {
+            type: Object,
+            required: true,
+        },
+
+        price: {
+            type: String,
+            required: true,
+        },
+
+        name: {
+            type: String,
+            required: true,
+        },
+
+        description: {
+            type: String,
+            required: true,
+        },
+
+        createdAt: {
+            type: String,
+            required: true,
+        },
+
+        shop: {
+            type: Object,
+            required: true,
+        },
+    },
 };
 </script>
 
