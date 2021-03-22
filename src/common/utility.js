@@ -1,5 +1,5 @@
 import moment from "moment";
-import clip from "text-clipper";
+import truncate from "truncate-html";
 
 const commonUtility = {
     methods: {
@@ -20,7 +20,7 @@ const commonUtility = {
         },
 
         truncateHTML(html, count) {
-            return clip(html, count, { html: true, maxLines: count });
+            return truncate(html, count, { stripTags: true });
         },
     },
 };

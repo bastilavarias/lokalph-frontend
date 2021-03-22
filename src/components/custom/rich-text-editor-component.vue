@@ -24,7 +24,6 @@ export default {
             editorConfig: {
                 toolbar: [
                     ["Bold", "Italic", "Underline", "Strike"],
-                    ["NumberedList", "BulletedList"],
                     ["Undo", "Redo"],
                     ["About"],
                 ],

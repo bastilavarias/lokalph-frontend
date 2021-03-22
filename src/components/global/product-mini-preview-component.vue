@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined height="580">
+    <v-card outlined height="550">
         <div :style="{ position: 'relative' }">
             <v-img
                 :src="preview.url"
@@ -29,9 +29,18 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
-        <v-card-text :style="{ height: '160px' }">
-            <div v-html="truncateHTML(description, 75)" class="mb-1"></div>
-            <span>Read more...</span>
+        <v-card-text :style="{ height: '130px' }">
+            <div
+                v-html="
+                    truncateHTML(description, 75).length >= 75
+                        ? truncateHTML(description, 75)
+                        : description
+                "
+                class="mb-1"
+            ></div>
+            <span v-if="truncateHTML(description, 75).length >= 75"
+                >Read more...</span
+            >
         </v-card-text>
         <v-divider></v-divider>
         <v-list-item two-line>

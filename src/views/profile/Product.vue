@@ -171,10 +171,10 @@ export default {
                 payload
             );
             const products = data.products;
-            if (products.length === this.perPage) {
+            if (products.length === this.scrollOptions.perPage) {
                 this.products = [...this.products, ...products];
                 $state.loaded();
-                this.page += 1;
+                this.scrollOptions.page += 1;
                 return;
             }
             this.products = [...this.products, ...products];
