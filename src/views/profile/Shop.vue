@@ -46,7 +46,11 @@
                 </template>
                 <template v-slot:no-results>
                     <div class="text-center py-5">
-                        <span class="font-italic">No shops available.</span>
+                        <span class="font-italic">
+                            {{
+                                shops.length === 0 ? "No shops available." : ""
+                            }}
+                        </span>
                     </div>
                 </template>
             </infinite-loading>
@@ -76,8 +80,10 @@ export default {
             account: null,
             isGetAccountDetailsStart: false,
             shops: [],
-            page: 1,
-            perPage: 5,
+            scrollOptions: {
+                page: 1,
+                perPage: 5,
+            },
             isCreateFirstShopDialogOpen: false,
         };
     },
@@ -121,8 +127,8 @@ export default {
         async getShops($state) {
             const payload = {
                 accountId: this.account.id,
-                page: this.page,
-                perPage: this.perPage,
+                page: this.scrollOptions.page,
+                perPage: this.scrollOptions.perPage,
                 sort: "desc",
             };
             const { data } = await this.$store.dispatch(
@@ -130,10 +136,10 @@ export default {
                 payload
             );
             const shops = data.shops;
-            if (shops.length === this.perPage) {
+            if (shops.length === this.scrollOptions.perPage) {
                 this.shops = [...this.shops, ...shops];
                 $state.loaded();
-                this.page += 1;
+                this.scrollOptions.page += 1;
                 return;
             }
             this.shops = [...this.shops, ...shops];

@@ -1,4 +1,5 @@
 import moment from "moment";
+import truncate from "truncate-html";
 
 const commonUtility = {
     methods: {
@@ -17,7 +18,23 @@ const commonUtility = {
                 maximumSignificantDigits: 3,
             }).format(amount);
         },
+
+        truncateHTML(html, count) {
+            return truncate(html, count, { stripTags: true });
+        },
     },
 };
+
+export function debounce(fn, delay) {
+    let timeoutID = null;
+    return function () {
+        clearTimeout(timeoutID);
+        let args = arguments;
+        let that = this;
+        timeoutID = setTimeout(function () {
+            fn.apply(that, args);
+        }, delay);
+    };
+}
 
 export default commonUtility;
