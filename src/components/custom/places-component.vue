@@ -9,6 +9,7 @@
         clearable
         @click:clear="placeLocal = null"
         autocomplete="new"
+        ref="placesSearch"
     ></vuetify-algolia-places>
 </template>
 
