@@ -196,7 +196,6 @@ export default {
                 payload
             );
             const products = data.products;
-            console.log(products);
             if (products.length === this.scrollOptions.perPage) {
                 this.products = [...this.products, ...products];
                 this.scrollOptions.page += 1;
