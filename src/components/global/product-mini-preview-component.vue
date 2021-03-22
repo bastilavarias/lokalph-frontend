@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined height="600">
+    <v-card outlined height="580">
         <div :style="{ position: 'relative' }">
             <v-img
                 :src="preview.url"
@@ -29,7 +29,10 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
-        <!--        <v-card-text v-html="description"> </v-card-text>-->
+        <v-card-text :style="{ height: '160px' }">
+            <div v-html="truncateHTML(description, 75)" class="mb-1"></div>
+            <span>Read more...</span>
+        </v-card-text>
         <v-divider></v-divider>
         <v-list-item two-line>
             <v-list-item-avatar :size="40">

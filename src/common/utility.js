@@ -1,4 +1,5 @@
 import moment from "moment";
+import clip from "text-clipper";
 
 const commonUtility = {
     methods: {
@@ -16,6 +17,10 @@ const commonUtility = {
                 currency: type,
                 maximumSignificantDigits: 3,
             }).format(amount);
+        },
+
+        truncateHTML(html, count) {
+            return clip(html, count, { html: true, maxLines: count });
         },
     },
 };

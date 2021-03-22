@@ -70,7 +70,13 @@
                 </template>
                 <template v-slot:no-results>
                     <div class="text-center py-5">
-                        <span class="font-italic">No products available.</span>
+                        <span class="font-italic">
+                            {{
+                                products.length === 0
+                                    ? "No products available."
+                                    : ""
+                            }}
+                        </span>
                     </div>
                 </template>
             </infinite-loading>
@@ -112,11 +118,12 @@ export default {
     },
 
     watch: {
-        "scrollOptions.id"(value) {
+        selectedShop(value) {
             if (value) {
                 this.scrollOptions = Object.assign(this.scrollOptions, {
                     page: 1,
                     perPage: 5,
+                    id: +new Date(),
                 });
                 this.products = [];
             }
