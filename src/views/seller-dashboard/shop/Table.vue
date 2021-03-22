@@ -63,6 +63,7 @@
 <script>
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { debounce } from "@/common/utility";
 
 export default {
     data() {
@@ -82,16 +83,9 @@ export default {
     },
 
     watch: {
-        search() {
-            let timer = 0;
-            clearTimeout(timer);
-            timer = setTimeout(
-                async function () {
-                    await this.getShops();
-                }.bind(this),
-                800
-            );
-        },
+        search: debounce(async function () {
+            await this.getShops();
+        }, 800),
 
         async "pagination.page"() {
             await this.getShops();
