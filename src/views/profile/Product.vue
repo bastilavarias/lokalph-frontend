@@ -43,6 +43,19 @@
         </v-card-title>
         <v-card-text>
             <v-row dense>
+                <v-col cols="12">
+                    <v-text-field
+                        rounded
+                        filled
+                        placeholder="Search"
+                        append-icon="mdi-magnify"
+                        :disabled="!selectedShop"
+                        v-model="search"
+                        autofocus
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row dense>
                 <template v-for="(product, index) in products">
                     <v-col cols="12" md="4" :key="index">
                         <global-product-mini-preview-component
@@ -89,6 +102,8 @@ import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { debounce } from "@/common/utility";
+
 export default {
     components: {
         CustomLoadingSpinnerComponent,
@@ -108,6 +123,7 @@ export default {
                 perPage: 5,
                 id: +new Date(),
             },
+            search: null,
         };
     },
 
@@ -120,14 +136,22 @@ export default {
     watch: {
         selectedShop(value) {
             if (value) {
+                this.products = [];
                 this.scrollOptions = Object.assign(this.scrollOptions, {
                     page: 1,
                     perPage: 5,
-                    id: +new Date(),
+                    id: this.scrollOptions.id + 1,
                 });
-                this.products = [];
             }
         },
+
+        search: debounce(function () {
+            this.products = [];
+            this.scrollOptions = Object.assign(this.scrollOptions, {
+                page: 1,
+                id: this.scrollOptions.id + 1,
+            });
+        }, 800),
     },
 
     methods: {
@@ -165,16 +189,18 @@ export default {
                 shopId: this.selectedShop.id,
                 page: this.scrollOptions.page,
                 perPage: this.scrollOptions.perPage,
+                search: this.search,
             };
             const { data } = await this.$store.dispatch(
                 GET_SHOP_PRODUCTS,
                 payload
             );
             const products = data.products;
+            console.log(products);
             if (products.length === this.scrollOptions.perPage) {
                 this.products = [...this.products, ...products];
-                $state.loaded();
                 this.scrollOptions.page += 1;
+                $state.loaded();
                 return;
             }
             this.products = [...this.products, ...products];
