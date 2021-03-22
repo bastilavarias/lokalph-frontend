@@ -116,7 +116,7 @@
 <script>
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
-import commonUtility from "@/common/utility";
+import commonUtility, { debounce } from "@/common/utility";
 
 export default {
     mixins: [commonUtility],
@@ -176,22 +176,15 @@ export default {
     },
 
     watch: {
-        search() {
-            let timer = 0;
-            clearTimeout(timer);
-            timer = setTimeout(
-                async function () {
-                    await this.getProducts();
-                }.bind(this),
-                800
-            );
-        },
+        search: debounce(async function () {
+            await this.getProducts();
+        }, 800),
 
         async "pagination.page"() {
             await this.getProducts();
         },
 
-        async "pagination.perPage"(value) {
+        async "pagination.perPage"() {
             await this.getProducts();
         },
 

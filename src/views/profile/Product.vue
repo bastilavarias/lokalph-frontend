@@ -74,6 +74,7 @@
                             :description="product.description"
                             :created-at="product.created_at"
                             :shop="product.shop"
+                            :stock="product.stock"
                         ></global-product-mini-preview-component>
                     </v-col>
                 </template>

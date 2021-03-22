@@ -108,6 +108,17 @@
         <v-app-bar app flat color="white" class="custom-toolbar">
             <v-container>
                 <v-row justify="space-between" align="center">
+                    <v-toolbar-title>
+                        <router-link :to="{ name: 'home-view' }">
+                            <v-img
+                                :src="
+                                    require('@/assets/images/navbar-logo.png')
+                                "
+                                width="150"
+                            ></v-img>
+                        </router-link>
+                    </v-toolbar-title>
+
                     <v-spacer></v-spacer>
                     <v-text-field
                         hide-details
