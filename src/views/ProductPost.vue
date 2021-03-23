@@ -71,13 +71,20 @@
             <v-col cols="12" md="5">
                 <v-list-item two-line>
                     <v-list-item-content>
-                        <v-list-item-title class="headline font-weight-bold">{{
-                            product.name
-                        }}</v-list-item-title>
-                        <v-list-item-title
-                            class="title font-weight-bold primary--text"
-                        >
-                            {{ formatMoney("PHP", product.price) }}
+                        <v-list-item-title>
+                            <span
+                                :title="product.name"
+                                class="headline font-weight-bold"
+                                >{{ product.name }}</span
+                            >
+                        </v-list-item-title>
+                        <v-list-item-title>
+                            <span
+                                class="title font-weight-bold primary--text"
+                                :title="formatMoney('PHP', product.price)"
+                            >
+                                {{ formatMoney("PHP", product.price) }}
+                            </span>
                         </v-list-item-title>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -94,7 +101,9 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title>
-                            {{ product.shop.name }}
+                            <span :title="product.shop.name">
+                                {{ product.shop.name }}
+                            </span>
                         </v-list-item-title>
                         <v-list-item-subtitle>
                             <span
