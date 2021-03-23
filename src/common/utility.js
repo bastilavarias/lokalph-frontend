@@ -15,7 +15,6 @@ const commonUtility = {
             return new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: type,
-                maximumSignificantDigits: 3,
             }).format(amount);
         },
 

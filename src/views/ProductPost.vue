@@ -68,6 +68,47 @@
                     </v-col>
                 </v-row>
             </v-col>
+            <v-col cols="12" md="5">
+                <v-list-item two-line>
+                    <v-list-item-content>
+                        <v-list-item-title class="headline font-weight-bold">{{
+                            product.name
+                        }}</v-list-item-title>
+                        <v-list-item-title
+                            class="title font-weight-bold primary--text"
+                        >
+                            {{ formatMoney("PHP", product.price) }}
+                        </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                        <v-btn icon large>
+                            <v-icon color="primary" large
+                                >mdi-heart-outline</v-icon
+                            >
+                        </v-btn>
+                    </v-list-item-action>
+                </v-list-item>
+                <v-list-item two-line>
+                    <v-list-item-avatar :size="75">
+                        <v-img :src="product.shop.image_url"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ product.shop.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            <span
+                                :title="`Posted this ${formatRelativeTime(
+                                    product.created_at
+                                )}`"
+                            >
+                                Posted this
+                                {{ formatRelativeTime(product.created_at) }}
+                            </span>
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-col>
         </v-row>
     </section>
 </template>
@@ -81,6 +122,7 @@ import {
     Pagination as HooperPagination,
 } from "hooper";
 import "hooper/dist/hooper.css";
+import commonUtility from "@/common/utility";
 
 export default {
     components: {
@@ -89,6 +131,8 @@ export default {
         HooperPagination,
         HooperNavigation,
     },
+
+    mixins: [commonUtility],
 
     data() {
         return {
