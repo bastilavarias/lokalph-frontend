@@ -3,6 +3,7 @@ import {
     CREATE_PRODUCT,
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
+    GET_PRODUCT_DETAILS_BY_SLUG,
     GET_PRODUCT_SHIPPING_METHODS,
     GET_SHOP_PRODUCTS,
 } from "@/store/types/product-store-type";
@@ -91,6 +92,14 @@ const productStoreModule = {
                     search,
                 };
                 return await productRepository.getShopProducts(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_DETAILS_BY_SLUG](_, slug) {
+            try {
+                return await productRepository.getProductDetailsBySlug(slug);
             } catch (error) {
                 return error.response.data;
             }
