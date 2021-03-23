@@ -62,6 +62,11 @@
                         autofocus
                     ></v-text-field>
                 </v-col>
+                <v-col cols="12" v-if="!selectedShop">
+                    <div class="text-center py-5">
+                        <span class="font-italic"> No selected shop. </span>
+                    </div>
+                </v-col>
             </v-row>
             <v-row dense>
                 <template v-for="(product, index) in products">
@@ -75,6 +80,7 @@
                             :created-at="product.created_at"
                             :shop="product.shop"
                             :stock="product.stock"
+                            :slug="product.slug"
                         ></global-product-mini-preview-component>
                     </v-col>
                 </template>

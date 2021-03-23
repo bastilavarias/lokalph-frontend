@@ -173,6 +173,22 @@ const routes = [
             },
         ],
     },
+
+    {
+        path: "/product/:slug",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                name: "product-post-view",
+                component: () => import("@/views/ProductPost"),
+                meta: {
+                    requiresAuth: false,
+                    roles: ["customer", "seller", "admin"],
+                },
+            },
+        ],
+    },
 ];
 
 const router = new VueRouter({
