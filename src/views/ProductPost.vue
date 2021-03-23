@@ -1,16 +1,23 @@
 <template>
     <section>
         <v-row dense v-if="product">
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="7">
                 <v-row dense>
                     <v-col cols="12">
-                        <hooper group="group1">
+                        <hooper group="group1" :items-to-show="1">
                             <template v-for="(image, index) in product.images">
                                 <slide :key="index">
-                                    <v-img
-                                        :src="image.url"
-                                        height="350"
-                                    ></v-img>
+                                    <div
+                                        :style="{ height: '450px' }"
+                                        class="secondary d-flex justify-center align-center align-content-center"
+                                    >
+                                        <v-img
+                                            :src="image.url"
+                                            width="100%"
+                                            height="450"
+                                            position="center"
+                                        ></v-img>
+                                    </div>
                                 </slide>
                             </template>
                         </hooper>
@@ -19,7 +26,7 @@
                         <div class="image-preview">
                             <hooper
                                 group="group1"
-                                :itemsToShow="3"
+                                :items-to-show="3"
                                 ref="carousel"
                             >
                                 <template
@@ -144,13 +151,13 @@ export default {
 
 .image-preview-button-previous {
     top: 40%;
-    left: 0;
-    transform: translate(-40%, 0);
+    left: 5%;
+    transform: translate(-40%, 5%);
 }
 
 .image-preview-button-next {
     top: 40%;
-    right: 0;
-    transform: translate(40%, 0);
+    right: 5%;
+    transform: translate(40%, 5%);
 }
 </style>
