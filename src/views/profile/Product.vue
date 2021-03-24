@@ -72,6 +72,7 @@
                 <template v-for="(product, index) in products">
                     <v-col cols="12" md="4" :key="index">
                         <global-product-mini-preview-component
+                            :shop-id="product.shop.id"
                             :category="product.category"
                             :preview="product.images[0]"
                             :price="product.price"

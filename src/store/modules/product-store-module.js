@@ -4,7 +4,7 @@ import {
     CREATE_PRODUCT_INQUIRY,
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
-    GET_PRODUCT_DETAILS_BY_SLUG,
+    GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
     GET_PRODUCT_SHIPPING_METHODS,
     GET_SHOP_PRODUCTS,
 } from "@/store/types/product-store-type";
@@ -98,9 +98,12 @@ const productStoreModule = {
             }
         },
 
-        async [GET_PRODUCT_DETAILS_BY_SLUG](_, slug) {
+        async [GET_SHOP_PRODUCT_DETAILS_BY_SLUG](_, { shopId, slug }) {
             try {
-                return await productRepository.getProductDetailsBySlug(slug);
+                return await productRepository.getShopProductDetailsBySlug(
+                    shopId,
+                    slug
+                );
             } catch (error) {
                 return error.response.data;
             }

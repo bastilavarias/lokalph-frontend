@@ -1,6 +1,6 @@
 <template>
     <router-link
-        :to="{ name: 'product-post-view', params: { slug } }"
+        :to="{ name: 'product-post-view', params: { shopId, slug } }"
         :style="{ textDecoration: 'none' }"
     >
         <v-hover v-slot="{ hover }">
@@ -121,6 +121,11 @@ export default {
     mixins: [commonUtility],
 
     props: {
+        shopId: {
+            type: Number,
+            required: true,
+        },
+
         category: {
             type: Object,
             required: true,

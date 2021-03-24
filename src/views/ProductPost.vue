@@ -442,7 +442,7 @@
 <script>
 import {
     CREATE_PRODUCT_INQUIRY,
-    GET_PRODUCT_DETAILS_BY_SLUG,
+    GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
 } from "@/store/types/product-store-type";
 import {
     Hooper,
@@ -482,6 +482,10 @@ export default {
     computed: {
         user() {
             return this.$store.state.authentication.user;
+        },
+
+        shopId() {
+            return this.$route.params.shopId;
         },
 
         slug() {
@@ -537,9 +541,13 @@ export default {
     methods: {
         async getProductDetails() {
             this.isGetProductDetailsStart = true;
+            const payload = {
+                shopId: this.shopId,
+                slug: this.slug,
+            };
             const { data } = await this.$store.dispatch(
-                GET_PRODUCT_DETAILS_BY_SLUG,
-                this.slug
+                GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
+                payload
             );
             this.product = data;
             console.log(this.product);

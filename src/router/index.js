@@ -175,7 +175,7 @@ const routes = [
     },
 
     {
-        path: "/product/:slug",
+        path: "/product/:shopId/:slug",
         component: () => import("@/layouts/customer-layout"),
         children: [
             {
