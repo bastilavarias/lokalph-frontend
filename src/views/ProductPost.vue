@@ -1,6 +1,9 @@
 <template>
     <section>
-        <v-row dense v-if="product">
+        <product-post-skeleton-loaders-component
+            v-if="isGetProductDetailsStart && !product"
+        ></product-post-skeleton-loaders-component>
+        <v-row dense v-if="!isGetProductDetailsStart && product">
             <v-col cols="12">
                 <custom-breadcrumbs-component
                     :items="breadcrumbs"
@@ -479,9 +482,11 @@ import commonUtility from "@/common/utility";
 import CustomBreadcrumbsComponent from "@/components/custom/breadcrumbs-component";
 import ProductPostViewInquiryCardComponent from "@/components/views/product-post/inquiry-card-component";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
+import ProductPostSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
 
 export default {
     components: {
+        ProductPostSkeletonLoadersComponent,
         CustomLoadingSpinnerComponent,
         ProductPostViewInquiryCardComponent,
         CustomBreadcrumbsComponent,
