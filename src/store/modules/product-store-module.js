@@ -1,6 +1,7 @@
 import productRepository from "@/repositories/product-repository";
 import {
     CREATE_PRODUCT,
+    CREATE_PRODUCT_INQUIRY,
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
     GET_PRODUCT_DETAILS_BY_SLUG,
@@ -100,6 +101,18 @@ const productStoreModule = {
         async [GET_PRODUCT_DETAILS_BY_SLUG](_, slug) {
             try {
                 return await productRepository.getProductDetailsBySlug(slug);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CREATE_PRODUCT_INQUIRY](_, { productId, message }) {
+            try {
+                const payload = {
+                    product_id: productId,
+                    message,
+                };
+                return await productRepository.createProductInquiry(payload);
             } catch (error) {
                 return error.response.data;
             }

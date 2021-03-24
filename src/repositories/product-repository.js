@@ -33,6 +33,11 @@ const shopRepository = {
         const response = await axiosService.get(`/product/${slug}`);
         return response.data;
     },
+
+    async createProductInquiry(payload) {
+        const response = await axiosService.post("/product/inquiry", payload);
+        return response.data;
+    },
 };
 
 export default shopRepository;

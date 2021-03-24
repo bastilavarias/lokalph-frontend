@@ -2,7 +2,7 @@
     <v-card outlined class="rounded-xl py-5 px-4">
         <div class="d-flex align-start justify-space-between mb-2">
             <v-avatar>
-                <v-img :src="user.profile.image_url"></v-img>
+                <v-img :src="imageUrl"></v-img>
             </v-avatar>
             <div class="mr-2 text-content flex-grow-1">
                 <div class="pl-4">
@@ -12,11 +12,11 @@
                                 class="d-flex align-content-center align-center"
                             >
                                 <span class="text-capitalize subtitle-1">
-                                    Sebastian Curtis Lavarias
+                                    {{ firstName }}
                                 </span>
                                 <span class="mx-1"> · </span>
                                 <span class="caption">
-                                    {{ formatRelativeTime(user.created_at) }}
+                                    {{ formatRelativeTime(createdAt) }}
                                 </span>
                             </div>
                         </v-col>
@@ -27,16 +27,7 @@
                                         class="subtitle-1 text-justify mb-2"
                                         :style="{ wordBreak: 'break-all' }"
                                     >
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipisicing elit. A accusamus cum
-                                        dolorum eaque ex id nam nisi quam quas
-                                        voluptatibus. Asperiores debitis
-                                        deserunt ducimus enim error fugit
-                                        minima, nemo nihil nobis pariatur
-                                        placeat quia quibusdam quos repellendus
-                                        saepe sequi sint, voluptate. Cum dolore
-                                        magnam necessitatibus velit vero. Atque
-                                        ducimus, vel?
+                                        {{ message }}
                                     </div>
                                 </v-col>
                                 <v-col cols="12">
@@ -104,8 +95,32 @@ import ProductPostViewInquiryReplyCardComponent from "@/components/views/product
 
 export default {
     name: "product-post-view-inquiry-card-component",
+
     components: { ProductPostViewInquiryReplyCardComponent },
+
     mixins: [commonUtility],
+
+    props: {
+        firstName: {
+            type: String,
+            required: true,
+        },
+
+        createdAt: {
+            type: String,
+            required: true,
+        },
+
+        message: {
+            type: String,
+            required: true,
+        },
+
+        imageUrl: {
+            type: String,
+            required: true,
+        },
+    },
 
     data() {
         return {

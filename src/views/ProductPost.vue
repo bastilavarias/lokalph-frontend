@@ -359,8 +359,10 @@
             </v-col>
             <v-col cols="12" md="9">
                 <v-card outlined rounded>
-                    <v-card-title>Questions about this product</v-card-title>
-                    <v-card-text>
+                    <v-card-title v-if="!isOwner"
+                        >Questions about this Product</v-card-title
+                    >
+                    <v-card-text v-if="!isOwner">
                         <v-row dense>
                             <v-col cols="1">
                                 <div class="d-flex justify-center">
@@ -377,6 +379,7 @@
                                     placeholder="Write your question(s) here"
                                     :counter="100"
                                     color="primary"
+                                    v-model="inquiry"
                                 ></v-textarea>
                             </v-col>
                             <v-col cols="12">
@@ -388,6 +391,9 @@
                                         color="primary"
                                         depressed
                                         class="text-capitalize"
+                                        :loading="isCreateProductInquiryStart"
+                                        @click="createProductInquiry"
+                                        :disabled="!isInquiryFormValid"
                                         >Ask</v-btn
                                     >
                                 </div>
@@ -398,7 +404,7 @@
                         {{
                             isOwner
                                 ? "Questions about your product"
-                                : "Questions about this product"
+                                : "Other questions"
                         }}
                     </v-card-title>
                     <v-card-subtitle
@@ -406,9 +412,18 @@
                     >
                     <v-card-text>
                         <v-row dense>
-                            <template v-for="n in 3">
-                                <v-col cols="12" :key="n">
-                                    <product-post-view-inquiry-card-component></product-post-view-inquiry-card-component>
+                            <template v-for="(inquiry, index) in inquiries">
+                                <v-col cols="12" :key="index">
+                                    <product-post-view-inquiry-card-component
+                                        :first-name="
+                                            inquiry.account.profile.first_name
+                                        "
+                                        :created-at="inquiry.created_at"
+                                        :message="inquiry.message"
+                                        :image-url="
+                                            inquiry.account.profile.image_url
+                                        "
+                                    ></product-post-view-inquiry-card-component>
                                 </v-col>
                             </template>
                         </v-row>
@@ -425,7 +440,10 @@
 </template>
 
 <script>
-import { GET_PRODUCT_DETAILS_BY_SLUG } from "@/store/types/product-store-type";
+import {
+    CREATE_PRODUCT_INQUIRY,
+    GET_PRODUCT_DETAILS_BY_SLUG,
+} from "@/store/types/product-store-type";
 import {
     Hooper,
     Slide,
@@ -455,6 +473,9 @@ export default {
             isGetProductDetailsStart: false,
             carouselData: 0,
             isDescriptionExpanded: false,
+            inquiries: [],
+            isCreateProductInquiryStart: false,
+            inquiry: null,
         };
     },
 
@@ -497,6 +518,14 @@ export default {
             if (!this.user) return false;
             return this.product.shop.account.id === this.user.id;
         },
+
+        isInquiryFormValid() {
+            return (
+                this.inquiry &&
+                this.inquiry.length >= 4 &&
+                this.inquiry.length <= 100
+            );
+        },
     },
 
     watch: {
@@ -523,6 +552,24 @@ export default {
 
         slideNext() {
             this.$refs.carousel.slideNext();
+        },
+
+        async createProductInquiry() {
+            this.isCreateProductInquiryStart = true;
+            const payload = {
+                productId: this.product.id,
+                message: this.inquiry,
+            };
+            const { success, data } = await this.$store.dispatch(
+                CREATE_PRODUCT_INQUIRY,
+                payload
+            );
+            if (success) {
+                this.inquiries = [data, ...this.inquiries];
+                this.inquiry = null;
+                this.isCreateProductInquiryStart = false;
+            }
+            this.isCreateProductInquiryStart = false;
         },
     },
 
