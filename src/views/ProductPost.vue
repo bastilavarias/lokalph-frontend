@@ -408,7 +408,8 @@
                         }}
                     </v-card-title>
                     <v-card-subtitle
-                        >Showing 5 out of 10 inquiries</v-card-subtitle
+                        >Showing 5 out of
+                        {{ inquiriesTotalCount }} inquiries</v-card-subtitle
                     >
                     <v-card-text>
                         <v-row dense>
@@ -428,6 +429,28 @@
                             </template>
                         </v-row>
                     </v-card-text>
+                    <infinite-loading
+                        @infinite="getInquiries"
+                        :identifier="scrollOptions.id"
+                    >
+                        <template v-slot:spinner>
+                            <custom-loading-spinner-component></custom-loading-spinner-component>
+                        </template>
+                        <template v-slot:no-more>
+                            <span></span>
+                        </template>
+                        <template v-slot:no-results>
+                            <div class="text-center py-5">
+                                <span class="font-italic">
+                                    {{
+                                        inquiries.length === 0
+                                            ? "No inquiries yet."
+                                            : ""
+                                    }}
+                                </span>
+                            </div>
+                        </template>
+                    </infinite-loading>
                 </v-card>
             </v-col>
             <v-col cols="12" md="3">
@@ -442,6 +465,7 @@
 <script>
 import {
     CREATE_PRODUCT_INQUIRY,
+    GET_PRODUCT_INQUIRIES,
     GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
 } from "@/store/types/product-store-type";
 import {
@@ -454,9 +478,11 @@ import "hooper/dist/hooper.css";
 import commonUtility from "@/common/utility";
 import CustomBreadcrumbsComponent from "@/components/custom/breadcrumbs-component";
 import ProductPostViewInquiryCardComponent from "@/components/views/product-post/inquiry-card-component";
+import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 
 export default {
     components: {
+        CustomLoadingSpinnerComponent,
         ProductPostViewInquiryCardComponent,
         CustomBreadcrumbsComponent,
         Hooper,
@@ -476,6 +502,13 @@ export default {
             inquiries: [],
             isCreateProductInquiryStart: false,
             inquiry: null,
+            scrollOptions: {
+                page: 1,
+                perPage: 5,
+                id: +new Date(),
+                totalCount: 0,
+            },
+            inquiriesTotalCount: 0,
         };
     },
 
@@ -578,6 +611,28 @@ export default {
                 this.isCreateProductInquiryStart = false;
             }
             this.isCreateProductInquiryStart = false;
+        },
+
+        async getInquiries($state) {
+            const payload = {
+                productId: this.product.id,
+                page: this.scrollOptions.page,
+                perPage: this.scrollOptions.perPage,
+            };
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCT_INQUIRIES,
+                payload
+            );
+            const inquiries = data.inquiries;
+            this.inquiriesTotalCount = data.totalCount || 0;
+            if (inquiries.length === this.scrollOptions.perPage) {
+                this.inquiries = [...this.inquiries, ...inquiries];
+                this.scrollOptions.page += 1;
+                $state.loaded();
+                return;
+            }
+            this.inquiries = [...this.inquiries, ...inquiries];
+            $state.complete();
         },
     },
 

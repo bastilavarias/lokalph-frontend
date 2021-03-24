@@ -38,6 +38,14 @@ const shopRepository = {
         const response = await axiosService.post("/product/inquiry", payload);
         return response.data;
     },
+
+    async getProductInquiries({ productId, page, per_page }) {
+        const url = `/product/inquiries/${productId}?page=${page}${
+            per_page ? `&per_page=${per_page}` : ""
+        }`;
+        const response = await axiosService.get(url);
+        return response.data;
+    },
 };
 
 export default shopRepository;

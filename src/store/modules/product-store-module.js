@@ -7,6 +7,7 @@ import {
     GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
     GET_PRODUCT_SHIPPING_METHODS,
     GET_SHOP_PRODUCTS,
+    GET_PRODUCT_INQUIRIES,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -116,6 +117,19 @@ const productStoreModule = {
                     message,
                 };
                 return await productRepository.createProductInquiry(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_INQUIRIES](_, { productId, page, perPage }) {
+            try {
+                const payload = {
+                    productId,
+                    page,
+                    per_page: perPage,
+                };
+                return await productRepository.getProductInquiries(payload);
             } catch (error) {
                 return error.response.data;
             }
