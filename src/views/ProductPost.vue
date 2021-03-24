@@ -69,54 +69,284 @@
                 </v-row>
             </v-col>
             <v-col cols="12" md="5">
-                <v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            <span
-                                :title="product.name"
-                                class="headline font-weight-bold"
-                                >{{ product.name }}</span
-                            >
-                        </v-list-item-title>
-                        <v-list-item-title>
-                            <span
-                                class="title font-weight-bold primary--text"
-                                :title="formatMoney('PHP', product.price)"
-                            >
-                                {{ formatMoney("PHP", product.price) }}
-                            </span>
-                        </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                        <v-btn icon large>
-                            <v-icon color="primary" large
-                                >mdi-heart-outline</v-icon
-                            >
-                        </v-btn>
-                    </v-list-item-action>
-                </v-list-item>
-                <v-list-item two-line>
-                    <v-list-item-avatar :size="75">
-                        <v-img :src="product.shop.image_url"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            <span :title="product.shop.name">
-                                {{ product.shop.name }}
-                            </span>
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            <span
-                                :title="`Posted this ${formatRelativeTime(
-                                    product.created_at
-                                )}`"
-                            >
-                                Posted this
-                                {{ formatRelativeTime(product.created_at) }}
-                            </span>
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
+                <v-row dense>
+                    <v-col cols="12">
+                        <v-list-item two-line>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <span
+                                        :title="product.name"
+                                        class="headline font-weight-bold"
+                                        >{{ product.name }}</span
+                                    >
+                                </v-list-item-title>
+                                <v-list-item-title>
+                                    <span
+                                        class="title font-weight-bold primary--text"
+                                        :title="
+                                            formatMoney('PHP', product.price)
+                                        "
+                                    >
+                                        {{ formatMoney("PHP", product.price) }}
+                                    </span>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn icon large>
+                                    <v-icon color="primary" large
+                                        >mdi-heart-outline</v-icon
+                                    >
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-list-item two-line>
+                            <v-list-item-avatar :size="75">
+                                <v-img :src="product.shop.image_url"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <span :title="product.shop.name">
+                                        {{ product.shop.name }}
+                                    </span>
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    <span
+                                        :title="`Posted this ${formatRelativeTime(
+                                            product.created_at
+                                        )}`"
+                                    >
+                                        Posted this
+                                        {{
+                                            formatRelativeTime(
+                                                product.created_at
+                                            )
+                                        }}
+                                    </span>
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn
+                                    color="secondary"
+                                    class="text-capitalize"
+                                    depressed
+                                    >Visit</v-btn
+                                >
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-card flat>
+                            <v-card-subtitle>Product Details:</v-card-subtitle>
+                            <v-card-text class="accent--text">
+                                <v-row dense>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-shape</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                :title="`Product Category: ${product.category.label}`"
+                                                >Category:
+                                                <span class="font-weight-bold">
+                                                    {{ product.category.label }}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-checkbox-blank</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                :title="`This item is tagged as ${product.condition.label}`"
+                                                >{{
+                                                    product.condition.label
+                                                }}</span
+                                            >
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-file-table-box-multiple</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                title="Total Stock"
+                                            >
+                                                <span
+                                                    class="secondary--text font-weight-bold"
+                                                >
+                                                    {{ product.stock }}
+                                                </span>
+                                                stock available
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-heart</v-icon
+                                            >
+                                            <span class="subtitle-1">
+                                                <span
+                                                    class="font-weight-bold secondary--text"
+                                                    >4</span
+                                                >
+                                                hearts
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-eye</v-icon
+                                            >
+                                            <span class="subtitle-1">
+                                                <span
+                                                    class="font-weight-bold secondary--text"
+                                                    >4</span
+                                                >
+                                                views
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-truck</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                title="Preferred shipping method"
+                                            >
+                                                Preferred for
+                                                <span class="font-weight-bold">
+                                                    {{ preferredFor }}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-map-marker</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                title="Shop Location"
+                                            >
+                                                {{ product.shop.address.value }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-clock</v-icon
+                                            >
+                                            <span class="subtitle-1">
+                                                Posted
+                                                {{
+                                                    formatRelativeTime(
+                                                        product.created_at
+                                                    )
+                                                }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-card flat>
+                            <v-card-text class="subtitle-1 accent--text">
+                                <div
+                                    class="d-flex align-content-center align-center"
+                                >
+                                    <v-icon class="mr-1"
+                                        >mdi-information</v-icon
+                                    >
+                                    <span class="subtitle-1">
+                                        Description
+                                    </span>
+                                </div>
+                                <template
+                                    v-if="
+                                        truncateHTML(product.description, 75)
+                                            .length < 75
+                                    "
+                                >
+                                    <div v-html="product.description"></div>
+                                </template>
+                                <template
+                                    v-if="
+                                        truncateHTML(product.description, 75)
+                                            .length > 75 &&
+                                        !shouldShowFullDescription
+                                    "
+                                >
+                                    <div
+                                        v-html="
+                                            truncateHTML(
+                                                product.description,
+                                                75
+                                            )
+                                        "
+                                    ></div>
+                                </template>
+                                <template
+                                    v-if="
+                                        truncateHTML(product.description, 75)
+                                            .length > 75 &&
+                                        shouldShowFullDescription
+                                    "
+                                >
+                                    <div v-html="product.description"></div>
+                                </template>
+                                <span
+                                    class="font-weight-bold secondary--text"
+                                    :style="{ cursor: 'pointer' }"
+                                    @click="
+                                        shouldShowFullDescription = !shouldShowFullDescription
+                                    "
+                                    >{{
+                                        shouldShowFullDescription
+                                            ? "Show less"
+                                            : "Read more"
+                                    }}
+                                    <v-icon color="secondary">{{
+                                        shouldShowFullDescription
+                                            ? "mdi-chevron-up"
+                                            : "mdi-chevron-down"
+                                    }}</v-icon></span
+                                >
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     </section>
@@ -148,12 +378,19 @@ export default {
             product: null,
             isGetProductDetailsStart: false,
             carouselData: 0,
+            shouldShowFullDescription: false,
         };
     },
 
     computed: {
         slug() {
             return this.$route.params.slug;
+        },
+
+        preferredFor() {
+            if (!this.product) return null;
+            const sm = this.product.shipping_methods.map((sm) => sm.label);
+            return sm.length === 1 ? sm[0] : "Meet Up & Pick Up";
         },
     },
 
@@ -171,6 +408,7 @@ export default {
                 this.slug
             );
             this.product = data;
+            console.log(this.product);
             this.isGetProductDetailsStart = false;
         },
 
