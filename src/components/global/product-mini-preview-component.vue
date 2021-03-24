@@ -39,13 +39,13 @@
                 <v-card-text :style="{ height: '130px' }">
                     <div
                         v-html="
-                            truncateHTML(description, 75).length >= 75
-                                ? truncateHTML(description, 75)
+                            truncateHTML(description, 50).length >= 50
+                                ? truncateHTML(description, 50)
                                 : description
                         "
                         class="mb-1"
                     ></div>
-                    <span v-if="truncateHTML(description, 75).length >= 75"
+                    <span v-if="truncateHTML(description, 50).length >= 50"
                         >Read more...</span
                     >
                 </v-card-text>

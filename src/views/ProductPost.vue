@@ -1,6 +1,11 @@
 <template>
     <section>
         <v-row dense v-if="product">
+            <v-col cols="12">
+                <custom-breadcrumbs-component
+                    :items="breadcrumbs"
+                ></custom-breadcrumbs-component>
+            </v-col>
             <v-col cols="12" md="7">
                 <v-row dense>
                     <v-col cols="12">
@@ -332,6 +337,10 @@
                                     @click="
                                         shouldShowFullDescription = !shouldShowFullDescription
                                     "
+                                    v-if="
+                                        truncateHTML(product.description, 75)
+                                            .length > 75
+                                    "
                                     >{{
                                         shouldShowFullDescription
                                             ? "Show less"
@@ -362,9 +371,11 @@ import {
 } from "hooper";
 import "hooper/dist/hooper.css";
 import commonUtility from "@/common/utility";
+import CustomBreadcrumbsComponent from "@/components/custom/breadcrumbs-component";
 
 export default {
     components: {
+        CustomBreadcrumbsComponent,
         Hooper,
         Slide,
         HooperPagination,
@@ -391,6 +402,26 @@ export default {
             if (!this.product) return null;
             const sm = this.product.shipping_methods.map((sm) => sm.label);
             return sm.length === 1 ? sm[0] : "Meet Up & Pick Up";
+        },
+
+        breadcrumbs() {
+            return [
+                {
+                    text: "Home",
+                    disabled: false,
+                    href: "/",
+                },
+                {
+                    text: this.product.category.label,
+                    disabled: false,
+                    href: "/",
+                },
+                {
+                    text: this.product.name,
+                    disabled: false,
+                    href: null,
+                },
+            ];
         },
     },
 
