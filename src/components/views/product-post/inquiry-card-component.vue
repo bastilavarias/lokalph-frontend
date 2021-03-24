@@ -30,9 +30,9 @@
                                         {{ message }}
                                     </div>
                                 </v-col>
-                                <v-col cols="12">
-                                    <product-post-view-inquiry-reply-card-component></product-post-view-inquiry-reply-card-component>
-                                </v-col>
+                                <!--                                <v-col cols="12">-->
+                                <!--                                    <product-post-view-inquiry-reply-card-component></product-post-view-inquiry-reply-card-component>-->
+                                <!--                                </v-col>-->
                                 <v-col cols="12">
                                     <span
                                         class="font-weight-bold secondary--text"
