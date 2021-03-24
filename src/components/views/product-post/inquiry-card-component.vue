@@ -1,5 +1,9 @@
 <template>
-    <v-card outlined class="rounded-xl py-5 px-4">
+    <v-card
+        outlined
+        class="rounded-xl py-5 px-4"
+        :id="`product-post-view-inquiry-card-component-${inquiryId}`"
+    >
         <div class="d-flex align-start justify-space-between mb-2">
             <v-avatar>
                 <v-img :src="imageUrl"></v-img>
@@ -101,6 +105,11 @@ export default {
     mixins: [commonUtility],
 
     props: {
+        inquiryId: {
+            type: Number,
+            required: true,
+        },
+
         firstName: {
             type: String,
             required: true,
