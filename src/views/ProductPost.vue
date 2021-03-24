@@ -625,7 +625,8 @@ export default {
                 this.inquiries = [data, ...this.inquiries];
                 this.inquiry = null;
                 this.isCreateProductInquiryStart = false;
-                this.inquiriesTotalCount += 1;
+                this.inquiriesTotalCount =
+                    parseInt(this.inquiriesTotalCount) + 1;
                 this.$nextTick(() => {
                     this.$vuetify.goTo(
                         `#product-post-view-inquiry-card-component-${data.id}`,
