@@ -30,7 +30,9 @@ const shopRepository = {
     },
 
     async getShopProductDetailsBySlug(shopId, slug) {
-        const response = await axiosService.get(`/product/${shopId}/${slug}`);
+        const response = await axiosService.get(
+            `/product/shop/${shopId}/${slug}`
+        );
         return response.data;
     },
 

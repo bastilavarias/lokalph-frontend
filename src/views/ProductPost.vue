@@ -411,7 +411,7 @@
                         }}
                     </v-card-title>
                     <v-card-subtitle
-                        >Showing 5 out of
+                        >Showing {{ inquiriesCount }} out of
                         {{ inquiriesTotalCount }} inquiries</v-card-subtitle
                     >
                     <v-card-text>
@@ -568,6 +568,10 @@ export default {
                 this.inquiry.length <= 100
             );
         },
+
+        inquiriesCount() {
+            return this.inquiries.length;
+        },
     },
 
     watch: {
@@ -628,8 +632,9 @@ export default {
                 GET_PRODUCT_INQUIRIES,
                 payload
             );
+            console.log(data);
             const inquiries = data.inquiries;
-            this.inquiriesTotalCount = data.totalCount || 0;
+            this.inquiriesTotalCount = data.total_count || 0;
             if (inquiries.length === this.scrollOptions.perPage) {
                 this.inquiries = [...this.inquiries, ...inquiries];
                 this.scrollOptions.page += 1;
