@@ -430,6 +430,7 @@
                                         :image-url="
                                             inquiry.account.profile.image_url
                                         "
+                                        :owner-id="product.shop.account.id"
                                     ></product-post-view-inquiry-card-component>
                                 </v-col>
                             </template>

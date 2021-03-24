@@ -41,7 +41,7 @@
                                     <span
                                         class="font-weight-bold secondary--text"
                                         :style="{ cursor: 'pointer' }"
-                                        v-if="!isReplyFormOpen"
+                                        v-if="!isReplyFormOpen && isOwner"
                                         @click="isReplyFormOpen = true"
                                     >
                                         <v-icon color="secondary"
@@ -129,6 +129,11 @@ export default {
             type: String,
             required: true,
         },
+
+        ownerId: {
+            type: Number,
+            required: true,
+        },
     },
 
     data() {
@@ -140,6 +145,11 @@ export default {
     computed: {
         user() {
             return this.$store.state.authentication.user;
+        },
+
+        isOwner() {
+            if (!this.user) return false;
+            return this.user.id === this.ownerId;
         },
     },
 };
