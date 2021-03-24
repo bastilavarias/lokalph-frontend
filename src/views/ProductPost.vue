@@ -403,6 +403,9 @@
                                 : "Questions about this product"
                         }}
                     </v-card-title>
+                    <v-card-subtitle
+                        >Showing 5 out of 10 inquiries</v-card-subtitle
+                    >
                     <v-card-text>
                         <v-row dense>
                             <template v-for="n in 3">
