@@ -357,6 +357,60 @@
                     </v-col>
                 </v-row>
             </v-col>
+            <v-col cols="12" md="9">
+                <v-card outlined rounded>
+                    <v-card-title>Questions about this product</v-card-title>
+                    <v-card-text>
+                        <v-row dense>
+                            <v-col cols="1">
+                                <div class="d-flex justify-center">
+                                    <v-avatar>
+                                        <v-img
+                                            :src="user.profile.image_url"
+                                        ></v-img>
+                                    </v-avatar>
+                                </div>
+                            </v-col>
+                            <v-col cols="11">
+                                <v-textarea
+                                    outlined
+                                    placeholder="Write your question(s) here"
+                                    :counter="100"
+                                    color="secondary"
+                                ></v-textarea>
+                            </v-col>
+                            <v-col cols="12">
+                                <div
+                                    class="d-flex justify-space-between align-center align-content-center"
+                                >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="secondary"
+                                        depressed
+                                        class="text-capitalize"
+                                        >Ask</v-btn
+                                    >
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-title> Others' Questions </v-card-title>
+                    <v-card-text>
+                        <v-row dense>
+                            <template v-for="n in 3">
+                                <v-col cols="12" :key="n">
+                                    <product-post-view-inquiry-card-component></product-post-view-inquiry-card-component>
+                                </v-col>
+                            </template>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card flat>
+                    <v-card-subtitle>From the same Shop</v-card-subtitle>
+                </v-card>
+            </v-col>
         </v-row>
     </section>
 </template>
@@ -372,9 +426,11 @@ import {
 import "hooper/dist/hooper.css";
 import commonUtility from "@/common/utility";
 import CustomBreadcrumbsComponent from "@/components/custom/breadcrumbs-component";
+import ProductPostViewInquiryCardComponent from "@/components/views/product-post/inquiry-card-component";
 
 export default {
     components: {
+        ProductPostViewInquiryCardComponent,
         CustomBreadcrumbsComponent,
         Hooper,
         Slide,
@@ -394,6 +450,10 @@ export default {
     },
 
     computed: {
+        user() {
+            return this.$store.state.authentication.user;
+        },
+
         slug() {
             return this.$route.params.slug;
         },
