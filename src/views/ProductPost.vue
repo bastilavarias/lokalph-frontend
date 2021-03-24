@@ -133,7 +133,7 @@
                             </v-list-item-content>
                             <v-list-item-action>
                                 <v-btn
-                                    color="secondary"
+                                    color="primary"
                                     class="text-capitalize"
                                     depressed
                                     >Visit</v-btn
@@ -310,7 +310,7 @@
                                     v-if="
                                         truncateHTML(product.description, 75)
                                             .length > 75 &&
-                                        !shouldShowFullDescription
+                                        !isDescriptionExpanded
                                     "
                                 >
                                     <div
@@ -326,7 +326,7 @@
                                     v-if="
                                         truncateHTML(product.description, 75)
                                             .length > 75 &&
-                                        shouldShowFullDescription
+                                        isDescriptionExpanded
                                     "
                                 >
                                     <div v-html="product.description"></div>
@@ -335,19 +335,19 @@
                                     class="font-weight-bold secondary--text"
                                     :style="{ cursor: 'pointer' }"
                                     @click="
-                                        shouldShowFullDescription = !shouldShowFullDescription
+                                        isDescriptionExpanded = !isDescriptionExpanded
                                     "
                                     v-if="
                                         truncateHTML(product.description, 75)
                                             .length > 75
                                     "
                                     >{{
-                                        shouldShowFullDescription
+                                        isDescriptionExpanded
                                             ? "Show less"
                                             : "Read more"
                                     }}
                                     <v-icon color="secondary">{{
-                                        shouldShowFullDescription
+                                        isDescriptionExpanded
                                             ? "mdi-chevron-up"
                                             : "mdi-chevron-down"
                                     }}</v-icon></span
@@ -359,10 +359,8 @@
             </v-col>
             <v-col cols="12" md="9">
                 <v-card outlined rounded>
-                    <v-card-title v-if="!isOwner"
-                        >Questions about this product</v-card-title
-                    >
-                    <v-card-text v-if="!isOwner">
+                    <v-card-title>Questions about this product</v-card-title>
+                    <v-card-text>
                         <v-row dense>
                             <v-col cols="1">
                                 <div class="d-flex justify-center">
@@ -378,7 +376,7 @@
                                     outlined
                                     placeholder="Write your question(s) here"
                                     :counter="100"
-                                    color="secondary"
+                                    color="primary"
                                 ></v-textarea>
                             </v-col>
                             <v-col cols="12">
@@ -387,7 +385,7 @@
                                 >
                                     <v-spacer></v-spacer>
                                     <v-btn
-                                        color="secondary"
+                                        color="primary"
                                         depressed
                                         class="text-capitalize"
                                         >Ask</v-btn
@@ -456,7 +454,7 @@ export default {
             product: null,
             isGetProductDetailsStart: false,
             carouselData: 0,
-            shouldShowFullDescription: false,
+            isDescriptionExpanded: false,
         };
     },
 
