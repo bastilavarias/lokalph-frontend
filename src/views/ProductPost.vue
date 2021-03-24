@@ -408,7 +408,6 @@ export default {
                 this.slug
             );
             this.product = data;
-            console.log(this.product);
             this.isGetProductDetailsStart = false;
         },
 
