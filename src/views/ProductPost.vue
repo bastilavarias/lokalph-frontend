@@ -359,8 +359,10 @@
             </v-col>
             <v-col cols="12" md="9">
                 <v-card outlined rounded>
-                    <v-card-title>Questions about this product</v-card-title>
-                    <v-card-text>
+                    <v-card-title v-if="!isOwner"
+                        >Questions about this product</v-card-title
+                    >
+                    <v-card-text v-if="!isOwner">
                         <v-row dense>
                             <v-col cols="1">
                                 <div class="d-flex justify-center">
@@ -394,7 +396,13 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
-                    <v-card-title> Others' Questions </v-card-title>
+                    <v-card-title>
+                        {{
+                            isOwner
+                                ? "Questions about your product"
+                                : "Questions about this product"
+                        }}
+                    </v-card-title>
                     <v-card-text>
                         <v-row dense>
                             <template v-for="n in 3">
@@ -483,6 +491,11 @@ export default {
                 },
             ];
         },
+
+        isOwner() {
+            if (!this.user) return false;
+            return this.product.shop.account.id === this.user.id;
+        },
     },
 
     watch: {
@@ -499,6 +512,7 @@ export default {
                 this.slug
             );
             this.product = data;
+            console.log(this.product);
             this.isGetProductDetailsStart = false;
         },
 

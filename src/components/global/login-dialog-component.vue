@@ -43,7 +43,7 @@
                     <v-col cols="12">
                         <v-btn
                             block
-                            color="secondary"
+                            color="accent"
                             depressed
                             class="text-capitalize"
                             large
