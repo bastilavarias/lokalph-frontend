@@ -272,6 +272,23 @@
                                             class="d-flex align-content-center align-center"
                                         >
                                             <v-icon class="mr-1"
+                                                >mdi-cellphone</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                title="Contact Number"
+                                            >
+                                                {{
+                                                    product.shop.contact_number
+                                                }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
                                                 >mdi-clock</v-icon
                                             >
                                             <span class="subtitle-1">
