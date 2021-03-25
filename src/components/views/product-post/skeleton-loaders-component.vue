@@ -36,6 +36,6 @@
 
 <script>
 export default {
-    name: "product-post-skeleton-loaders-component",
+    name: "product-post-view-skeleton-loaders-component",
 };
 </script>

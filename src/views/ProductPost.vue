@@ -1,8 +1,8 @@
 <template>
     <section>
-        <product-post-skeleton-loaders-component
+        <product-post-view-skeleton-loaders-component
             v-if="isGetProductDetailsStart && !product"
-        ></product-post-skeleton-loaders-component>
+        ></product-post-view-skeleton-loaders-component>
         <v-row dense v-if="!isGetProductDetailsStart && product">
             <v-col cols="12">
                 <custom-breadcrumbs-component
@@ -176,6 +176,7 @@
                                         block
                                         depressed
                                         large
+                                        @click="isOfferDialogOpen = true"
                                     >
                                         <v-icon class="mr-1"
                                             >mdi-currency-php</v-icon
@@ -535,7 +536,18 @@
                 </v-card>
             </v-col>
         </v-row>
-      <product-post-view-offer-dialog-component :is-open.sync="isOfferDialogOpen"></product-post-view-offer-dialog-component>
+        <product-post-view-offer-dialog-component
+            :is-open.sync="isOfferDialogOpen"
+            :preview="product.images[0]"
+            :name="product.name"
+            :created-at="product.created_at"
+            :condition="product.condition"
+            :stock="product.stock"
+            :price="product.price"
+            :shipping-methods="product.shipping_methods"
+            :category="product.category"
+            v-if="product"
+        ></product-post-view-offer-dialog-component>
     </section>
 </template>
 
@@ -556,13 +568,13 @@ import commonUtility from "@/common/utility";
 import CustomBreadcrumbsComponent from "@/components/custom/breadcrumbs-component";
 import ProductPostViewInquiryCardComponent from "@/components/views/product-post/inquiry-card-component";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
-import ProductPostSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
 import ProductPostViewOfferDialogComponent from "@/components/views/product-post/offer-dialog-component";
+import ProductPostViewSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
 
 export default {
     components: {
-      ProductPostViewOfferDialogComponent,
-        ProductPostSkeletonLoadersComponent,
+        ProductPostViewSkeletonLoadersComponent,
+        ProductPostViewOfferDialogComponent,
         CustomLoadingSpinnerComponent,
         ProductPostViewInquiryCardComponent,
         CustomBreadcrumbsComponent,
@@ -669,6 +681,7 @@ export default {
                 payload
             );
             this.product = data;
+            console.log(data);
             this.isGetProductDetailsStart = false;
         },
 
