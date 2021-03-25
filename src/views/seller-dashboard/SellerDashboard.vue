@@ -33,25 +33,34 @@ export default {
                     icon: "mdi-view-dashboard",
                     to: { name: "seller-dashboard-view" },
                 },
+
                 {
                     text: "Shops",
                     icon: "mdi-storefront",
                     to: { name: "seller-dashboard-shop" },
                 },
+
                 {
                     text: "Products",
                     icon: "mdi-cart",
                     to: { name: "seller-dashboard-product" },
                 },
+
+                // {
+                //     text: "Reviews & Inquiries",
+                //     icon: "mdi-comment-quote-outline",
+                //     to: { name: "seller-dashboard-review-inquiry" },
+                // },
+
                 {
-                    text: "Reviews & Inquiries",
-                    icon: "mdi-comment-quote-outline",
-                    to: { name: "seller-dashboard-review-inquiry" },
+                    text: "Offers",
+                    icon: "mdi-offer",
+                    to: { name: "seller-dashboard-offer" },
                 },
                 {
-                    text: "Orders",
+                    text: "Transaction",
                     icon: "mdi-history",
-                    to: { name: "seller-dashboard-order" },
+                    to: { name: "seller-dashboard-transaction" },
                 },
             ];
         },

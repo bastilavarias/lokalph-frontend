@@ -160,10 +160,21 @@ const routes = [
                     },
 
                     {
-                        path: "order",
+                        path: "offer",
                         component: () =>
-                            import("@/views/seller-dashboard/Order"),
-                        name: "seller-dashboard-order",
+                            import("@/views/seller-dashboard/Offer"),
+                        name: "seller-dashboard-offer",
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                    },
+
+                    {
+                        path: "transaction",
+                        component: () =>
+                            import("@/views/seller-dashboard/Transaction"),
+                        name: "seller-dashboard-transaction",
                         meta: {
                             requiresAuth: true,
                             roles: ["seller"],
