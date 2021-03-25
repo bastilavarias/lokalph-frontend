@@ -535,6 +535,7 @@
                 </v-card>
             </v-col>
         </v-row>
+      <product-post-view-offer-dialog-component :is-open.sync="isOfferDialogOpen"></product-post-view-offer-dialog-component>
     </section>
 </template>
 
@@ -556,9 +557,11 @@ import CustomBreadcrumbsComponent from "@/components/custom/breadcrumbs-componen
 import ProductPostViewInquiryCardComponent from "@/components/views/product-post/inquiry-card-component";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 import ProductPostSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
+import ProductPostViewOfferDialogComponent from "@/components/views/product-post/offer-dialog-component";
 
 export default {
     components: {
+      ProductPostViewOfferDialogComponent,
         ProductPostSkeletonLoadersComponent,
         CustomLoadingSpinnerComponent,
         ProductPostViewInquiryCardComponent,
@@ -587,6 +590,7 @@ export default {
                 totalCount: 0,
             },
             inquiriesTotalCount: 0,
+            isOfferDialogOpen: false,
         };
     },
 
