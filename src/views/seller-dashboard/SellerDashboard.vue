@@ -46,12 +46,6 @@ export default {
                     to: { name: "seller-dashboard-product" },
                 },
 
-                // {
-                //     text: "Reviews & Inquiries",
-                //     icon: "mdi-comment-quote-outline",
-                //     to: { name: "seller-dashboard-review-inquiry" },
-                // },
-
                 {
                     text: "Offers",
                     icon: "mdi-offer",

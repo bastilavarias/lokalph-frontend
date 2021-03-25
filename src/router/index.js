@@ -149,17 +149,6 @@ const routes = [
                     },
 
                     {
-                        path: "review-inquiry",
-                        component: () =>
-                            import("@/views/seller-dashboard/ReviewInquiry"),
-                        name: "seller-dashboard-review-inquiry",
-                        meta: {
-                            requiresAuth: true,
-                            roles: ["seller"],
-                        },
-                    },
-
-                    {
                         path: "offer",
                         component: () =>
                             import("@/views/seller-dashboard/Offer"),
