@@ -70,7 +70,8 @@ export default {
         stockLocal(value) {
             try {
                 const stock = parseFloat(value);
-                if (stock < 1) {
+
+                if (!stock || stock < 1) {
                     this.stockLocal = 1;
                 }
                 if (this.limit && stock >= this.limitValue) {

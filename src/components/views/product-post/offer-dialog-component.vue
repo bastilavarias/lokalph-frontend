@@ -108,15 +108,38 @@
                             label="Total Offer Price"
                             :value="formatMoney('PHP', totalPrice)"
                             outlined
+                            readonly
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                         <custom-stock-input-component
                             :stock.sync="quantity"
-                            label="Quantity"
+                            label="Quantity *"
                             limit
                             :limit-value="stock"
                         ></custom-stock-input-component>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-select
+                            outlined
+                            label="Preferred Shipping Method *"
+                            :items="shippingMethods"
+                            item-value="id"
+                            item-text="label"
+                            v-model="shippingMethodId"
+                        ></v-select>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-textarea outlined label="Notes"></v-textarea>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-btn
+                            color="primary"
+                            block
+                            depressed
+                            class="text-capitalize"
+                            >Send
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
