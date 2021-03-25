@@ -9,14 +9,16 @@
                 </v-btn>
             </v-card-title>
             <v-card-text>
-                <v-row dense>
+                <v-row>
                     <v-col cols="12" md="6">
-                        <v-img
-                            :src="preview.url"
-                            width="100%"
-                            height="auto"
-                            position="center"
-                        ></v-img>
+                        <v-card-text class="pl-0">
+                            <v-img
+                                :src="preview.url"
+                                width="100%"
+                                height="auto"
+                                position="center"
+                            ></v-img>
+                        </v-card-text>
                     </v-col>
                     <v-col cols="12" md="6">
                         <v-list-item-content>
@@ -87,14 +89,34 @@
                                         >mdi-currency-php</v-icon
                                     >
                                     <span
-                                        class="subtitle-1"
+                                        class="subtitle-1 mr-1 font-weight-bold secondary--text"
                                         title="Price per unit"
                                     >
-                                        {{ formatMoney("PHP", price) }} per unit
+                                        {{ formatMoney("PHP", price) }}
                                     </span>
+                                    per unit
                                 </div>
                             </v-col>
                         </v-row>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-text>
+                <v-row dense>
+                    <v-col cols="12">
+                        <v-text-field
+                            label="Total Offer Price"
+                            :value="formatMoney('PHP', totalPrice)"
+                            outlined
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                        <custom-stock-input-component
+                            :stock.sync="quantity"
+                            label="Quantity"
+                            limit
+                            :limit-value="stock"
+                        ></custom-stock-input-component>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -104,10 +126,11 @@
 
 <script>
 import commonUtility from "@/common/utility";
+import CustomStockInputComponent from "@/components/custom/stock-input-component";
 
 export default {
     name: "product-post-view-offer-dialog-component",
-
+    components: { CustomStockInputComponent },
     mixins: [commonUtility],
 
     props: {
@@ -159,7 +182,15 @@ export default {
     data() {
         return {
             isOpenLocal: this.isOpen,
+            quantity: 1,
+            shippingMethodId: null,
         };
+    },
+
+    computed: {
+        totalPrice() {
+            return parseFloat(this.price) * this.quantity;
+        },
     },
 
     watch: {

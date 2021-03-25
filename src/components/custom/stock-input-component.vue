@@ -44,6 +44,16 @@ export default {
             required: false,
             type: String,
         },
+
+        limit: {
+            type: Boolean,
+            required: false,
+        },
+
+        limitValue: {
+            type: Number,
+            required: false,
+        },
     },
 
     data() {
@@ -62,6 +72,9 @@ export default {
                 const stock = parseFloat(value);
                 if (stock < 1) {
                     this.stockLocal = 1;
+                }
+                if (this.limit && stock >= this.limitValue) {
+                    this.stockLocal = this.limitValue;
                 }
                 this.$emit("update:stock", this.stockLocal);
             } catch (_) {
