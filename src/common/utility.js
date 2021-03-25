@@ -12,7 +12,7 @@ const commonUtility = {
         },
 
         formatMoney(type, amount) {
-            return new Intl.NumberFormat("en-IN", {
+            return new Intl.NumberFormat("en-EN", {
                 style: "currency",
                 currency: type,
             }).format(amount);
