@@ -145,6 +145,36 @@
                         </v-list-item>
                     </v-col>
                     <v-col cols="12">
+                        <v-card-text>
+                            <v-row dense>
+                                <v-col cols="12" md="6">
+                                    <v-btn color="primary" outlined block>
+                                        <v-icon class="mr-1"
+                                            >mdi-chat-outline</v-icon
+                                        >
+                                        <span class="text-capitalize"
+                                            >Chat Shop</span
+                                        >
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-btn color="primary" block depressed>
+                                        <v-icon class="mr-1"
+                                            >mdi-currency-php</v-icon
+                                        >
+                                        <span class="text-capitalize"
+                                            >Make
+                                            <span class="text-lowercase"
+                                                >an</span
+                                            >
+                                            Offer</span
+                                        >
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                    </v-col>
+                    <v-col cols="12">
                         <v-card flat>
                             <v-card-subtitle>Product Details:</v-card-subtitle>
                             <v-card-text class="accent--text">
