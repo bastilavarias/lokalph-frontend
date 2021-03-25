@@ -8,6 +8,7 @@ import {
     GET_PRODUCT_SHIPPING_METHODS,
     GET_SHOP_PRODUCTS,
     GET_PRODUCT_INQUIRIES,
+    CREATE_PRODUCT_INQUIRY_REPLY,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -130,6 +131,24 @@ const productStoreModule = {
                     per_page: perPage,
                 };
                 return await productRepository.getProductInquiries(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CREATE_PRODUCT_INQUIRY_REPLY](
+            _,
+            { productId, inquiryId, message }
+        ) {
+            try {
+                const payload = {
+                    product_inquiry_id: inquiryId,
+                    product_id: productId,
+                    message,
+                };
+                return await productRepository.createProductInquiryReply(
+                    payload
+                );
             } catch (error) {
                 return error.response.data;
             }

@@ -48,6 +48,14 @@ const shopRepository = {
         const response = await axiosService.get(url);
         return response.data;
     },
+
+    async createProductInquiryReply(payload) {
+        const response = await axiosService.post(
+            "/product/inquiry/reply",
+            payload
+        );
+        return response.data;
+    },
 };
 
 export default shopRepository;

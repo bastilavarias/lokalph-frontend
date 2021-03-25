@@ -34,10 +34,10 @@
                                         {{ message }}
                                     </div>
                                 </v-col>
-                                <!--                                <v-col cols="12">-->
-                                <!--                                    <product-post-view-inquiry-reply-card-component></product-post-view-inquiry-reply-card-component>-->
-                                <!--                                </v-col>-->
-                                <v-col cols="12">
+                                <v-col cols="12" v-if="currentReply">
+                                    <product-post-view-inquiry-reply-card-component></product-post-view-inquiry-reply-card-component>
+                                </v-col>
+                                <v-col cols="12" v-if="!currentReply">
                                     <span
                                         class="font-weight-bold secondary--text"
                                         :style="{ cursor: 'pointer' }"
@@ -57,6 +57,7 @@
                                                 placeholder="Write your answer(s) here"
                                                 outlined
                                                 :counter="2500"
+                                                v-model="replyMessage"
                                             ></v-textarea>
                                         </v-col>
                                         <v-col cols="12">
@@ -77,6 +78,11 @@
                                                         color="primary"
                                                         depressed
                                                         class="text-capitalize"
+                                                        @click="answer"
+                                                        :disabled="
+                                                            !isAnswerFormValid
+                                                        "
+                                                        :loading="isAnswerStart"
                                                         >Answer</v-btn
                                                     >
                                                 </div>
@@ -96,6 +102,10 @@
 <script>
 import commonUtility from "@/common/utility";
 import ProductPostViewInquiryReplyCardComponent from "@/components/views/product-post/inquiry-reply-card-component";
+import {
+    CREATE_PRODUCT_INQUIRY,
+    CREATE_PRODUCT_INQUIRY_REPLY,
+} from "@/store/types/product-store-type";
 
 export default {
     name: "product-post-view-inquiry-card-component",
@@ -106,6 +116,11 @@ export default {
 
     props: {
         inquiryId: {
+            type: Number,
+            required: true,
+        },
+
+        productId: {
             type: Number,
             required: true,
         },
@@ -139,6 +154,9 @@ export default {
     data() {
         return {
             isReplyFormOpen: false,
+            isAnswerStart: false,
+            replyMessage: null,
+            currentReply: null,
         };
     },
 
@@ -150,6 +168,35 @@ export default {
         isOwner() {
             if (!this.user) return false;
             return this.user.id === this.ownerId;
+        },
+
+        isAnswerFormValid() {
+            return (
+                this.replyMessage &&
+                this.replyMessage.length >= 3 &&
+                this.replyMessage.length <= 2500
+            );
+        },
+    },
+
+    methods: {
+        async answer() {
+            this.isAnswerStart = true;
+            const payload = {
+                inquiryId: this.inquiryId,
+                productId: this.productId,
+                message: this.replyMessage,
+            };
+            const { data, success } = await this.$store.dispatch(
+                CREATE_PRODUCT_INQUIRY_REPLY,
+                payload
+            );
+            if (success) {
+                this.currentReply = Object.assign({}, data);
+                this.replyMessage = null;
+                this.isAnswerStart = false;
+                this.isReplyFormOpen = false;
+            }
         },
     },
 };

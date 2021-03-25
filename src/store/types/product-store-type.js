@@ -7,3 +7,5 @@ export const GET_SHOP_PRODUCT_DETAILS_BY_SLUG =
     "product/get-shop-product-details-by-slug";
 export const CREATE_PRODUCT_INQUIRY = "product/create-product-inquiry";
 export const GET_PRODUCT_INQUIRIES = "product/get-inquiries";
+export const CREATE_PRODUCT_INQUIRY_REPLY =
+    "product/create-product-inquiry-reply";

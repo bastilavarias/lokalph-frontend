@@ -487,6 +487,7 @@
                             <template v-for="(inquiry, index) in inquiries">
                                 <v-col cols="12" :key="index">
                                     <product-post-view-inquiry-card-component
+                                        :product-id="inquiry.product.id"
                                         :inquiry-id="inquiry.id"
                                         :first-name="
                                             inquiry.account.profile.first_name
