@@ -99,7 +99,7 @@
                                     </span>
                                 </v-list-item-title>
                             </v-list-item-content>
-                            <v-list-item-action>
+                            <v-list-item-action v-if="user && !isOwner">
                                 <v-btn icon large>
                                     <v-icon color="primary" large
                                         >mdi-heart-outline</v-icon
@@ -144,11 +144,24 @@
                             </v-list-item-action>
                         </v-list-item>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="user && isOwner">
+                        <v-card-text>
+                            <v-btn
+                                color="primary"
+                                block
+                                depressed
+                                class="text-capitalize"
+                                large
+                            >
+                                View Received Offers
+                            </v-btn>
+                        </v-card-text>
+                    </v-col>
+                    <v-col cols="12" v-if="user && !isOwner">
                         <v-card-text>
                             <v-row dense>
                                 <v-col cols="12" md="6">
-                                    <v-btn color="primary" outlined block>
+                                    <v-btn color="primary" outlined block large>
                                         <v-icon class="mr-1"
                                             >mdi-chat-outline</v-icon
                                         >
@@ -158,7 +171,12 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-btn color="primary" block depressed>
+                                    <v-btn
+                                        color="primary"
+                                        block
+                                        depressed
+                                        large
+                                    >
                                         <v-icon class="mr-1"
                                             >mdi-currency-php</v-icon
                                         >
