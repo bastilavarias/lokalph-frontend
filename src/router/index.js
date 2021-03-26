@@ -149,10 +149,10 @@ const routes = [
                     },
 
                     {
-                        path: "review-inquiry",
+                        path: "offer",
                         component: () =>
-                            import("@/views/seller-dashboard/ReviewInquiry"),
-                        name: "seller-dashboard-review-inquiry",
+                            import("@/views/seller-dashboard/Offer"),
+                        name: "seller-dashboard-offer",
                         meta: {
                             requiresAuth: true,
                             roles: ["seller"],
@@ -160,16 +160,32 @@ const routes = [
                     },
 
                     {
-                        path: "order",
+                        path: "transaction",
                         component: () =>
-                            import("@/views/seller-dashboard/Order"),
-                        name: "seller-dashboard-order",
+                            import("@/views/seller-dashboard/Transaction"),
+                        name: "seller-dashboard-transaction",
                         meta: {
                             requiresAuth: true,
                             roles: ["seller"],
                         },
                     },
                 ],
+            },
+        ],
+    },
+
+    {
+        path: "/product/:shopId/:slug",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                name: "product-post-view",
+                component: () => import("@/views/ProductPost"),
+                meta: {
+                    requiresAuth: false,
+                    roles: ["customer", "seller", "admin"],
+                },
             },
         ],
     },

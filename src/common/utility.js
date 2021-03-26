@@ -12,10 +12,9 @@ const commonUtility = {
         },
 
         formatMoney(type, amount) {
-            return new Intl.NumberFormat("en-IN", {
+            return new Intl.NumberFormat("en-EN", {
                 style: "currency",
                 currency: type,
-                maximumSignificantDigits: 3,
             }).format(amount);
         },
 

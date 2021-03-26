@@ -28,6 +28,41 @@ const shopRepository = {
         const response = await axiosService.get(url);
         return response.data;
     },
+
+    async getShopProductDetailsBySlug(shopId, slug) {
+        const response = await axiosService.get(
+            `/product/shop/${shopId}/${slug}`
+        );
+        return response.data;
+    },
+
+    async createProductInquiry(payload) {
+        const response = await axiosService.post("/product/inquiry", payload);
+        return response.data;
+    },
+
+    async getProductInquiries({ productId, page, per_page }) {
+        const url = `/product/inquiries/${productId}?page=${page}${
+            per_page ? `&per_page=${per_page}` : ""
+        }`;
+        const response = await axiosService.get(url);
+        return response.data;
+    },
+
+    async createProductInquiryReply(payload) {
+        const response = await axiosService.post(
+            "/product/inquiry/reply",
+            payload
+        );
+        return response.data;
+    },
+
+    async getProductInquiryReply(inquiryId) {
+        const response = await axiosService.get(
+            `/product/inquiry/reply/${inquiryId}`
+        );
+        return response.data;
+    },
 };
 
 export default shopRepository;

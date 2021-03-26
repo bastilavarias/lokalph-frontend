@@ -1,10 +1,15 @@
 import productRepository from "@/repositories/product-repository";
 import {
     CREATE_PRODUCT,
+    CREATE_PRODUCT_INQUIRY,
     GET_PRODUCT_CATEGORIES,
     GET_PRODUCT_CONDITIONS,
+    GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
     GET_PRODUCT_SHIPPING_METHODS,
     GET_SHOP_PRODUCTS,
+    GET_PRODUCT_INQUIRIES,
+    CREATE_PRODUCT_INQUIRY_REPLY,
+    GET_PRODUCT_INQUIRY_REPLY,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -91,6 +96,70 @@ const productStoreModule = {
                     search,
                 };
                 return await productRepository.getShopProducts(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_SHOP_PRODUCT_DETAILS_BY_SLUG](_, { shopId, slug }) {
+            try {
+                return await productRepository.getShopProductDetailsBySlug(
+                    shopId,
+                    slug
+                );
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CREATE_PRODUCT_INQUIRY](_, { productId, message }) {
+            try {
+                const payload = {
+                    product_id: productId,
+                    message,
+                };
+                return await productRepository.createProductInquiry(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_INQUIRIES](_, { productId, page, perPage }) {
+            try {
+                const payload = {
+                    productId,
+                    page,
+                    per_page: perPage,
+                };
+                return await productRepository.getProductInquiries(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CREATE_PRODUCT_INQUIRY_REPLY](
+            _,
+            { productId, inquiryId, message }
+        ) {
+            try {
+                const payload = {
+                    product_inquiry_id: inquiryId,
+                    product_id: productId,
+                    message,
+                };
+                return await productRepository.createProductInquiryReply(
+                    payload
+                );
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_INQUIRY_REPLY](_, inquiryId) {
+            try {
+                return await productRepository.getProductInquiryReply(
+                    inquiryId
+                );
             } catch (error) {
                 return error.response.data;
             }
