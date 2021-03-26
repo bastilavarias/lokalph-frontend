@@ -269,8 +269,13 @@
                                         </div>
                                     </v-col>
                                     <v-col cols="12">
+                                        <v-skeleton-loader
+                                            type="list-item"
+                                            v-if="isGetProductLikesStart"
+                                        ></v-skeleton-loader>
                                         <div
                                             class="d-flex align-content-center align-center"
+                                            v-if="!isGetProductLikesStart"
                                         >
                                             <v-icon class="mr-1"
                                                 >mdi-heart</v-icon
