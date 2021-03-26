@@ -111,6 +111,7 @@
                                     large
                                     v-if="isAlreadyLiked"
                                     @click="deleteProductLike"
+                                    :loading="isDeleteProductLikeStart"
                                 >
                                     <v-icon color="primary" large
                                         >mdi-heart</v-icon
@@ -121,6 +122,7 @@
                                     large
                                     v-if="!isAlreadyLiked"
                                     @click="createProductLike"
+                                    :loading="isCreateProductLikeStart"
                                 >
                                     <v-icon color="primary" large
                                         >mdi-heart-outline</v-icon
@@ -639,6 +641,8 @@ export default {
             views: null,
             likes: [],
             shouldShowProductViewsAndLikes: false,
+            isCreateProductLikeStart: false,
+            isDeleteProductLikeStart: false,
         };
     },
 
@@ -808,13 +812,17 @@ export default {
         },
 
         async createProductLike() {
+            this.isCreateProductLikeStart = true;
             const { data } = await this.$store.dispatch(
                 CREATE_PRODUCT_LIKE,
                 this.product.id
             );
             if (data) {
                 this.likes = [...this.likes, data];
+                this.isCreateProductLikeStart = false;
+                return;
             }
+            this.isCreateProductLikeStart = false;
         },
 
         async getProductLikes() {
@@ -826,6 +834,7 @@ export default {
         },
 
         async deleteProductLike() {
+            this.isDeleteProductLikeStart = true;
             const { data } = await this.$store.dispatch(
                 DELETE_PRODUCT_LIKE,
                 this.product.id
@@ -834,7 +843,10 @@ export default {
                 this.likes = this.likes.filter(
                     (like) => like.account.id !== this.user.id
                 );
+                this.isDeleteProductLikeStart = false;
+                return;
             }
+            this.isDeleteProductLikeStart = false;
         },
     },
 
