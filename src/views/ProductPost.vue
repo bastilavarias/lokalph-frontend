@@ -99,19 +99,16 @@
                                     </span>
                                 </v-list-item-title>
                             </v-list-item-content>
-                            <v-list-item-action
-                                v-if="
-                                    shouldShowProductViewsAndLikes &&
-                                    user &&
-                                    !isOwner
-                                "
-                            >
+                            <v-list-item-action v-if="user && !isOwner">
                                 <v-btn
                                     icon
                                     large
                                     v-if="isAlreadyLiked"
                                     @click="deleteProductLike"
-                                    :loading="isDeleteProductLikeStart"
+                                    :loading="
+                                        !shouldShowProductViewsAndLikes ||
+                                        isDeleteProductLikeStart
+                                    "
                                 >
                                     <v-icon color="primary" large
                                         >mdi-heart</v-icon
@@ -122,7 +119,10 @@
                                     large
                                     v-if="!isAlreadyLiked"
                                     @click="createProductLike"
-                                    :loading="isCreateProductLikeStart"
+                                    :loading="
+                                        !shouldShowProductViewsAndLikes ||
+                                        isCreateProductLikeStart
+                                    "
                                 >
                                     <v-icon color="primary" large
                                         >mdi-heart-outline</v-icon
@@ -274,12 +274,18 @@
                                             </span>
                                         </div>
                                     </v-col>
-                                    <v-col
-                                        cols="12"
-                                        v-if="shouldShowProductViewsAndLikes"
-                                    >
+                                    <v-col cols="12">
+                                        <v-skeleton-loader
+                                            type="list-item"
+                                            v-if="
+                                                !shouldShowProductViewsAndLikes
+                                            "
+                                        ></v-skeleton-loader>
                                         <div
                                             class="d-flex align-content-center align-center"
+                                            v-if="
+                                                shouldShowProductViewsAndLikes
+                                            "
                                         >
                                             <v-icon class="mr-1"
                                                 >mdi-heart</v-icon
@@ -293,12 +299,18 @@
                                             </span>
                                         </div>
                                     </v-col>
-                                    <v-col
-                                        cols="12"
-                                        v-if="shouldShowProductViewsAndLikes"
-                                    >
+                                    <v-col cols="12">
+                                        <v-skeleton-loader
+                                            type="list-item"
+                                            v-if="
+                                                !shouldShowProductViewsAndLikes
+                                            "
+                                        ></v-skeleton-loader>
                                         <div
                                             class="d-flex align-content-center align-center"
+                                            v-if="
+                                                shouldShowProductViewsAndLikes
+                                            "
                                         >
                                             <v-icon class="mr-1"
                                                 >mdi-eye</v-icon
