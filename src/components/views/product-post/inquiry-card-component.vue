@@ -244,7 +244,8 @@ export default {
         },
     },
 
-    async mounted() {
+    async created() {
+        this.currentReply = null;
         await this.getReply();
     },
 };
