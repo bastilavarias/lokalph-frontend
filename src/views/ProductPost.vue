@@ -99,13 +99,18 @@
                                     </span>
                                 </v-list-item-title>
                             </v-list-item-content>
-                            <v-list-item-action v-if="user && !isOwner">
+                            <v-list-item-action
+                                v-if="
+                                    shouldShowProductViewsAndLikes &&
+                                    user &&
+                                    !isOwner
+                                "
+                            >
                                 <v-btn
                                     icon
                                     large
                                     v-if="isAlreadyLiked"
                                     @click="deleteProductLike"
-                                    :loading="isDeleteProductStart"
                                 >
                                     <v-icon color="primary" large
                                         >mdi-heart</v-icon
@@ -116,7 +121,6 @@
                                     large
                                     v-if="!isAlreadyLiked"
                                     @click="createProductLike"
-                                    :loading="isLikeProductStart"
                                 >
                                     <v-icon color="primary" large
                                         >mdi-heart-outline</v-icon
@@ -268,14 +272,12 @@
                                             </span>
                                         </div>
                                     </v-col>
-                                    <v-col cols="12">
-                                        <v-skeleton-loader
-                                            type="list-item"
-                                            v-if="isGetProductLikesStart"
-                                        ></v-skeleton-loader>
+                                    <v-col
+                                        cols="12"
+                                        v-if="shouldShowProductViewsAndLikes"
+                                    >
                                         <div
                                             class="d-flex align-content-center align-center"
-                                            v-if="!isGetProductLikesStart"
                                         >
                                             <v-icon class="mr-1"
                                                 >mdi-heart</v-icon
@@ -289,16 +291,12 @@
                                             </span>
                                         </div>
                                     </v-col>
-                                    <v-col cols="12">
-                                        <v-skeleton-loader
-                                            type="list-item"
-                                            v-if="isGetProductViewsStart"
-                                        ></v-skeleton-loader>
+                                    <v-col
+                                        cols="12"
+                                        v-if="shouldShowProductViewsAndLikes"
+                                    >
                                         <div
                                             class="d-flex align-content-center align-center"
-                                            v-if="
-                                                views && !isGetProductViewsStart
-                                            "
                                         >
                                             <v-icon class="mr-1"
                                                 >mdi-eye</v-icon
@@ -638,12 +636,9 @@ export default {
             },
             inquiriesTotalCount: 0,
             isOfferDialogOpen: false,
-            isGetProductViewsStart: false,
             views: null,
-            isLikeProductStart: false,
             likes: [],
-            isGetProductLikesStart: false,
-            isDeleteProductStart: false,
+            shouldShowProductViewsAndLikes: false,
         };
     },
 
@@ -725,6 +720,7 @@ export default {
                     await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
                 await this.getProductLikes();
                 await this.getProductViews();
+                this.shouldShowProductViewsAndLikes = true;
             }
         },
     },
@@ -758,7 +754,7 @@ export default {
                 productId: this.product.id,
                 message: this.inquiry,
             };
-            const { success, data } = await this.$store.dispatch(
+            const { success } = await this.$store.dispatch(
                 CREATE_PRODUCT_INQUIRY,
                 payload
             );
@@ -804,41 +800,32 @@ export default {
         },
 
         async getProductViews() {
-            this.isGetProductViewsStart = true;
             const { data } = await this.$store.dispatch(
                 GET_PRODUCT_VIEWS,
                 this.product.id
             );
             this.views = data;
-            this.isGetProductViewsStart = false;
         },
 
         async createProductLike() {
-            this.isLikeProductStart = true;
             const { data } = await this.$store.dispatch(
                 CREATE_PRODUCT_LIKE,
                 this.product.id
             );
             if (data) {
                 this.likes = [...this.likes, data];
-                this.isLikeProductStart = false;
-                return;
             }
-            this.isLikeProductStart = false;
         },
 
         async getProductLikes() {
-            this.isGetProductLikesStart = true;
             const { data } = await this.$store.dispatch(
                 GET_PRODUCT_LIKES,
                 this.product.id
             );
             this.likes = data || [];
-            this.isGetProductLikesStart = false;
         },
 
         async deleteProductLike() {
-            this.isDeleteProductStart = true;
             const { data } = await this.$store.dispatch(
                 DELETE_PRODUCT_LIKE,
                 this.product.id
@@ -847,14 +834,12 @@ export default {
                 this.likes = this.likes.filter(
                     (like) => like.account.id !== this.user.id
                 );
-                this.isDeleteProductStart = false;
-                return;
             }
-            this.isDeleteProductStart = false;
         },
     },
 
     async created() {
+        this.shouldShowProductViewsAndLikes = false;
         await this.getProductDetails();
     },
 };
