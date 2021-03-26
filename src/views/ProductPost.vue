@@ -268,8 +268,15 @@
                                         </div>
                                     </v-col>
                                     <v-col cols="12">
+                                        <v-skeleton-loader
+                                            type="list-item"
+                                            v-if="isGetProductViewsStart"
+                                        ></v-skeleton-loader>
                                         <div
                                             class="d-flex align-content-center align-center"
+                                            v-if="
+                                                views && !isGetProductViewsStart
+                                            "
                                         >
                                             <v-icon class="mr-1"
                                                 >mdi-eye</v-icon
@@ -277,7 +284,7 @@
                                             <span class="subtitle-1">
                                                 <span
                                                     class="font-weight-bold secondary--text"
-                                                    >4</span
+                                                    >{{ views }}</span
                                                 >
                                                 views
                                             </span>
@@ -557,6 +564,7 @@ import {
     CREATE_PRODUCT_INQUIRY,
     CREATE_PRODUCT_VIEW,
     GET_PRODUCT_INQUIRIES,
+    GET_PRODUCT_VIEWS,
     GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
 } from "@/store/types/product-store-type";
 import {
@@ -605,6 +613,8 @@ export default {
             },
             inquiriesTotalCount: 0,
             isOfferDialogOpen: false,
+            isGetProductViewsStart: false,
+            views: null,
         };
     },
 
@@ -672,7 +682,9 @@ export default {
 
         async product(value) {
             if (value) {
-                await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
+                if (this.user)
+                    await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
+                await this.getProductViews();
             }
         },
     },
@@ -689,7 +701,6 @@ export default {
                 payload
             );
             this.product = data;
-            console.log(data);
             this.isGetProductDetailsStart = false;
         },
 
@@ -750,6 +761,16 @@ export default {
                 id: this.scrollOptions.id + 1,
                 totalCount: 0,
             });
+        },
+
+        async getProductViews() {
+            this.isGetProductViewsStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCT_VIEWS,
+                this.product.id
+            );
+            this.views = data;
+            this.isGetProductViewsStart = false;
         },
     },
 

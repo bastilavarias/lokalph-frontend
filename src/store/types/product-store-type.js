@@ -11,3 +11,4 @@ export const CREATE_PRODUCT_INQUIRY_REPLY =
     "product/create-product-inquiry-reply";
 export const GET_PRODUCT_INQUIRY_REPLY = "product/get-product-inquiry-reply";
 export const CREATE_PRODUCT_VIEW = "product/create-view";
+export const GET_PRODUCT_VIEWS = "product/get-product-views";

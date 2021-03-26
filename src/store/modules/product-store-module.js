@@ -11,6 +11,7 @@ import {
     CREATE_PRODUCT_INQUIRY_REPLY,
     GET_PRODUCT_INQUIRY_REPLY,
     CREATE_PRODUCT_VIEW,
+    GET_PRODUCT_VIEWS,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -172,6 +173,14 @@ const productStoreModule = {
                     product_id: productId,
                 };
                 return await productRepository.createProductView(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_VIEWS](_, productId) {
+            try {
+                return await productRepository.getProductViews(productId);
             } catch (error) {
                 return error.response.data;
             }
