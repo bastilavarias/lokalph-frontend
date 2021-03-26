@@ -100,7 +100,13 @@
                                 </v-list-item-title>
                             </v-list-item-content>
                             <v-list-item-action v-if="user && !isOwner">
-                                <v-btn icon large v-if="isAlreadyLiked">
+                                <v-btn
+                                    icon
+                                    large
+                                    v-if="isAlreadyLiked"
+                                    @click="deleteProductLike"
+                                    :loading="isDeleteProductStart"
+                                >
                                     <v-icon color="primary" large
                                         >mdi-heart</v-icon
                                     >
@@ -109,7 +115,7 @@
                                     icon
                                     large
                                     v-if="!isAlreadyLiked"
-                                    @click="likeProduct"
+                                    @click="createProductLike"
                                     :loading="isLikeProductStart"
                                 >
                                     <v-icon color="primary" large
@@ -575,7 +581,9 @@ import {
     CREATE_PRODUCT_INQUIRY,
     CREATE_PRODUCT_LIKE,
     CREATE_PRODUCT_VIEW,
+    DELETE_PRODUCT_LIKE,
     GET_PRODUCT_INQUIRIES,
+    GET_PRODUCT_LIKES,
     GET_PRODUCT_VIEWS,
     GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
 } from "@/store/types/product-store-type";
@@ -629,6 +637,8 @@ export default {
             views: null,
             isLikeProductStart: false,
             likes: [],
+            isGetProductLikesStart: false,
+            isDeleteProductStart: false,
         };
     },
 
@@ -708,6 +718,7 @@ export default {
             if (value) {
                 if (this.user)
                     await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
+                await this.getProductLikes();
                 await this.getProductViews();
             }
         },
@@ -797,7 +808,7 @@ export default {
             this.isGetProductViewsStart = false;
         },
 
-        async likeProduct() {
+        async createProductLike() {
             this.isLikeProductStart = true;
             const { data } = await this.$store.dispatch(
                 CREATE_PRODUCT_LIKE,
@@ -809,6 +820,32 @@ export default {
                 return;
             }
             this.isLikeProductStart = false;
+        },
+
+        async getProductLikes() {
+            this.isGetProductLikesStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCT_LIKES,
+                this.product.id
+            );
+            this.likes = data || [];
+            this.isGetProductLikesStart = false;
+        },
+
+        async deleteProductLike() {
+            this.isDeleteProductStart = true;
+            const { data } = await this.$store.dispatch(
+                DELETE_PRODUCT_LIKE,
+                this.product.id
+            );
+            if (data) {
+                this.likes = this.likes.filter(
+                    (like) => like.account.id !== this.user.id
+                );
+                this.isDeleteProductStart = false;
+                return;
+            }
+            this.isDeleteProductStart = false;
         },
     },
 

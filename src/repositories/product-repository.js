@@ -78,6 +78,18 @@ const shopRepository = {
         const response = await axiosService.post("/product/like", payload);
         return response.data;
     },
+
+    async getProductLikes(productId) {
+        const response = await axiosService.get(`/product/likes/${productId}`);
+        return response.data;
+    },
+
+    async deleteProductLike(productId) {
+        const response = await axiosService.delete(
+            `/product/like/${productId}`
+        );
+        return response.data;
+    },
 };
 
 export default shopRepository;
