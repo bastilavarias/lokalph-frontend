@@ -10,6 +10,8 @@ import {
     GET_PRODUCT_INQUIRIES,
     CREATE_PRODUCT_INQUIRY_REPLY,
     GET_PRODUCT_INQUIRY_REPLY,
+    CREATE_PRODUCT_VIEW,
+    GET_PRODUCT_VIEWS,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -160,6 +162,25 @@ const productStoreModule = {
                 return await productRepository.getProductInquiryReply(
                     inquiryId
                 );
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CREATE_PRODUCT_VIEW](_, productId) {
+            try {
+                const payload = {
+                    product_id: productId,
+                };
+                return await productRepository.createProductView(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_VIEWS](_, productId) {
+            try {
+                return await productRepository.getProductViews(productId);
             } catch (error) {
                 return error.response.data;
             }
