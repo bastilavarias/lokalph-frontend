@@ -705,17 +705,11 @@ export default {
                 payload
             );
             if (success) {
-                this.inquiries = [data, ...this.inquiries];
+                this.clearInquiries();
                 this.inquiry = null;
                 this.isCreateProductInquiryStart = false;
                 this.inquiriesTotalCount =
                     parseInt(this.inquiriesTotalCount) + 1;
-                this.$nextTick(() => {
-                    this.$vuetify.goTo(
-                        `#product-post-view-inquiry-card-component-${data.id}`,
-                        { duration: 300, offset: 75 }
-                    );
-                });
             }
             this.isCreateProductInquiryStart = false;
         },
@@ -740,6 +734,15 @@ export default {
             }
             this.inquiries = [...this.inquiries, ...inquiries];
             $state.complete();
+        },
+
+        clearInquiries() {
+            this.inquiries = [];
+            this.scrollOptions = Object.assign(this.scrollOptions, {
+                page: 1,
+                id: this.scrollOptions.id + 1,
+                totalCount: 0,
+            });
         },
     },
 

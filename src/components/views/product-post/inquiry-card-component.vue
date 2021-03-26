@@ -34,20 +34,20 @@
                                         {{ message }}
                                     </div>
                                 </v-col>
-                                <v-col cols="12" v-if="currentReply">
-                                    <product-post-view-inquiry-reply-card-component
-                                        :first-name="
-                                            currentReply.account.profile
-                                                .first_name
-                                        "
-                                        :created-at="currentReply.created_at"
-                                        :message="currentReply.message"
-                                        :image-url="
-                                            currentReply.account.profile
-                                                .image_url
-                                        "
-                                    ></product-post-view-inquiry-reply-card-component>
-                                </v-col>
+                                <template v-for="(reply, index) in replies">
+                                    <v-col cols="12" :key="index">
+                                        <product-post-view-inquiry-reply-card-component
+                                            :first-name="
+                                                reply.account.profile.first_name
+                                            "
+                                            :created-at="reply.created_at"
+                                            :message="reply.message"
+                                            :image-url="
+                                                reply.account.profile.image_url
+                                            "
+                                        ></product-post-view-inquiry-reply-card-component>
+                                    </v-col>
+                                </template>
                                 <v-col
                                     cols="12"
                                     v-if="isGetReplyStart && !currentReply"
@@ -56,14 +56,10 @@
                                         <custom-loading-spinner-component></custom-loading-spinner-component>
                                     </div>
                                 </v-col>
-                                <v-col
-                                    cols="12"
-                                    v-if="!currentReply && !isGetReplyStart"
-                                >
+                                <v-col cols="12" v-if="isReplyButtonShow">
                                     <span
                                         class="font-weight-bold secondary--text"
                                         :style="{ cursor: 'pointer' }"
-                                        v-if="!isReplyFormOpen && isOwner"
                                         @click="isReplyFormOpen = true"
                                     >
                                         <v-icon color="secondary"
@@ -187,6 +183,7 @@ export default {
             replyMessage: null,
             currentReply: null,
             isGetReplyStart: false,
+            replies: [],
         };
     },
 
@@ -207,6 +204,14 @@ export default {
                 this.replyMessage.length <= 2500
             );
         },
+
+        isReplyButtonShow() {
+            return (
+                !this.isReplyFormOpen &&
+                this.isOwner &&
+                this.replies.length === 0
+            );
+        },
     },
 
     methods: {
@@ -222,7 +227,7 @@ export default {
                 payload
             );
             if (success) {
-                this.currentReply = Object.assign({}, data);
+                this.replies = [data, ...this.replies];
                 this.replyMessage = null;
                 this.isAnswerStart = false;
                 this.isReplyFormOpen = false;
@@ -236,7 +241,7 @@ export default {
                 this.inquiryId
             );
             if (data) {
-                this.currentReply = Object.assign({}, data);
+                this.replies = [data, ...this.replies];
                 this.isGetReplyStart = false;
                 return;
             }
@@ -245,7 +250,6 @@ export default {
     },
 
     async created() {
-        this.currentReply = null;
         await this.getReply();
     },
 };
