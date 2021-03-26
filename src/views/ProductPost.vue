@@ -100,7 +100,18 @@
                                 </v-list-item-title>
                             </v-list-item-content>
                             <v-list-item-action v-if="user && !isOwner">
-                                <v-btn icon large>
+                                <v-btn icon large v-if="isAlreadyLiked">
+                                    <v-icon color="primary" large
+                                        >mdi-heart</v-icon
+                                    >
+                                </v-btn>
+                                <v-btn
+                                    icon
+                                    large
+                                    v-if="!isAlreadyLiked"
+                                    @click="likeProduct"
+                                    :loading="isLikeProductStart"
+                                >
                                     <v-icon color="primary" large
                                         >mdi-heart-outline</v-icon
                                     >
@@ -261,9 +272,9 @@
                                             <span class="subtitle-1">
                                                 <span
                                                     class="font-weight-bold secondary--text"
-                                                    >4</span
+                                                    >{{ likesCount }}</span
                                                 >
-                                                hearts
+                                                likes
                                             </span>
                                         </div>
                                     </v-col>
@@ -511,7 +522,7 @@
                         </v-row>
                     </v-card-text>
                     <infinite-loading
-                        @infinite="getInquiries"
+                        @infinite="getProductInquiries"
                         :identifier="scrollOptions.id"
                     >
                         <template v-slot:spinner>
@@ -562,6 +573,7 @@
 <script>
 import {
     CREATE_PRODUCT_INQUIRY,
+    CREATE_PRODUCT_LIKE,
     CREATE_PRODUCT_VIEW,
     GET_PRODUCT_INQUIRIES,
     GET_PRODUCT_VIEWS,
@@ -615,6 +627,8 @@ export default {
             isOfferDialogOpen: false,
             isGetProductViewsStart: false,
             views: null,
+            isLikeProductStart: false,
+            likes: [],
         };
     },
 
@@ -672,6 +686,16 @@ export default {
 
         inquiriesCount() {
             return this.inquiries.length;
+        },
+
+        isAlreadyLiked() {
+            return !!this.likes.find(
+                (like) => like.account.id === this.user.id
+            );
+        },
+
+        likesCount() {
+            return this.likes.length || 0;
         },
     },
 
@@ -732,7 +756,7 @@ export default {
             this.isCreateProductInquiryStart = false;
         },
 
-        async getInquiries($state) {
+        async getProductInquiries($state) {
             const payload = {
                 productId: this.product.id,
                 page: this.scrollOptions.page,
@@ -771,6 +795,20 @@ export default {
             );
             this.views = data;
             this.isGetProductViewsStart = false;
+        },
+
+        async likeProduct() {
+            this.isLikeProductStart = true;
+            const { data } = await this.$store.dispatch(
+                CREATE_PRODUCT_LIKE,
+                this.product.id
+            );
+            if (data) {
+                this.likes = [...this.likes, data];
+                this.isLikeProductStart = false;
+                return;
+            }
+            this.isLikeProductStart = false;
         },
     },
 
