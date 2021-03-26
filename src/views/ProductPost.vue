@@ -555,6 +555,7 @@
 <script>
 import {
     CREATE_PRODUCT_INQUIRY,
+    CREATE_PRODUCT_VIEW,
     GET_PRODUCT_INQUIRIES,
     GET_SHOP_PRODUCT_DETAILS_BY_SLUG,
 } from "@/store/types/product-store-type";
@@ -667,6 +668,12 @@ export default {
     watch: {
         carouselData() {
             this.$refs.carousel.slideTo(this.carouselData);
+        },
+
+        async product(value) {
+            if (value) {
+                await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
+            }
         },
     },
 

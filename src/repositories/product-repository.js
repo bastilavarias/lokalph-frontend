@@ -63,6 +63,11 @@ const shopRepository = {
         );
         return response.data;
     },
+
+    async createProductView(payload) {
+        const response = await axiosService.post("/product/view", payload);
+        return response.data;
+    },
 };
 
 export default shopRepository;
