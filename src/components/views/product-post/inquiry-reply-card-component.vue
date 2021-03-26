@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex align-start justify-space-between mb-2">
         <v-avatar>
-            <v-img :src="user.profile.image_url"></v-img>
+            <v-img :src="imageUrl"></v-img>
         </v-avatar>
         <div class="mr-2 text-content flex-grow-1">
             <div class="pl-4">
@@ -9,7 +9,7 @@
                     <v-col cols="12">
                         <div class="d-flex align-content-center align-center">
                             <span class="text-capitalize subtitle-1">
-                                Sebastian Curtis Lavarias
+                                {{ firstName }}
                             </span>
                             <span class="mx-1">
                                 <v-chip color="secondary" small label>
@@ -21,7 +21,7 @@
                             </span>
                             <span class="mx-1"> · </span>
                             <span class="caption">
-                                {{ formatRelativeTime(user.created_at) }}
+                                {{ formatRelativeTime(createdAt) }}
                             </span>
                         </div>
                     </v-col>
@@ -34,15 +34,7 @@
                                         wordBreak: 'break-all',
                                     }"
                                 >
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit. A accusamus cum dolorum
-                                    eaque ex id nam nisi quam quas voluptatibus.
-                                    Asperiores debitis deserunt ducimus enim
-                                    error fugit minima, nemo nihil nobis
-                                    pariatur placeat quia quibusdam quos
-                                    repellendus saepe sequi sint, voluptate. Cum
-                                    dolore magnam necessitatibus velit vero.
-                                    Atque ducimus, vel?
+                                    {{ message }}
                                 </div>
                             </v-col>
                         </v-row>
@@ -58,6 +50,28 @@ import commonUtility from "@/common/utility";
 
 export default {
     name: "product-post-view-inquiry-reply-card-component",
+
+    props: {
+        firstName: {
+            type: String,
+            required: true,
+        },
+
+        createdAt: {
+            type: String,
+            required: true,
+        },
+
+        message: {
+            type: String,
+            required: true,
+        },
+
+        imageUrl: {
+            type: String,
+            required: true,
+        },
+    },
 
     mixins: [commonUtility],
 

@@ -35,7 +35,18 @@
                                     </div>
                                 </v-col>
                                 <v-col cols="12" v-if="currentReply">
-                                    <product-post-view-inquiry-reply-card-component></product-post-view-inquiry-reply-card-component>
+                                    <product-post-view-inquiry-reply-card-component
+                                        :first-name="
+                                            currentReply.account.profile
+                                                .first_name
+                                        "
+                                        :created-at="currentReply.created_at"
+                                        :message="currentReply.message"
+                                        :image-url="
+                                            currentReply.account.profile
+                                                .image_url
+                                        "
+                                    ></product-post-view-inquiry-reply-card-component>
                                 </v-col>
                                 <v-col
                                     cols="12"
@@ -119,11 +130,13 @@ import {
     GET_PRODUCT_INQUIRY_REPLY,
 } from "@/store/types/product-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
+import Product from "@/views/profile/Product";
 
 export default {
     name: "product-post-view-inquiry-card-component",
 
     components: {
+        Product,
         CustomLoadingSpinnerComponent,
         ProductPostViewInquiryReplyCardComponent,
     },
