@@ -37,7 +37,18 @@
                                 <v-col cols="12" v-if="currentReply">
                                     <product-post-view-inquiry-reply-card-component></product-post-view-inquiry-reply-card-component>
                                 </v-col>
-                                <v-col cols="12" v-if="!currentReply">
+                                <v-col
+                                    cols="12"
+                                    v-if="isGetReplyStart && !currentReply"
+                                >
+                                    <div class="text-center">
+                                        <custom-loading-spinner-component></custom-loading-spinner-component>
+                                    </div>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    v-if="!currentReply && !isGetReplyStart"
+                                >
                                     <span
                                         class="font-weight-bold secondary--text"
                                         :style="{ cursor: 'pointer' }"
@@ -105,12 +116,17 @@ import ProductPostViewInquiryReplyCardComponent from "@/components/views/product
 import {
     CREATE_PRODUCT_INQUIRY,
     CREATE_PRODUCT_INQUIRY_REPLY,
+    GET_PRODUCT_INQUIRY_REPLY,
 } from "@/store/types/product-store-type";
+import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 
 export default {
     name: "product-post-view-inquiry-card-component",
 
-    components: { ProductPostViewInquiryReplyCardComponent },
+    components: {
+        CustomLoadingSpinnerComponent,
+        ProductPostViewInquiryReplyCardComponent,
+    },
 
     mixins: [commonUtility],
 
@@ -157,6 +173,7 @@ export default {
             isAnswerStart: false,
             replyMessage: null,
             currentReply: null,
+            isGetReplyStart: false,
         };
     },
 
@@ -198,6 +215,24 @@ export default {
                 this.isReplyFormOpen = false;
             }
         },
+
+        async getReply() {
+            this.isGetReplyStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCT_INQUIRY_REPLY,
+                this.inquiryId
+            );
+            if (data) {
+                this.currentReply = Object.assign({}, data);
+                this.isGetReplyStart = false;
+                return;
+            }
+            this.isGetReplyStart = false;
+        },
+    },
+
+    async mounted() {
+        await this.getReply();
     },
 };
 </script>

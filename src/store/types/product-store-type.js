@@ -9,3 +9,4 @@ export const CREATE_PRODUCT_INQUIRY = "product/create-product-inquiry";
 export const GET_PRODUCT_INQUIRIES = "product/get-inquiries";
 export const CREATE_PRODUCT_INQUIRY_REPLY =
     "product/create-product-inquiry-reply";
+export const GET_PRODUCT_INQUIRY_REPLY = "product/get-product-inquiry-reply";

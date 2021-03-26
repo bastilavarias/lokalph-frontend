@@ -598,7 +598,7 @@ export default {
             inquiry: null,
             scrollOptions: {
                 page: 1,
-                perPage: 5,
+                perPage: 3,
                 id: +new Date(),
                 totalCount: 0,
             },

@@ -56,6 +56,13 @@ const shopRepository = {
         );
         return response.data;
     },
+
+    async getProductInquiryReply(inquiryId) {
+        const response = await axiosService.get(
+            `/product/inquiry/reply/${inquiryId}`
+        );
+        return response.data;
+    },
 };
 
 export default shopRepository;

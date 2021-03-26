@@ -9,6 +9,7 @@ import {
     GET_SHOP_PRODUCTS,
     GET_PRODUCT_INQUIRIES,
     CREATE_PRODUCT_INQUIRY_REPLY,
+    GET_PRODUCT_INQUIRY_REPLY,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -148,6 +149,16 @@ const productStoreModule = {
                 };
                 return await productRepository.createProductInquiryReply(
                     payload
+                );
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_INQUIRY_REPLY](_, inquiryId) {
+            try {
+                return await productRepository.getProductInquiryReply(
+                    inquiryId
                 );
             } catch (error) {
                 return error.response.data;
