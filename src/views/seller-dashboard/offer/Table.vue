@@ -141,7 +141,6 @@ export default {
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
-            selectedDateRangeValue: 1,
             selectedDateFrom: null,
             selectedDateTo: null,
         };
@@ -197,24 +196,28 @@ export default {
             return [
                 {
                     label: "Today",
-                    value: 1,
+                    value: "today",
                 },
 
                 {
                     label: "Last 3 days",
-                    value: 2,
+                    value: "last-3-days",
                 },
 
                 {
                     label: "This Week",
-                    value: 3,
+                    value: "this-week",
                 },
 
                 {
                     label: "Custom",
-                    value: 4,
+                    value: "custom",
                 },
             ];
+        },
+
+        selectedDateRangeValue() {
+            return this.$route.query.date_range_value || null;
         },
 
         selectedDateRange() {
@@ -260,38 +263,34 @@ export default {
             this.shops = data.shops;
             if (!this.selectedShop) {
                 const shop = this.shops[0];
-                await this.selectShopId(shop.id);
+                await this.setRouteQueries(shop.id, "today");
             }
         },
 
-        async selectShopId(shopId) {
+        async setRouteQueries(shopId, dateRangeValue) {
             await this.$router.push({
                 name: "seller-dashboard-offer",
-                query: { shop_id: shopId },
+                query: { shop_id: shopId, date_range_value: dateRangeValue },
             });
-        },
-
-        selectDateRangeValue(value) {
-            this.selectedDateRangeValue = value;
         },
 
         selectDate() {
             let dateFrom = null;
             let dateTo = null;
             const currentDate = moment().format("YYYY-MM-DD");
-            if (this.selectedDateRangeValue === 1) {
+            if (this.selectedDateRangeValue === "today") {
                 dateFrom = currentDate;
                 dateTo = currentDate;
             }
-            if (this.selectedDateRangeValue === 2) {
+            if (this.selectedDateRangeValue === "last-3-days") {
                 dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
                 dateTo = currentDate;
             }
-            if (this.selectedDateRangeValue === 3) {
+            if (this.selectedDateRangeValue === "this-week") {
                 dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
                 dateTo = currentDate;
             }
-            if (this.selectedDateRangeValue === 4) {
+            if (this.selectedDateRangeValue === "custom") {
                 dateFrom = this.selectedDateFrom;
                 dateTo = this.selectedDateTo;
             }

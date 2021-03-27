@@ -32,7 +32,7 @@
                         <template v-for="(shop, index) in shops">
                             <v-list-item
                                 :key="index"
-                                @click="selectShopId(shop.id)"
+                                @click="setRouteQueries(shop.id)"
                                 :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
                             >
@@ -229,7 +229,7 @@ export default {
             this.shops = data.shops;
             if (!this.selectedShop) {
                 const shop = this.shops[0];
-                await this.selectShopId(shop.id);
+                await this.setRouteQueries(shop.id);
             }
         },
 
@@ -251,7 +251,7 @@ export default {
             if (this.search) this.pagination.totalCount = this.shops.length;
         },
 
-        async selectShopId(shopId) {
+        async setRouteQueries(shopId) {
             await this.$router.push({
                 name: "seller-dashboard-product",
                 query: { shop_id: shopId },
