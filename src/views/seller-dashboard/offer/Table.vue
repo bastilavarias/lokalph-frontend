@@ -9,7 +9,7 @@
                             text
                             v-bind="attrs"
                             v-on="on"
-                            :loading="isGetShopsStart"
+                            :loading="!selectedShopId || isGetShopsStart"
                             small
                         >
                             <span
@@ -32,7 +32,12 @@
                         <template v-for="(shop, index) in shops">
                             <v-list-item
                                 :key="index"
-                                @click="selectShopId(shop.id)"
+                                @click="
+                                    setRouteQueries(
+                                        shop.id,
+                                        selectedDateRangeValue
+                                    )
+                                "
                                 >{{ shop.name }}</v-list-item
                             >
                         </template>
@@ -42,7 +47,13 @@
             <v-spacer></v-spacer>
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn text v-bind="attrs" v-on="on" small>
+                    <v-btn
+                        text
+                        v-bind="attrs"
+                        v-on="on"
+                        small
+                        :loading="!selectedDateRangeValue"
+                    >
                         <span
                             class="mr-1 font-weight-bold"
                             v-if="selectedDateRange"
