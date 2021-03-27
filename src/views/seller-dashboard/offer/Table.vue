@@ -80,6 +80,36 @@
                             >{{ range.label }}</v-list-item
                         >
                     </template>
+                    <v-dialog
+                        ref="dialog"
+                        v-model="isDateRangesDialogOpen"
+                        :return-value.sync="selectedDateRanges"
+                        persistent
+                        width="290px"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-list-item v-bind="attrs" v-on="on"
+                                >Custom</v-list-item
+                            >
+                        </template>
+                        <v-date-picker
+                            v-model="selectedDateRanges"
+                            range
+                            :max="currentDate"
+                        >
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="modal = false">
+                                Cancel
+                            </v-btn>
+                            <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.dialog.save(selectedDateRanges)"
+                            >
+                                OK
+                            </v-btn>
+                        </v-date-picker>
+                    </v-dialog>
                 </v-list>
             </v-menu>
         </v-card-title>
@@ -138,7 +168,9 @@ import CustomRouterLinkComponent from "@/components/custom/router-link-component
 import moment from "moment";
 
 export default {
-    components: { CustomRouterLinkComponent },
+    components: {
+        CustomRouterLinkComponent,
+    },
     mixins: [commonUtility],
 
     data() {
@@ -153,8 +185,10 @@ export default {
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
-            selectedDateFrom: null,
-            selectedDateTo: null,
+            selectedDateRanges: [],
+            dateFrom: null,
+            dateTo: null,
+            isDateRangesDialogOpen: false,
         };
     },
 
@@ -220,11 +254,6 @@ export default {
                     label: "This Week",
                     value: "this-week",
                 },
-
-                {
-                    label: "Custom",
-                    value: "custom",
-                },
             ];
         },
 
@@ -237,6 +266,10 @@ export default {
             return this.dateRanges.find(
                 (range) => range.value === this.selectedDateRangeValue
             );
+        },
+
+        currentDate() {
+            return moment().format("YYYY-MM-DD");
         },
     },
 
@@ -254,9 +287,13 @@ export default {
         },
 
         async selectedDateRangeValue(value) {
-            if (value && value !== 4) {
+            if (value) {
                 await this.getOffers();
             }
+        },
+
+        selectedDateRanges(value) {
+            console.log(value);
         },
     },
 
@@ -289,23 +326,20 @@ export default {
         selectDate() {
             let dateFrom = null;
             let dateTo = null;
-            const currentDate = moment().format("YYYY-MM-DD");
+
             if (this.selectedDateRangeValue === "today") {
-                dateFrom = currentDate;
-                dateTo = currentDate;
+                dateFrom = this.currentDate;
+                dateTo = this.currentDate;
             }
             if (this.selectedDateRangeValue === "last-3-days") {
                 dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
-                dateTo = currentDate;
+                dateTo = this.currentDate;
             }
             if (this.selectedDateRangeValue === "this-week") {
                 dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
-                dateTo = currentDate;
+                dateTo = this.currentDate;
             }
-            if (this.selectedDateRangeValue === "custom") {
-                dateFrom = this.selectedDateFrom;
-                dateTo = this.selectedDateTo;
-            }
+
             return {
                 dateFrom,
                 dateTo,
