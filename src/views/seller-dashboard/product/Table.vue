@@ -33,6 +33,7 @@
                             <v-list-item
                                 :key="index"
                                 @click="selectShopId(shop.id)"
+                                :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
                             >
                         </template>
