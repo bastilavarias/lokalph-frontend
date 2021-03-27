@@ -74,7 +74,9 @@
                     <template v-for="(range, index) in dateRanges">
                         <v-list-item
                             :key="index"
-                            @click="selectDateRangeValue(range.value)"
+                            @click="
+                                setRouteQueries(selectedShopId, range.value)
+                            "
                             >{{ range.label }}</v-list-item
                         >
                     </template>
@@ -131,7 +133,6 @@
 
 <script>
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
-import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
 import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import moment from "moment";

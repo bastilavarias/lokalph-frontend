@@ -9,7 +9,7 @@
                             text
                             v-bind="attrs"
                             v-on="on"
-                            :loading="isGetShopsStart"
+                            :loading="!selectedShopId || isGetShopsStart"
                             small
                         >
                             <span
