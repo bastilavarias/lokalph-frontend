@@ -56,13 +56,19 @@
                     >
                         <span
                             class="mr-1 font-weight-bold"
-                            v-if="selectedDateRange"
+                            v-if="selectedDateRange && dateFrom && dateTo"
+                            >{{ formatBirthDate(dateFrom) }} -
+                            {{ formatBirthDate(dateTo) }}</span
+                        >
+                        <span
+                            class="mr-1 font-weight-bold"
+                            v-if="selectedDateRange && !dateFrom && !dateTo"
                             >{{ selectedDateRange.label }}</span
                         >
                         <v-badge
                             color="primary"
                             dot
-                            v-if="!selectedDateRange"
+                            v-if="!selectedDateRange && !dateFrom && !dateTo"
                             class="mr-2 text-capitalize font-italic"
                         >
                             Date Range
@@ -294,6 +300,8 @@ export default {
 
         async selectedDateRangeValue(value) {
             if (value) {
+                this.dateFrom = null;
+                this.dateTo = null;
                 await this.getOffers();
             }
         },
