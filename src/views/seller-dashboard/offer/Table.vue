@@ -96,17 +96,23 @@
                             v-model="selectedDateRanges"
                             range
                             :max="currentDate"
+                            :reactive="false"
                         >
                             <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="modal = false">
+                            <v-btn
+                                text
+                                @click="isDateRangesDialogOpen = false"
+                                class="text-capitalize"
+                            >
                                 Cancel
                             </v-btn>
                             <v-btn
-                                text
                                 color="primary"
-                                @click="$refs.dialog.save(selectedDateRanges)"
+                                depressed
+                                @click="getOffers"
+                                class="text-capitalize"
                             >
-                                OK
+                                View Offers
                             </v-btn>
                         </v-date-picker>
                     </v-dialog>
@@ -292,8 +298,11 @@ export default {
             }
         },
 
-        selectedDateRanges(value) {
-            console.log(value);
+        async selectedDateRanges(values) {
+            if (values.length > 0) {
+                this.dateFrom = values[0];
+                this.dateTo = values[1];
+            }
         },
     },
 
@@ -326,18 +335,18 @@ export default {
         selectDate() {
             let dateFrom = null;
             let dateTo = null;
-
             if (this.selectedDateRangeValue === "today") {
                 dateFrom = this.currentDate;
                 dateTo = this.currentDate;
-            }
-            if (this.selectedDateRangeValue === "last-3-days") {
+            } else if (this.selectedDateRangeValue === "last-3-days") {
                 dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
-            }
-            if (this.selectedDateRangeValue === "this-week") {
+            } else if (this.selectedDateRangeValue === "this-week") {
                 dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
+            } else {
+                dateFrom = this.dateFrom;
+                dateTo = this.dateTo;
             }
 
             return {
@@ -348,7 +357,8 @@ export default {
 
         async getOffers() {
             const { dateFrom, dateTo } = this.selectDate();
-            console.log(dateFrom, dateTo);
+            if (this.isDateRangesDialogOpen)
+                this.isDateRangesDialogOpen = false;
         },
 
         // async getProducts() {
