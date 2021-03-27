@@ -81,19 +81,6 @@
                 'items-per-page-options': pagination.rowsPerPageItems,
             }"
         >
-            <template v-slot:top>
-                <v-card-text>
-                    <v-text-field
-                        filled
-                        rounded
-                        placeholder="Search"
-                        append-icon="mdi-magnify"
-                        autofocus
-                        v-model="search"
-                        :disabled="!selectedShop"
-                    ></v-text-field>
-                </v-card-text>
-            </template>
             <template v-slot:item.name="{ item }">
                 <custom-router-link-component
                     :to="{
@@ -147,14 +134,13 @@ export default {
             isGetShopsStart: false,
             isGetProductsStart: false,
             products: [],
-            search: null,
             pagination: {
                 page: 1,
                 perPage: 10,
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
-            selectedDateRangeValue: null,
+            selectedDateRangeValue: 1,
         };
     },
 
@@ -237,10 +223,6 @@ export default {
     },
 
     watch: {
-        search: debounce(async function () {
-            await this.getProducts();
-        }, 800),
-
         async "pagination.page"() {
             await this.getProducts();
         },
@@ -278,7 +260,6 @@ export default {
                 shopId: this.selectedShopId,
                 page: this.pagination.page,
                 perPage: this.pagination.perPage,
-                search: this.search,
             };
             this.isGetProductsStart = true;
             const { data } = await this.$store.dispatch(
