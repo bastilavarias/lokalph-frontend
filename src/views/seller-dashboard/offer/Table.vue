@@ -121,8 +121,9 @@
 <script>
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
-import commonUtility, { debounce } from "@/common/utility";
+import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
+import moment from "moment";
 
 export default {
     components: { CustomRouterLinkComponent },
@@ -141,6 +142,8 @@ export default {
                 rowsPerPageItems: [10, 25, 50],
             },
             selectedDateRangeValue: 1,
+            selectedDateFrom: null,
+            selectedDateTo: null,
         };
     },
 
@@ -224,15 +227,21 @@ export default {
 
     watch: {
         async "pagination.page"() {
-            await this.getProducts();
+            await this.getOffers();
         },
 
         async "pagination.perPage"() {
-            await this.getProducts();
+            await this.getOffers();
         },
 
         async selectedShopId(value) {
-            if (value) await this.getProducts();
+            if (value) await this.getOffers();
+        },
+
+        async selectedDateRangeValue(value) {
+            if (value && value !== 4) {
+                await this.getOffers();
+            }
         },
     },
 
@@ -255,23 +264,6 @@ export default {
             }
         },
 
-        async getProducts() {
-            const payload = {
-                shopId: this.selectedShopId,
-                page: this.pagination.page,
-                perPage: this.pagination.perPage,
-            };
-            this.isGetProductsStart = true;
-            const { data } = await this.$store.dispatch(
-                GET_SHOP_PRODUCTS,
-                payload
-            );
-            this.isGetProductsStart = false;
-            this.products = data.products;
-            if (!this.search) this.pagination.totalCount = data.total_count;
-            if (this.search) this.pagination.totalCount = this.shops.length;
-        },
-
         async selectShopId(shopId) {
             await this.$router.push({
                 name: "seller-dashboard-offer",
@@ -282,11 +274,59 @@ export default {
         selectDateRangeValue(value) {
             this.selectedDateRangeValue = value;
         },
+
+        selectDate() {
+            let dateFrom = null;
+            let dateTo = null;
+            const currentDate = moment().format("YYYY-MM-DD");
+            if (this.selectedDateRangeValue === 1) {
+                dateFrom = currentDate;
+                dateTo = currentDate;
+            }
+            if (this.selectedDateRangeValue === 2) {
+                dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
+                dateTo = currentDate;
+            }
+            if (this.selectedDateRangeValue === 3) {
+                dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
+                dateTo = currentDate;
+            }
+            if (this.selectedDateRangeValue === 4) {
+                dateFrom = this.selectedDateFrom;
+                dateTo = this.selectedDateTo;
+            }
+            return {
+                dateFrom,
+                dateTo,
+            };
+        },
+
+        async getOffers() {
+            const { dateFrom, dateTo } = this.selectDate();
+            console.log(dateFrom, dateTo);
+        },
+
+        // async getProducts() {
+        //     const payload = {
+        //         shopId: this.selectedShopId,
+        //         page: this.pagination.page,
+        //         perPage: this.pagination.perPage,
+        //     };
+        //     this.isGetProductsStart = true;
+        //     const { data } = await this.$store.dispatch(
+        //         GET_SHOP_PRODUCTS,
+        //         payload
+        //     );
+        //     this.isGetProductsStart = false;
+        //     this.products = data.products;
+        //     if (!this.search) this.pagination.totalCount = data.total_count;
+        //     if (this.search) this.pagination.totalCount = this.shops.length;
+        // },
     },
 
     async created() {
         await this.getShops();
-        if (this.selectedShopId) await this.getProducts();
+        if (this.selectedShopId) await this.getOffers();
     },
 };
 </script>
