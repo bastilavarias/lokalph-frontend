@@ -86,18 +86,14 @@
                             >{{ range.label }}</v-list-item
                         >
                     </template>
+                    <v-list-item @click="isDateRangesDialogOpen = true"
+                        >Custom</v-list-item
+                    >
                     <v-dialog
-                        ref="dialog"
                         v-model="isDateRangesDialogOpen"
-                        :return-value.sync="selectedDateRanges"
                         persistent
                         width="290px"
                     >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-list-item v-bind="attrs" v-on="on"
-                                >Custom</v-list-item
-                            >
-                        </template>
                         <v-date-picker
                             v-model="selectedDateRanges"
                             range
@@ -356,7 +352,6 @@ export default {
                 dateFrom = this.dateFrom;
                 dateTo = this.dateTo;
             }
-
             return {
                 dateFrom,
                 dateTo,
