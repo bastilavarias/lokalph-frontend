@@ -86,38 +86,6 @@
                             >{{ range.label }}</v-list-item
                         >
                     </template>
-                    <v-list-item @click="isDateRangesDialogOpen = true"
-                        >Custom</v-list-item
-                    >
-                    <v-dialog
-                        v-model="isDateRangesDialogOpen"
-                        persistent
-                        width="290px"
-                    >
-                        <v-date-picker
-                            v-model="selectedDateRanges"
-                            range
-                            :max="currentDate"
-                            :reactive="false"
-                        >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                text
-                                @click="isDateRangesDialogOpen = false"
-                                class="text-capitalize"
-                            >
-                                Cancel
-                            </v-btn>
-                            <v-btn
-                                color="primary"
-                                depressed
-                                @click="getOffers"
-                                class="text-capitalize"
-                            >
-                                View Offers
-                            </v-btn>
-                        </v-date-picker>
-                    </v-dialog>
                 </v-list>
             </v-menu>
         </v-card-title>
@@ -166,6 +134,31 @@
                 </v-btn>
             </template>
         </v-data-table>
+        <v-dialog v-model="isDateRangesDialogOpen" persistent width="290px">
+            <v-date-picker
+                v-model="selectedDateRanges"
+                range
+                :max="currentDate"
+                :reactive="false"
+            >
+                <v-spacer></v-spacer>
+                <v-btn
+                    text
+                    @click="isDateRangesDialogOpen = false"
+                    class="text-capitalize"
+                >
+                    Cancel
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    depressed
+                    @click="setCustomDate"
+                    class="text-capitalize"
+                >
+                    View Offers
+                </v-btn>
+            </v-date-picker>
+        </v-dialog>
     </v-card>
 </template>
 
@@ -262,6 +255,11 @@ export default {
                     label: "This Week",
                     value: "this-week",
                 },
+
+                {
+                    label: "Custom",
+                    value: "custom",
+                },
             ];
         },
 
@@ -296,16 +294,7 @@ export default {
 
         async selectedDateRangeValue(value) {
             if (value) {
-                this.dateFrom = null;
-                this.dateTo = null;
                 await this.getOffers();
-            }
-        },
-
-        async selectedDateRanges(values) {
-            if (values.length > 0) {
-                this.dateFrom = values[0];
-                this.dateTo = values[1];
             }
         },
     },
@@ -364,27 +353,22 @@ export default {
                 this.isDateRangesDialogOpen = false;
         },
 
-        // async getProducts() {
-        //     const payload = {
-        //         shopId: this.selectedShopId,
-        //         page: this.pagination.page,
-        //         perPage: this.pagination.perPage,
-        //     };
-        //     this.isGetProductsStart = true;
-        //     const { data } = await this.$store.dispatch(
-        //         GET_SHOP_PRODUCTS,
-        //         payload
-        //     );
-        //     this.isGetProductsStart = false;
-        //     this.products = data.products;
-        //     if (!this.search) this.pagination.totalCount = data.total_count;
-        //     if (this.search) this.pagination.totalCount = this.shops.length;
-        // },
+        async setCustomDate() {
+            if (this.selectedDateRanges.length > 0) {
+                this.dateFrom = this.selectedDateRanges[0];
+                this.dateTo = this.selectedDateRanges[1];
+                this.isDateRangesDialogOpen = false;
+                await this.getOffers();
+            }
+        },
     },
 
     async created() {
         await this.getShops();
-        if (this.selectedShopId) await this.getOffers();
+        if (this.selectedShopId && this.selectedDateRangeValue === "custom")
+            return this.setRouteQueries(this.selectedShopId, "today");
+        if (this.selectedShopId && this.selectedDateRangeValue)
+            await this.getOffers();
     },
 };
 </script>
