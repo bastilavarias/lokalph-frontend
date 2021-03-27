@@ -86,7 +86,16 @@
                 </v-card-text>
             </template>
             <template v-slot:item.name="{ item }">
-                <span class="font-weight-bold">{{ item.name }}</span>
+                <custom-router-link-component
+                    :to="{
+                        name: 'product-post-view',
+                        params: { shopId: item.shop.id, slug: item.slug },
+                    }"
+                >
+                    <span class="black--text font-weight-bold">{{
+                        item.name
+                    }}</span>
+                </custom-router-link-component>
             </template>
             <template v-slot:item.category="{ item }">
                 {{ item.category.label }}
@@ -117,8 +126,10 @@
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
 import commonUtility, { debounce } from "@/common/utility";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
+    components: { CustomRouterLinkComponent },
     mixins: [commonUtility],
 
     data() {
