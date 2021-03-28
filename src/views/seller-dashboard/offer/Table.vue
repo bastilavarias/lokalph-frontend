@@ -33,10 +33,7 @@
                             <v-list-item
                                 :key="index"
                                 @click="
-                                    setRouteQueries(
-                                        shop.id,
-                                        selectedDateRangeValue
-                                    )
+                                    setRouteQueries(shop.id, selectedDatePreset)
                                 "
                                 :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
@@ -53,7 +50,7 @@
                         v-bind="attrs"
                         v-on="on"
                         small
-                        :loading="!selectedDateRangeValue"
+                        :loading="!selectedDatePreset"
                     >
                         <v-icon class="mr-1">mdi-calendar</v-icon>
                         <span
@@ -87,7 +84,7 @@
                             @click="
                                 setRouteQueries(selectedShopId, range.value)
                             "
-                            :disabled="selectedDateRangeValue === range.value"
+                            :disabled="selectedDatePreset === range.value"
                             >{{ range.label }}</v-list-item
                         >
                     </template>
@@ -275,14 +272,14 @@ export default {
             ];
         },
 
-        selectedDateRangeValue() {
+        selectedDatePreset() {
             return this.$route.query.date_range_value || null;
         },
 
         selectedDateRange() {
-            if (!this.selectedDateRangeValue) return null;
+            if (!this.selectedDatePreset) return null;
             return this.dateRanges.find(
-                (range) => range.value === this.selectedDateRangeValue
+                (range) => range.value === this.selectedDatePreset
             );
         },
 
@@ -292,8 +289,7 @@ export default {
 
         hasCustomDates() {
             return (
-                this.selectedDateRangeValue === "custom" &&
-                this.selectedDateRanges.length > 0 &&
+                this.selectedDatePreset === "custom" &&
                 this.dateFrom &&
                 this.dateTo
             );
@@ -313,7 +309,7 @@ export default {
             if (value) await this.getOffers();
         },
 
-        async selectedDateRangeValue(newValue, oldValue) {
+        async selectedDatePreset(newValue, oldValue) {
             if (newValue === "custom") {
                 this.lastDateRangeValue = oldValue;
                 this.isDateRangesDialogOpen = true;
@@ -356,19 +352,19 @@ export default {
         selectDate() {
             let dateFrom = null;
             let dateTo = null;
-            if (this.selectedDateRangeValue === "today") {
+            if (this.selectedDatePreset === "today") {
                 dateFrom = this.currentDate;
                 dateTo = this.currentDate;
             }
-            if (this.selectedDateRangeValue === "last-3-days") {
+            if (this.selectedDatePreset === "last-3-days") {
                 dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
             }
-            if (this.selectedDateRangeValue === "this-week") {
+            if (this.selectedDatePreset === "this-week") {
                 dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
             }
-            if (this.selectedDateRangeValue === "custom") {
+            if (this.selectedDatePreset === "custom") {
                 dateFrom = this.dateFrom;
                 dateTo = this.dateTo;
             }
@@ -395,19 +391,21 @@ export default {
 
         async cancelGetOffersByCustomDate() {
             this.isDateRangesDialogOpen = false;
-            await this.setRouteQueries(
-                this.selectedShopId,
-                this.lastDateRangeValue
-            );
             this.selectedDateRanges = [];
+            if (!this.hasCustomDates) {
+                await this.setRouteQueries(
+                    this.selectedShopId,
+                    this.lastDateRangeValue
+                );
+            }
         },
     },
 
     async created() {
         await this.getShops();
-        if (this.selectedShopId && this.selectedDateRangeValue === "custom")
+        if (this.selectedShopId && this.selectedDatePreset === "custom")
             return this.setRouteQueries(this.selectedShopId, "today");
-        if (this.selectedShopId && this.selectedDateRangeValue)
+        if (this.selectedShopId && this.selectedDatePreset)
             await this.getOffers();
     },
 };
