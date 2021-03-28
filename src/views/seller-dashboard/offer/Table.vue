@@ -54,14 +54,15 @@
                         small
                         :loading="!selectedDateRangeValue"
                     >
+                        <v-icon class="mr-1">mdi-calendar</v-icon>
                         <span
-                            class="mr-1 font-weight-bold"
+                            class="font-weight-bold"
                             v-if="selectedDateRange && dateFrom && dateTo"
                             >{{ formatBirthDate(dateFrom) }} -
                             {{ formatBirthDate(dateTo) }}</span
                         >
                         <span
-                            class="mr-1 font-weight-bold"
+                            class="font-weight-bold"
                             v-if="selectedDateRange && !dateFrom && !dateTo"
                             >{{ selectedDateRange.label }}</span
                         >
@@ -73,7 +74,6 @@
                         >
                             Date Range
                         </v-badge>
-                        <v-icon>mdi-calendar</v-icon>
                     </v-btn>
                 </template>
                 <v-list>
@@ -142,11 +142,7 @@
                 :reactive="false"
             >
                 <v-spacer></v-spacer>
-                <v-btn
-                    text
-                    @click="isDateRangesDialogOpen = false"
-                    class="text-capitalize"
-                >
+                <v-btn text @click="cancelCustomDate" class="text-capitalize">
                     Cancel
                 </v-btn>
                 <v-btn
@@ -190,6 +186,7 @@ export default {
             dateFrom: null,
             dateTo: null,
             isDateRangesDialogOpen: false,
+            lastDateRangeValue: "today",
         };
     },
 
@@ -292,10 +289,16 @@ export default {
             if (value) await this.getOffers();
         },
 
-        async selectedDateRangeValue(value) {
-            if (value) {
-                await this.getOffers();
+        async selectedDateRangeValue(newValue, oldValue) {
+            if (newValue === "custom") {
+                this.lastDateRangeValue = oldValue;
+                this.isDateRangesDialogOpen = true;
+                return;
             }
+            this.dateFrom = null;
+            this.dateTo = null;
+            this.selectedDateRanges = [];
+            if (value) await this.getOffers();
         },
     },
 
@@ -319,6 +322,7 @@ export default {
         },
 
         async setRouteQueries(shopId, dateRangeValue) {
+            this.lastDateRangeValue = dateRangeValue;
             await this.$router.push({
                 name: "seller-dashboard-offer",
                 query: { shop_id: shopId, date_range_value: dateRangeValue },
@@ -331,13 +335,16 @@ export default {
             if (this.selectedDateRangeValue === "today") {
                 dateFrom = this.currentDate;
                 dateTo = this.currentDate;
-            } else if (this.selectedDateRangeValue === "last-3-days") {
+            }
+            if (this.selectedDateRangeValue === "last-3-days") {
                 dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
-            } else if (this.selectedDateRangeValue === "this-week") {
+            }
+            if (this.selectedDateRangeValue === "this-week") {
                 dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
-            } else {
+            }
+            if (this.selectedDateRangeValue === "custom") {
                 dateFrom = this.dateFrom;
                 dateTo = this.dateTo;
             }
@@ -360,6 +367,14 @@ export default {
                 this.isDateRangesDialogOpen = false;
                 await this.getOffers();
             }
+        },
+
+        async cancelCustomDate() {
+            await this.setRouteQueries(
+                this.selectedShopId,
+                this.lastDateRangeValue
+            );
+            this.isDateRangesDialogOpen = false;
         },
     },
 
