@@ -33,7 +33,10 @@
                             <v-list-item
                                 :key="index"
                                 @click="
-                                    setRouteQueries(shop.id, selectedDatePreset)
+                                    setRouteQueries(
+                                        shop.id,
+                                        selectedDatePresetValue
+                                    )
                                 "
                                 :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
@@ -50,24 +53,24 @@
                         v-bind="attrs"
                         v-on="on"
                         small
-                        :loading="!selectedDatePreset"
+                        :loading="!selectedDatePresetValue"
                     >
                         <v-icon class="mr-1">mdi-calendar</v-icon>
                         <span
                             class="font-weight-bold"
-                            v-if="selectedDateRange && dateFrom && dateTo"
+                            v-if="selectedDatePreset && dateFrom && dateTo"
                             >{{ formatBirthDate(dateFrom) }} -
                             {{ formatBirthDate(dateTo) }}</span
                         >
                         <span
                             class="font-weight-bold"
-                            v-if="selectedDateRange && !dateFrom && !dateTo"
-                            >{{ selectedDateRange.label }}</span
+                            v-if="selectedDatePreset && !dateFrom && !dateTo"
+                            >{{ selectedDatePreset.label }}</span
                         >
                         <v-badge
                             color="primary"
                             dot
-                            v-if="!selectedDateRange && !dateFrom && !dateTo"
+                            v-if="!selectedDatePreset && !dateFrom && !dateTo"
                             class="mr-2 text-capitalize font-italic"
                         >
                             Date Range
@@ -78,13 +81,13 @@
                     <v-subheader v-if="hasCustomDates"
                         >Date Presets</v-subheader
                     >
-                    <template v-for="(range, index) in dateRanges">
+                    <template v-for="(range, index) in datePresets">
                         <v-list-item
                             :key="index"
                             @click="
                                 setRouteQueries(selectedShopId, range.value)
                             "
-                            :disabled="selectedDatePreset === range.value"
+                            :disabled="selectedDatePresetValue === range.value"
                             >{{ range.label }}</v-list-item
                         >
                     </template>
@@ -144,7 +147,7 @@
         </v-data-table>
         <v-dialog v-model="isDateRangesDialogOpen" persistent width="290px">
             <v-date-picker
-                v-model="selectedDateRanges"
+                v-model="selectedDatePresets"
                 range
                 :max="currentDate"
                 :reactive="false"
@@ -194,7 +197,7 @@ export default {
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
-            selectedDateRanges: [],
+            selectedDatePresets: [],
             dateFrom: null,
             dateTo: null,
             isDateRangesDialogOpen: false,
@@ -248,7 +251,7 @@ export default {
             return this.shops.find((shop) => shop.id === this.selectedShopId);
         },
 
-        dateRanges() {
+        datePresets() {
             return [
                 {
                     label: "Today",
@@ -272,14 +275,14 @@ export default {
             ];
         },
 
-        selectedDatePreset() {
-            return this.$route.query.date_range_value || null;
+        selectedDatePresetValue() {
+            return this.$route.query.date_preset || null;
         },
 
-        selectedDateRange() {
-            if (!this.selectedDatePreset) return null;
-            return this.dateRanges.find(
-                (range) => range.value === this.selectedDatePreset
+        selectedDatePreset() {
+            if (!this.selectedDatePresetValue) return null;
+            return this.datePresets.find(
+                (range) => range.value === this.selectedDatePresetValue
             );
         },
 
@@ -289,7 +292,7 @@ export default {
 
         hasCustomDates() {
             return (
-                this.selectedDatePreset === "custom" &&
+                this.selectedDatePresetValue === "custom" &&
                 this.dateFrom &&
                 this.dateTo
             );
@@ -309,7 +312,7 @@ export default {
             if (value) await this.getOffers();
         },
 
-        async selectedDatePreset(newValue, oldValue) {
+        async selectedDatePresetValue(newValue, oldValue) {
             if (newValue === "custom") {
                 this.lastDateRangeValue = oldValue;
                 this.isDateRangesDialogOpen = true;
@@ -317,7 +320,7 @@ export default {
             }
             this.dateFrom = null;
             this.dateTo = null;
-            this.selectedDateRanges = [];
+            this.selectedDatePresets = [];
             if (newValue) await this.getOffers();
         },
     },
@@ -345,26 +348,26 @@ export default {
             this.lastDateRangeValue = dateRangeValue;
             await this.$router.push({
                 name: "seller-dashboard-offer",
-                query: { shop_id: shopId, date_range_value: dateRangeValue },
+                query: { shop_id: shopId, date_preset: dateRangeValue },
             });
         },
 
         selectDate() {
             let dateFrom = null;
             let dateTo = null;
-            if (this.selectedDatePreset === "today") {
+            if (this.selectedDatePresetValue === "today") {
                 dateFrom = this.currentDate;
                 dateTo = this.currentDate;
             }
-            if (this.selectedDatePreset === "last-3-days") {
+            if (this.selectedDatePresetValue === "last-3-days") {
                 dateFrom = moment().subtract(3, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
             }
-            if (this.selectedDatePreset === "this-week") {
+            if (this.selectedDatePresetValue === "this-week") {
                 dateFrom = moment().subtract(7, "days").format("YYYY-MM-DD");
                 dateTo = this.currentDate;
             }
-            if (this.selectedDatePreset === "custom") {
+            if (this.selectedDatePresetValue === "custom") {
                 dateFrom = this.dateFrom;
                 dateTo = this.dateTo;
             }
@@ -381,9 +384,9 @@ export default {
         },
 
         async setCustomDate() {
-            if (this.selectedDateRanges.length > 0) {
-                this.dateFrom = this.selectedDateRanges[0];
-                this.dateTo = this.selectedDateRanges[1];
+            if (this.selectedDatePresets.length > 0) {
+                this.dateFrom = this.selectedDatePresets[0];
+                this.dateTo = this.selectedDatePresets[1];
                 this.isDateRangesDialogOpen = false;
                 await this.getOffers();
             }
@@ -391,7 +394,7 @@ export default {
 
         async cancelGetOffersByCustomDate() {
             this.isDateRangesDialogOpen = false;
-            this.selectedDateRanges = [];
+            this.selectedDatePresets = [];
             if (!this.hasCustomDates) {
                 await this.setRouteQueries(
                     this.selectedShopId,
@@ -403,9 +406,9 @@ export default {
 
     async created() {
         await this.getShops();
-        if (this.selectedShopId && this.selectedDatePreset === "custom")
+        if (this.selectedShopId && this.selectedDatePresetValue === "custom")
             return this.setRouteQueries(this.selectedShopId, "today");
-        if (this.selectedShopId && this.selectedDatePreset)
+        if (this.selectedShopId && this.selectedDatePresetValue)
             await this.getOffers();
     },
 };
