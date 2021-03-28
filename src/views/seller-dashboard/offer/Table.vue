@@ -147,7 +147,7 @@
         </v-data-table>
         <v-dialog v-model="isDateRangesDialogOpen" persistent width="290px">
             <v-date-picker
-                v-model="selectedDatePresets"
+                v-model="selectedCustomDates"
                 range
                 :max="currentDate"
                 :reactive="false"
@@ -197,7 +197,7 @@ export default {
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
-            selectedDatePresets: [],
+            selectedCustomDates: [],
             dateFrom: null,
             dateTo: null,
             isDateRangesDialogOpen: false,
@@ -320,7 +320,7 @@ export default {
             }
             this.dateFrom = null;
             this.dateTo = null;
-            this.selectedDatePresets = [];
+            this.selectedCustomDates = [];
             if (newValue) await this.getOffers();
         },
     },
@@ -384,9 +384,9 @@ export default {
         },
 
         async setCustomDate() {
-            if (this.selectedDatePresets.length > 0) {
-                this.dateFrom = this.selectedDatePresets[0];
-                this.dateTo = this.selectedDatePresets[1];
+            if (this.selectedCustomDates.length > 0) {
+                this.dateFrom = this.selectedCustomDates[0];
+                this.dateTo = this.selectedCustomDates[1];
                 this.isDateRangesDialogOpen = false;
                 await this.getOffers();
             }
@@ -394,7 +394,7 @@ export default {
 
         async cancelGetOffersByCustomDate() {
             this.isDateRangesDialogOpen = false;
-            this.selectedDatePresets = [];
+            this.selectedCustomDates = [];
             if (!this.hasCustomDates) {
                 await this.setRouteQueries(
                     this.selectedShopId,
