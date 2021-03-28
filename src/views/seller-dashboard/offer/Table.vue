@@ -136,12 +136,9 @@
                     </v-chip>
                 </template>
             </template>
-            <template v-slot:item.actions>
-                <v-btn icon class="mr-1">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                </v-btn>
+            <template v-slot:item.action>
                 <v-btn icon>
-                    <v-icon>mdi-trash-can-outline</v-icon>
+                    <v-icon>mdi-eye-outline</v-icon>
                 </v-btn>
             </template>
         </v-data-table>
@@ -209,17 +206,17 @@ export default {
         tableHeaders() {
             return [
                 {
-                    text: "Name",
+                    text: "Product",
                     sortable: false,
-                    value: "name",
+                    value: "product",
                 },
                 {
-                    text: "Category",
+                    text: "Quantity",
                     sortable: false,
-                    value: "category",
+                    value: "quantity",
                 },
                 {
-                    text: "Price per unit",
+                    text: "Offer Price",
                     sortable: false,
                     value: "price",
                 },
@@ -230,7 +227,7 @@ export default {
                 },
                 {
                     text: "Actions",
-                    value: "actions",
+                    value: "action",
                     sortable: false,
                     align: "right",
                 },
