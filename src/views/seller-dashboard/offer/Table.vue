@@ -38,6 +38,7 @@
                                         selectedDateRangeValue
                                     )
                                 "
+                                :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
                             >
                         </template>
@@ -77,15 +78,25 @@
                     </v-btn>
                 </template>
                 <v-list>
+                    <v-subheader v-if="hasCustomDates"
+                        >Date Presets</v-subheader
+                    >
                     <template v-for="(range, index) in dateRanges">
                         <v-list-item
                             :key="index"
                             @click="
                                 setRouteQueries(selectedShopId, range.value)
                             "
+                            :disabled="selectedDateRangeValue === range.value"
                             >{{ range.label }}</v-list-item
                         >
                     </template>
+                    <v-divider v-if="hasCustomDates"></v-divider>
+                    <v-list-item
+                        @click="isDateRangesDialogOpen = true"
+                        v-if="hasCustomDates"
+                        >Change Custom Date</v-list-item
+                    >
                 </v-list>
             </v-menu>
         </v-card-title>
@@ -142,7 +153,11 @@
                 :reactive="false"
             >
                 <v-spacer></v-spacer>
-                <v-btn text @click="cancelCustomDate" class="text-capitalize">
+                <v-btn
+                    text
+                    @click="cancelGetOffersByCustomDate"
+                    class="text-capitalize"
+                >
                     Cancel
                 </v-btn>
                 <v-btn
@@ -274,6 +289,15 @@ export default {
         currentDate() {
             return moment().format("YYYY-MM-DD");
         },
+
+        hasCustomDates() {
+            return (
+                this.selectedDateRangeValue === "custom" &&
+                this.selectedDateRanges.length > 0 &&
+                this.dateFrom &&
+                this.dateTo
+            );
+        },
     },
 
     watch: {
@@ -298,7 +322,7 @@ export default {
             this.dateFrom = null;
             this.dateTo = null;
             this.selectedDateRanges = [];
-            if (value) await this.getOffers();
+            if (newValue) await this.getOffers();
         },
     },
 
@@ -369,12 +393,13 @@ export default {
             }
         },
 
-        async cancelCustomDate() {
+        async cancelGetOffersByCustomDate() {
+            this.isDateRangesDialogOpen = false;
             await this.setRouteQueries(
                 this.selectedShopId,
                 this.lastDateRangeValue
             );
-            this.isDateRangesDialogOpen = false;
+            this.selectedDateRanges = [];
         },
     },
 
