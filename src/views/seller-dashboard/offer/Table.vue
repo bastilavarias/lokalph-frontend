@@ -352,7 +352,7 @@ export default {
             });
         },
 
-        selectDate() {
+        extractDate() {
             let dateFrom = null;
             let dateTo = null;
             if (this.selectedDatePresetValue === "today") {
@@ -378,7 +378,7 @@ export default {
         },
 
         async getOffers() {
-            const { dateFrom, dateTo } = this.selectDate();
+            const { dateFrom, dateTo } = this.extractDate();
             if (this.isDateRangesDialogOpen)
                 this.isDateRangesDialogOpen = false;
         },
