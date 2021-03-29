@@ -150,13 +150,25 @@ const routes = [
 
                     {
                         path: "offer",
-                        component: () =>
-                            import("@/views/seller-dashboard/Offer"),
-                        name: "seller-dashboard-offer",
+                        component: () => import("@/layouts/router-view-layout"),
                         meta: {
                             requiresAuth: true,
                             roles: ["seller"],
                         },
+                        children: [
+                            {
+                                path: "",
+                                name: "seller-dashboard-offer",
+                                component: () =>
+                                    import(
+                                        "@/views/seller-dashboard/offer/Table"
+                                    ),
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+                        ],
                     },
 
                     {

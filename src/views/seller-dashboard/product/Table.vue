@@ -9,7 +9,7 @@
                             text
                             v-bind="attrs"
                             v-on="on"
-                            :loading="isGetShopsStart"
+                            :loading="!selectedShopId || isGetShopsStart"
                             small
                         >
                             <span
@@ -32,7 +32,8 @@
                         <template v-for="(shop, index) in shops">
                             <v-list-item
                                 :key="index"
-                                @click="selectedShop = shop"
+                                @click="setRouteQueries(shop.id)"
+                                :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
                             >
                         </template>
@@ -86,7 +87,16 @@
                 </v-card-text>
             </template>
             <template v-slot:item.name="{ item }">
-                <span class="font-weight-bold">{{ item.name }}</span>
+                <custom-router-link-component
+                    :to="{
+                        name: 'product-post-view',
+                        params: { shopId: item.shop.id, slug: item.slug },
+                    }"
+                >
+                    <span class="black--text font-weight-bold">{{
+                        item.name
+                    }}</span>
+                </custom-router-link-component>
             </template>
             <template v-slot:item.category="{ item }">
                 {{ item.category.label }}
@@ -117,8 +127,10 @@
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
 import commonUtility, { debounce } from "@/common/utility";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
+    components: { CustomRouterLinkComponent },
     mixins: [commonUtility],
 
     data() {
@@ -126,7 +138,6 @@ export default {
             shops: [],
             isGetShopsStart: false,
             isGetProductsStart: false,
-            selectedShop: null,
             products: [],
             search: null,
             pagination: {
@@ -173,6 +184,16 @@ export default {
         user() {
             return this.$store.state.authentication.user;
         },
+
+        selectedShopId() {
+            const shopId = this.$route.query.shop_id;
+            return parseInt(shopId) || null;
+        },
+
+        selectedShop() {
+            if (!this.selectedShopId) return null;
+            return this.shops.find((shop) => shop.id === this.selectedShopId);
+        },
     },
 
     watch: {
@@ -188,7 +209,7 @@ export default {
             await this.getProducts();
         },
 
-        async selectedShop(value) {
+        async selectedShopId(value) {
             if (value) await this.getProducts();
         },
     },
@@ -206,11 +227,15 @@ export default {
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
+            if (!this.selectedShop) {
+                const shop = this.shops[0];
+                await this.setRouteQueries(shop.id);
+            }
         },
 
         async getProducts() {
             const payload = {
-                shopId: this.selectedShop.id,
+                shopId: this.selectedShopId,
                 page: this.pagination.page,
                 perPage: this.pagination.perPage,
                 search: this.search,
@@ -225,10 +250,18 @@ export default {
             if (!this.search) this.pagination.totalCount = data.total_count;
             if (this.search) this.pagination.totalCount = this.shops.length;
         },
+
+        async setRouteQueries(shopId) {
+            await this.$router.push({
+                name: "seller-dashboard-product",
+                query: { shop_id: shopId },
+            });
+        },
     },
 
     async created() {
         await this.getShops();
+        if (this.selectedShopId) await this.getProducts();
     },
 };
 </script>

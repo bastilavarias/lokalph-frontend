@@ -175,6 +175,7 @@
                                 depressed
                                 class="text-capitalize"
                                 large
+                                :to="{ name: 'seller-dashboard-offer' }"
                             >
                                 View Received Offers
                             </v-btn>
