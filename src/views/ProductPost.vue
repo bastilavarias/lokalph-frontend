@@ -589,6 +589,8 @@
             :price="product.price"
             :shipping-methods="product.shipping_methods"
             :category="product.category"
+            :product-id="product.id"
+            :shop-id="product.shop.id"
             v-if="product"
         ></product-post-view-offer-dialog-component>
     </section>

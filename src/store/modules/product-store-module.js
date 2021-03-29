@@ -15,6 +15,7 @@ import {
     CREATE_PRODUCT_LIKE,
     GET_PRODUCT_LIKES,
     DELETE_PRODUCT_LIKE,
+    CREATE_PRODUCT_OFFER,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -211,6 +212,25 @@ const productStoreModule = {
         async [DELETE_PRODUCT_LIKE](_, productId) {
             try {
                 return await productRepository.deleteProductLike(productId);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CREATE_PRODUCT_OFFER](
+            _,
+            { shopId, productId, quantity, totalPrice, note, shippingMethodId }
+        ) {
+            try {
+                const payload = {
+                    shop_id: shopId,
+                    product_id: productId,
+                    total_price: totalPrice,
+                    quantity,
+                    note,
+                    shipping_method_id: shippingMethodId,
+                };
+                return await productRepository.createProductOffer(payload);
             } catch (error) {
                 return error.response.data;
             }
