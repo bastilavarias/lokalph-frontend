@@ -90,6 +90,11 @@ const shopRepository = {
         );
         return response.data;
     },
+
+    async createProductOffer(payload) {
+        const response = await axiosService.post("/product/offer", payload);
+        return response.data;
+    },
 };
 
 export default shopRepository;

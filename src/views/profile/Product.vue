@@ -9,7 +9,7 @@
                             text
                             v-bind="attrs"
                             v-on="on"
-                            :loading="isGetShopsStart"
+                            :loading="!hasShops || isGetShopsStart"
                             small
                         >
                             <span
@@ -153,6 +153,10 @@ export default {
                 this.user && this.account && this.user.id === this.account.id
             );
         },
+
+        hasShops() {
+            return this.shops.length > 0;
+        },
     },
 
     watch: {
@@ -204,6 +208,10 @@ export default {
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
+            if (!this.selectedShop) {
+                const shop = this.shops[0];
+                this.selectedShop = Object.assign({}, shop);
+            }
         },
 
         async getProducts($state) {

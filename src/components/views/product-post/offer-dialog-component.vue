@@ -113,7 +113,7 @@
                     </v-col>
                     <v-col cols="12">
                         <custom-stock-input-component
-                            :stock.sync="quantity"
+                            :stock.sync="form.quantity"
                             label="Quantity *"
                             limit
                             :limit-value="stock"
@@ -126,11 +126,15 @@
                             :items="shippingMethods"
                             item-value="id"
                             item-text="label"
-                            v-model="shippingMethodId"
+                            v-model="form.shippingMethodId"
                         ></v-select>
                     </v-col>
                     <v-col cols="12">
-                        <v-textarea outlined label="Notes"></v-textarea>
+                        <v-textarea
+                            outlined
+                            label="Note"
+                            v-model="form.note"
+                        ></v-textarea>
                     </v-col>
                     <v-col cols="12">
                         <v-btn
@@ -138,6 +142,9 @@
                             block
                             depressed
                             class="text-capitalize"
+                            @click="createOffer"
+                            :disabled="!isFormValid"
+                            :loading="isCreateOfferStart"
                             >Send
                         </v-btn>
                     </v-col>
@@ -150,6 +157,14 @@
 <script>
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
+import { CREATE_PRODUCT_OFFER } from "@/store/types/product-store-type";
+import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
+
+const defaultForm = {
+    quantity: 1,
+    shippingMethodId: null,
+    note: null,
+};
 
 export default {
     name: "product-post-view-offer-dialog-component",
@@ -200,19 +215,35 @@ export default {
             type: Object,
             required: true,
         },
+
+        shopId: {
+            type: Number,
+            required: true,
+        },
+
+        productId: {
+            type: Number,
+            required: true,
+        },
     },
 
     data() {
         return {
             isOpenLocal: this.isOpen,
-            quantity: 1,
-            shippingMethodId: null,
+            isCreateOfferStart: false,
+            form: Object.assign({}, defaultForm),
+            defaultForm,
         };
     },
 
     computed: {
         totalPrice() {
-            return parseFloat(this.price) * this.quantity;
+            return parseFloat(this.price) * this.form.quantity;
+        },
+
+        isFormValid() {
+            const { shippingMethodId, quantity } = this.form;
+            return shippingMethodId && quantity && quantity > 0;
         },
     },
 
@@ -223,6 +254,36 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+    },
+
+    methods: {
+        async createOffer() {
+            this.isCreateOfferStart = true;
+            const payload = {
+                shopId: this.shopId,
+                productId: this.productId,
+                quantity: this.form.quantity,
+                totalPrice: this.totalPrice,
+                note: this.form.note,
+                shippingMethodId: this.form.shippingMethodId,
+            };
+            const { data } = await this.$store.dispatch(
+                CREATE_PRODUCT_OFFER,
+                payload
+            );
+            if (data) {
+                this.isCreateOfferStart = false;
+                this.isOpenLocal = false;
+                this.form = Object.assign({}, this.defaultForm);
+                this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
+                    isOpen: true,
+                    text: "Your offer sent!",
+                    color: "success",
+                });
+                return;
+            }
+            this.isCreateOfferStart = false;
         },
     },
 };
