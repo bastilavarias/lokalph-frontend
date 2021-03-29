@@ -100,73 +100,23 @@
                 </v-list>
             </v-menu>
         </v-card-title>
-        <v-data-table
-            :headers="tableHeaders"
-            :loading="isGetProductsStart"
-            :items="products"
-            :server-items-length="pagination.totalCount"
-            :items-per-page.sync="pagination.perPage"
-            :page.sync="pagination.page"
-            :footer-props="{
-                'items-per-page-options': pagination.rowsPerPageItems,
-            }"
-        >
-            <template v-slot:item.name="{ item }">
-                <custom-router-link-component
-                    :to="{
-                        name: 'product-post-view',
-                        params: { shopId: item.shop.id, slug: item.slug },
-                    }"
-                >
-                    <span class="black--text font-weight-bold">{{
-                        item.name
-                    }}</span>
-                </custom-router-link-component>
-            </template>
-            <template v-slot:item.category="{ item }">
-                {{ item.category.label }}
-            </template>
-            <template v-slot:item.price="{ item }">
-                {{ formatMoney("PHP", item.price) }}
-            </template>
-            <template v-slot:item.shippingMethods="{ item }">
-                <template v-for="(method, index) in item.shipping_methods">
-                    <v-chip :key="index" small color="primary" class="ma-1">
-                        {{ method.label }}
-                    </v-chip>
-                </template>
-            </template>
-            <template v-slot:item.action>
-                <v-btn icon>
+        <v-data-table :headers="tableHeaders" :items="sampleItems">
+            <template v-slot:item.action="{ item }">
+                <v-btn icon @click="isOfferDialogOpen = true">
                     <v-icon>mdi-eye-outline</v-icon>
                 </v-btn>
             </template>
         </v-data-table>
-        <v-dialog v-model="isDateRangesDialogOpen" persistent width="290px">
-            <v-date-picker
-                v-model="customDates"
-                range
-                :max="currentDate"
-                :reactive="false"
-            >
-                <v-spacer></v-spacer>
-                <v-btn
-                    text
-                    @click="cancelGetOffersByCustomDate"
-                    class="text-capitalize"
-                >
-                    Cancel
-                </v-btn>
-                <v-btn
-                    color="primary"
-                    depressed
-                    @click="setCustomDate"
-                    class="text-capitalize"
-                >
-                    View Offers
-                </v-btn>
-            </v-date-picker>
-        </v-dialog>
+        <seller-dashboard-view-date-range-picker-dialog-component
+            :is-open.sync="isDateRangesDialogOpen"
+            :custom-dates.sync="customDates"
+            :max="currentDate"
+            :cancel="cancelGetOffersByCustomDate"
+            :proceed="setCustomDates"
+        ></seller-dashboard-view-date-range-picker-dialog-component>
+        <seller-dashboard-view-offer-dialog-component
+            :is-open.sync="isOfferDialogOpen"
+        ></seller-dashboard-view-offer-dialog-component>
     </v-card>
 </template>
 
@@ -175,19 +125,22 @@ import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import moment from "moment";
+import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog";
+import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog";
 
 export default {
     components: {
+        SellerDashboardViewOfferDialogComponent,
+        SellerDashboardViewDateRangePickerDialogComponent,
         CustomRouterLinkComponent,
     },
+
     mixins: [commonUtility],
 
     data() {
         return {
             shops: [],
             isGetShopsStart: false,
-            isGetProductsStart: false,
-            products: [],
             pagination: {
                 page: 1,
                 perPage: 10,
@@ -199,6 +152,15 @@ export default {
             dateTo: null,
             isDateRangesDialogOpen: false,
             lastDateRangeValue: "today",
+            sampleItems: [
+                {
+                    product: "Product Name",
+                    quantity: 5,
+                    price: 50000,
+                    shippingMethods: "test",
+                },
+            ],
+            isOfferDialogOpen: false,
         };
     },
 
@@ -226,7 +188,7 @@ export default {
                     value: "shippingMethods",
                 },
                 {
-                    text: "Actions",
+                    text: "Action",
                     value: "action",
                     sortable: false,
                     align: "right",
@@ -380,7 +342,7 @@ export default {
                 this.isDateRangesDialogOpen = false;
         },
 
-        async setCustomDate() {
+        async setCustomDates() {
             if (this.customDates.length > 0) {
                 this.dateFrom = this.customDates[0];
                 this.dateTo = this.customDates[1];
