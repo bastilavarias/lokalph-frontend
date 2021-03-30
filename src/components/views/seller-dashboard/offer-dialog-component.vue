@@ -5,7 +5,7 @@
                 <div>
                     <span class="mr-2">Offer</span>
                     <span title="You accepted this offer 3 days ago">
-                        <v-chip small label color="success">Accepted</v-chip>
+                        <v-chip small color="success">Accepted</v-chip>
                     </span>
                 </div>
                 <v-spacer> </v-spacer>

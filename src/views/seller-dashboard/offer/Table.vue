@@ -101,6 +101,9 @@
             </v-menu>
         </v-card-title>
         <v-data-table :headers="tableHeaders" :items="sampleItems">
+            <template v-slot:item.status="{ item }">
+                <v-chip color="success" label small>Accepted</v-chip>
+            </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="isOfferDialogOpen = true">
                     <v-icon>mdi-eye-outline</v-icon>
@@ -196,6 +199,11 @@ export default {
                     text: "Shipping Methods",
                     sortable: false,
                     value: "shippingMethods",
+                },
+                {
+                    text: "Status",
+                    sortable: false,
+                    value: "status",
                 },
                 {
                     text: "Action",
