@@ -7,6 +7,10 @@ const commonUtility = {
             return moment(new Date(date)).format("MMMM DD, YYYY");
         },
 
+        formatDateTime(date) {
+            return moment(new Date(date)).format("MMMM DD, YYYY, h:mm a");
+        },
+
         formatRelativeTime(date) {
             return moment(new Date(date)).fromNow();
         },

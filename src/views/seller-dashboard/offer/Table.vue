@@ -137,6 +137,9 @@
                     :status="item.status"
                 ></seller-dashboard-view-offer-status-chip-component>
             </template>
+            <template v-slot:item.date="{ item }">
+                {{ formatDateTime(item.created_at) }}
+            </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="isOfferDialogOpen = true">
                     <v-icon>mdi-chevron-right</v-icon>
@@ -235,6 +238,11 @@ export default {
                     text: "Status",
                     sortable: false,
                     value: "status",
+                },
+                {
+                    text: "Date",
+                    sortable: false,
+                    value: "date",
                 },
                 {
                     text: "Action",
