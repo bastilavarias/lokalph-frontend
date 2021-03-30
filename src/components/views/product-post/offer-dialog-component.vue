@@ -102,10 +102,12 @@
                 <v-row dense>
                     <v-col cols="12">
                         <v-text-field
-                            label="Total Offer Price"
-                            :value="formatMoney('PHP', totalPrice)"
+                            :label="`Offer Total Price (${formatMoney(
+                                'PHP',
+                                form.totalPrice
+                            )})`"
                             outlined
-                            readonly
+                            v-model="form.totalPrice"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -161,6 +163,7 @@ const defaultForm = {
     quantity: 1,
     shippingMethodId: null,
     note: null,
+    totalPrice: 0,
 };
 
 export default {
@@ -234,10 +237,6 @@ export default {
     },
 
     computed: {
-        totalPrice() {
-            return parseFloat(this.price) * this.form.quantity;
-        },
-
         isFormValid() {
             const { shippingMethodId, quantity } = this.form;
             return shippingMethodId && quantity && quantity > 0;
@@ -252,6 +251,12 @@ export default {
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
         },
+
+        "form.quantity"(value) {
+            if (value && value > 0) {
+                this.form.totalPrice = this.price * value;
+            }
+        },
     },
 
     methods: {
@@ -261,7 +266,7 @@ export default {
                 shopId: this.shopId,
                 productId: this.productId,
                 quantity: this.form.quantity,
-                totalPrice: this.totalPrice,
+                totalPrice: this.form.totalPrice,
                 note: this.form.note,
                 shippingMethodId: this.form.shippingMethodId,
             };
@@ -279,6 +284,10 @@ export default {
             }
             this.isCreateOfferStart = false;
         },
+    },
+
+    created() {
+        this.form.totalPrice = this.price * this.form.quantity;
     },
 };
 </script>
