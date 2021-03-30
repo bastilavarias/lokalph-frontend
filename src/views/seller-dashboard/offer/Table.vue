@@ -100,10 +100,49 @@
                 </v-list>
             </v-menu>
         </v-card-title>
-        <v-data-table :headers="tableHeaders" :items="sampleItems">
+        <v-data-table
+            :headers="tableHeaders"
+            :items="offers"
+            :server-items-length="pagination.totalCount"
+            :items-per-page.sync="pagination.perPage"
+            :page.sync="pagination.page"
+            :footer-props="{
+                'items-per-page-options': pagination.rowsPerPageItems,
+            }"
+            :loading="isGetOffersStart"
+        >
+            <template v-slot:item.product="{ item }">
+                <custom-router-link-component
+                    :to="{
+                        name: 'product-post-view',
+                        params: {
+                            shopId: item.shop.id,
+                            slug: item.product.slug,
+                        },
+                    }"
+                >
+                    <span class="black--text font-weight-bold">{{
+                        item.product.name
+                    }}</span>
+                </custom-router-link-component>
+            </template>
+            <template v-slot:item.price="{ item }">
+                {{ formatMoney("PHP", item.total_price) }}
+            </template>
+            <template v-slot:item.shippingMethod="{ item }">
+                {{ item.shipping_method.label }}
+            </template>
+            <template v-slot:item.datetime="{ item }">
+                {{ formatDateTime(item.created_at) }}
+            </template>
+            <template v-slot:item.status="{ item }">
+                <seller-dashboard-view-offer-status-chip-component
+                    :status="item.status"
+                ></seller-dashboard-view-offer-status-chip-component>
+            </template>
             <template v-slot:item.action="{ item }">
-                <v-btn icon @click="isOfferDialogOpen = true">
-                    <v-icon>mdi-eye-outline</v-icon>
+                <v-btn icon @click="openOfferDialog(item)">
+                    <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
             </template>
         </v-data-table>
@@ -113,9 +152,28 @@
             :max="currentDate"
             :cancel="cancelGetOffersByCustomDate"
             :proceed="setCustomDates"
+            :disabled="hasCustomDates"
         ></seller-dashboard-view-date-range-picker-dialog-component>
         <seller-dashboard-view-offer-dialog-component
             :is-open.sync="isOfferDialogOpen"
+            :product-preview="selectedOffer.product.images[0]"
+            :product-name="selectedOffer.product.name"
+            :product-created-at="selectedOffer.product.created_at"
+            :product-condition="selectedOffer.product.condition"
+            :product-stock="selectedOffer.product.stock"
+            :product-price="selectedOffer.product.price"
+            :product-category="selectedOffer.product.category"
+            :product-shipping-methods="selectedOffer.product.shipping_methods"
+            :offer-total-price="selectedOffer.total_price"
+            :offer-quantity="selectedOffer.quantity"
+            :offer-status="selectedOffer.status"
+            :offer-shipping-method="selectedOffer.shipping_method"
+            :offer-created-at="selectedOffer.created_at"
+            :offer-note="selectedOffer.note"
+            :account-first-name="selectedOffer.account.profile.first_name"
+            :account-image-url="selectedOffer.account.profile.image_url"
+            :account-email="selectedOffer.account.email"
+            v-if="selectedOffer"
         ></seller-dashboard-view-offer-dialog-component>
     </v-card>
 </template>
@@ -125,11 +183,14 @@ import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import moment from "moment";
-import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog";
-import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog";
+import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog-component";
+import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog-component";
+import { GET_SHOP_OFFERS } from "@/store/types/offer-store-type";
+import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
 
 export default {
     components: {
+        SellerDashboardViewOfferStatusChipComponent,
         SellerDashboardViewOfferDialogComponent,
         SellerDashboardViewDateRangePickerDialogComponent,
         CustomRouterLinkComponent,
@@ -152,15 +213,10 @@ export default {
             dateTo: null,
             isDateRangesDialogOpen: false,
             lastDateRangeValue: "today",
-            sampleItems: [
-                {
-                    product: "Product Name",
-                    quantity: 5,
-                    price: 50000,
-                    shippingMethods: "test",
-                },
-            ],
             isOfferDialogOpen: false,
+            isGetOffersStart: false,
+            offers: [],
+            selectedOffer: null,
         };
     },
 
@@ -183,9 +239,14 @@ export default {
                     value: "price",
                 },
                 {
-                    text: "Shipping Methods",
+                    text: "Offered At",
                     sortable: false,
-                    value: "shippingMethods",
+                    value: "datetime",
+                },
+                {
+                    text: "Status",
+                    sortable: false,
+                    value: "status",
                 },
                 {
                     text: "Action",
@@ -340,6 +401,22 @@ export default {
             const { dateFrom, dateTo } = this.extractDate();
             if (this.isDateRangesDialogOpen)
                 this.isDateRangesDialogOpen = false;
+            this.isGetOffersStart = true;
+            const payload = {
+                shopId: this.selectedShopId,
+                dateFrom,
+                dateTo,
+                page: this.pagination.page,
+                perPage: this.pagination.perPage,
+            };
+            const { data } = await this.$store.dispatch(
+                GET_SHOP_OFFERS,
+                payload
+            );
+            this.offers = data.shop_offers;
+            console.log(this.offers);
+            this.pagination.totalCount = parseInt(data.total_count) || 0;
+            this.isGetOffersStart = false;
         },
 
         async setCustomDates() {
@@ -360,6 +437,11 @@ export default {
                     this.lastDateRangeValue
                 );
             }
+        },
+
+        openOfferDialog(offer) {
+            this.selectedOffer = Object.assign({}, offer);
+            this.isOfferDialogOpen = true;
         },
     },
 

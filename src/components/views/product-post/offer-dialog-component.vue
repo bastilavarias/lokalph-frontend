@@ -85,9 +85,6 @@
                                 <div
                                     class="d-flex align-content-center align-center"
                                 >
-                                    <v-icon class="mr-1" small
-                                        >mdi-currency-php</v-icon
-                                    >
                                     <span
                                         class="subtitle-1 mr-1 font-weight-bold secondary--text"
                                         title="Price per unit"
@@ -105,10 +102,12 @@
                 <v-row dense>
                     <v-col cols="12">
                         <v-text-field
-                            label="Total Offer Price"
-                            :value="formatMoney('PHP', totalPrice)"
+                            :label="`Offer Total Price (${formatMoney(
+                                'PHP',
+                                form.totalPrice
+                            )})`"
                             outlined
-                            readonly
+                            v-model="form.totalPrice"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -134,6 +133,7 @@
                             outlined
                             label="Note"
                             v-model="form.note"
+                            :counter="200"
                         ></v-textarea>
                     </v-col>
                     <v-col cols="12">
@@ -157,13 +157,14 @@
 <script>
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
-import { CREATE_PRODUCT_OFFER } from "@/store/types/product-store-type";
 import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
+import { CREATE_OFFER } from "@/store/types/offer-store-type";
 
 const defaultForm = {
     quantity: 1,
     shippingMethodId: null,
     note: null,
+    totalPrice: 0,
 };
 
 export default {
@@ -237,13 +238,17 @@ export default {
     },
 
     computed: {
-        totalPrice() {
-            return parseFloat(this.price) * this.form.quantity;
-        },
-
         isFormValid() {
-            const { shippingMethodId, quantity } = this.form;
-            return shippingMethodId && quantity && quantity > 0;
+            const { shippingMethodId, quantity, note } = this.form;
+            const hasNote =
+                shippingMethodId &&
+                quantity &&
+                quantity > 0 &&
+                note &&
+                note.length >= 3 &&
+                note.length <= 200;
+            const noNote = shippingMethodId && quantity && quantity > 0;
+            return note ? hasNote : noNote;
         },
     },
 
@@ -255,6 +260,12 @@ export default {
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
         },
+
+        "form.quantity"(value) {
+            if (value && value > 0) {
+                this.form.totalPrice = this.price * value;
+            }
+        },
     },
 
     methods: {
@@ -264,14 +275,11 @@ export default {
                 shopId: this.shopId,
                 productId: this.productId,
                 quantity: this.form.quantity,
-                totalPrice: this.totalPrice,
+                totalPrice: this.form.totalPrice,
                 note: this.form.note,
                 shippingMethodId: this.form.shippingMethodId,
             };
-            const { data } = await this.$store.dispatch(
-                CREATE_PRODUCT_OFFER,
-                payload
-            );
+            const { data } = await this.$store.dispatch(CREATE_OFFER, payload);
             if (data) {
                 this.isCreateOfferStart = false;
                 this.isOpenLocal = false;
@@ -285,6 +293,10 @@ export default {
             }
             this.isCreateOfferStart = false;
         },
+    },
+
+    created() {
+        this.form.totalPrice = this.price * this.form.quantity;
     },
 };
 </script>
