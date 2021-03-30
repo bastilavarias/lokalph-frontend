@@ -141,7 +141,7 @@
                 ></seller-dashboard-view-offer-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
-                <v-btn icon @click="isOfferDialogOpen = true">
+                <v-btn icon @click="openOfferDialog(item)">
                     <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
             </template>
@@ -156,16 +156,14 @@
         ></seller-dashboard-view-date-range-picker-dialog-component>
         <seller-dashboard-view-offer-dialog-component
             :is-open.sync="isOfferDialogOpen"
-            :preview="{
-                url:
-                    'https://res.cloudinary.com/deqllunb9/image/upload/v1616231198/lokal-ph-development/products/d4b4ea816fd1796c1985cf2566300dd1_nfltf6.jpg',
-            }"
-            name="Awei A70BL"
-            created-at="2021-03-20T09:06:37.949Z"
-            :condition="{ label: 'Brand New' }"
-            :stock="10"
-            :price="1500"
-            :category="{ label: 'Electronics' }"
+            :product-preview="selectedOffer.product.images[0]"
+            :product-name="selectedOffer.product.name"
+            :product-created-at="selectedOffer.product.created_at"
+            :product-condition="selectedOffer.product.condition"
+            :product-stock="selectedOffer.product.stock"
+            :product-price="selectedOffer.product.price"
+            :product-category="selectedOffer.product.category"
+            v-if="selectedOffer"
         ></seller-dashboard-view-offer-dialog-component>
     </v-card>
 </template>
@@ -208,6 +206,7 @@ export default {
             isOfferDialogOpen: false,
             isGetOffersStart: false,
             offers: [],
+            selectedOffer: null,
         };
     },
 
@@ -432,6 +431,11 @@ export default {
                     this.lastDateRangeValue
                 );
             }
+        },
+
+        openOfferDialog(offer) {
+            this.selectedOffer = Object.assign({}, offer);
+            this.isOfferDialogOpen = true;
         },
     },
 

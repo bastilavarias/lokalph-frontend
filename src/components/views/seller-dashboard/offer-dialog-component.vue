@@ -18,7 +18,7 @@
                     <v-col cols="12" md="6">
                         <v-card-text class="pl-0">
                             <v-img
-                                :src="preview.url"
+                                :src="productPreview.url"
                                 width="100%"
                                 height="auto"
                                 position="center"
@@ -30,14 +30,14 @@
                             <v-list-item-title
                                 class="headline font-weight-bold accent--text"
                             >
-                                <span :title="name">
-                                    {{ name }}
+                                <span :title="productName">
+                                    {{ productName }}
                                 </span>
                             </v-list-item-title>
                             <v-list-item-subtitle>
                                 <span
-                                    :title="`Product Category: ${category.label}`"
-                                    >{{ category.label }}</span
+                                    :title="`Product Category: ${productCategory.label}`"
+                                    >{{ productCategory.label }}</span
                                 >
                             </v-list-item-subtitle>
                         </v-list-item-content>
@@ -50,10 +50,12 @@
                                     <span
                                         class="subtitle-1"
                                         :title="`Posted: ${formatRelativeTime(
-                                            createdAt
+                                            productCreatedAt
                                         )}`"
                                     >
-                                        {{ formatRelativeTime(createdAt) }}
+                                        {{
+                                            formatRelativeTime(productCreatedAt)
+                                        }}
                                     </span>
                                 </div>
                             </v-col>
@@ -66,8 +68,8 @@
                                     >
                                     <span
                                         class="subtitle-1"
-                                        :title="`This item is tagged as ${condition.label}`"
-                                        >{{ condition.label }}</span
+                                        :title="`This item is tagged as ${productCondition.label}`"
+                                        >{{ productCondition.label }}</span
                                     >
                                 </div>
                             </v-col>
@@ -82,7 +84,7 @@
                                         class="subtitle-1"
                                         title="Total Stock"
                                     >
-                                        {{ stock }} stock available
+                                        {{ productStock }} stock available
                                     </span>
                                 </div>
                             </v-col>
@@ -94,7 +96,7 @@
                                         class="subtitle-1 mr-1 font-weight-bold secondary--text"
                                         title="Price per unit"
                                     >
-                                        {{ formatMoney("PHP", price) }}
+                                        {{ formatMoney("PHP", productPrice) }}
                                     </span>
                                     per unit
                                 </div>
@@ -293,36 +295,36 @@ export default {
             required: true,
         },
 
-        preview: {
+        productPreview: {
             type: Object,
             required: true,
         },
 
-        name: {
+        productName: {
             type: String,
             required: true,
         },
 
-        createdAt: {
+        productCreatedAt: {
             type: String,
             required: true,
         },
 
-        condition: {
+        productCondition: {
             type: Object,
             required: true,
         },
 
-        stock: {
+        productStock: {
             type: Number,
             required: true,
         },
 
-        price: {
+        productPrice: {
             required: true,
         },
 
-        category: {
+        productCategory: {
             type: Object,
             required: true,
         },
