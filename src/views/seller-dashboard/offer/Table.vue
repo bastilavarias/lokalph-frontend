@@ -132,13 +132,13 @@
             <template v-slot:item.shippingMethod="{ item }">
                 {{ item.shipping_method.label }}
             </template>
+            <template v-slot:item.datetime="{ item }">
+                {{ formatDateTime(item.created_at) }}
+            </template>
             <template v-slot:item.status="{ item }">
                 <seller-dashboard-view-offer-status-chip-component
                     :status="item.status"
                 ></seller-dashboard-view-offer-status-chip-component>
-            </template>
-            <template v-slot:item.date="{ item }">
-                {{ formatDateTime(item.created_at) }}
             </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="isOfferDialogOpen = true">
@@ -235,14 +235,14 @@ export default {
                     value: "shippingMethod",
                 },
                 {
+                    text: "Offered At",
+                    sortable: false,
+                    value: "datetime",
+                },
+                {
                     text: "Status",
                     sortable: false,
                     value: "status",
-                },
-                {
-                    text: "Date",
-                    sortable: false,
-                    value: "date",
                 },
                 {
                     text: "Action",
