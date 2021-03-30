@@ -250,9 +250,12 @@
                                 <v-list-item-title>Sebastian</v-list-item-title>
                                 <v-list-item-subtitle>
                                     <span
-                                        title="Account was created 3 days ago"
+                                        :title="`Offer was created ${formatRelativeTime(
+                                            offerCreatedAt
+                                        )}`"
                                     >
-                                        Created 3 days ago
+                                        Offered this
+                                        {{ formatRelativeTime(offerCreatedAt) }}
                                     </span>
                                 </v-list-item-subtitle>
                             </v-list-item-content>
