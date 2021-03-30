@@ -133,6 +133,7 @@
                             outlined
                             label="Note"
                             v-model="form.note"
+                            :counter="200"
                         ></v-textarea>
                     </v-col>
                     <v-col cols="12">
@@ -238,8 +239,16 @@ export default {
 
     computed: {
         isFormValid() {
-            const { shippingMethodId, quantity } = this.form;
-            return shippingMethodId && quantity && quantity > 0;
+            const { shippingMethodId, quantity, note } = this.form;
+            const hasNote =
+                shippingMethodId &&
+                quantity &&
+                quantity > 0 &&
+                note &&
+                note.length >= 3 &&
+                note.length <= 200;
+            const noNote = shippingMethodId && quantity && quantity > 0;
+            return note ? hasNote : noNote;
         },
     },
 
