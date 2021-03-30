@@ -61,7 +61,7 @@ export default {
 
     computed: {
         isFormValid() {
-            return this.customDatesLocal.length > 0;
+            return this.customDatesLocal.length === 2;
         },
     },
 

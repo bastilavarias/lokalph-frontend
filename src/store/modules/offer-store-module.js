@@ -22,12 +22,17 @@ const offerStoreModule = {
             }
         },
 
-        async [GET_SHOP_OFFERS](_, { shopId, dateFrom, dateTo }) {
+        async [GET_SHOP_OFFERS](
+            _,
+            { shopId, dateFrom, dateTo, page, perPage }
+        ) {
             try {
                 return await offerRepository.getShopOffers({
                     shopId,
                     dateFrom,
                     dateTo,
+                    page,
+                    perPage,
                 });
             } catch (error) {
                 return error.response.data;

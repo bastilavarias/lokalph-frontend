@@ -100,7 +100,16 @@
                 </v-list>
             </v-menu>
         </v-card-title>
-        <v-data-table :headers="tableHeaders" :items="sampleItems">
+        <v-data-table
+            :headers="tableHeaders"
+            :items="offers"
+            :server-items-length="pagination.totalCount"
+            :items-per-page.sync="pagination.perPage"
+            :page.sync="pagination.page"
+            :footer-props="{
+                'items-per-page-options': pagination.rowsPerPageItems,
+            }"
+        >
             <template v-slot:item.status="{ item }">
                 <v-chip color="success" label small>Accepted</v-chip>
             </template>
@@ -167,14 +176,6 @@ export default {
             dateTo: null,
             isDateRangesDialogOpen: false,
             lastDateRangeValue: "today",
-            sampleItems: [
-                {
-                    product: "Product Name",
-                    quantity: 5,
-                    price: 50000,
-                    shippingMethods: "test",
-                },
-            ],
             isOfferDialogOpen: false,
             isGetOffersStart: false,
             offers: [],
@@ -367,13 +368,15 @@ export default {
                 shopId: this.selectedShopId,
                 dateFrom,
                 dateTo,
+                page: this.pagination.page,
+                perPage: this.pagination.perPage,
             };
-            console.log(payload);
             const { data } = await this.$store.dispatch(
                 GET_SHOP_OFFERS,
                 payload
             );
-            console.log(data);
+            this.offers = data.shop_offers;
+            this.pagination.totalCount = parseInt(data.total_count) || 0;
             this.isGetOffersStart = false;
         },
 

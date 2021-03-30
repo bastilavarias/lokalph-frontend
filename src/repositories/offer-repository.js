@@ -6,9 +6,9 @@ const offerRepository = {
         return response.data;
     },
 
-    async getShopOffers({ shopId, dateFrom, dateTo }) {
+    async getShopOffers({ shopId, dateFrom, dateTo, page, perPage }) {
         const response = await axiosService.get(
-            `/offer/shop/${shopId}/${dateFrom}/${dateTo}`
+            `/offer/shop/${shopId}/${dateFrom}/${dateTo}?page=${page}&per_page=${perPage}`
         );
         return response.data;
     },
