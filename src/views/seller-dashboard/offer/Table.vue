@@ -239,11 +239,6 @@ export default {
                     value: "price",
                 },
                 {
-                    text: "Shipping Method",
-                    sortable: false,
-                    value: "shippingMethod",
-                },
-                {
                     text: "Offered At",
                     sortable: false,
                     value: "datetime",
