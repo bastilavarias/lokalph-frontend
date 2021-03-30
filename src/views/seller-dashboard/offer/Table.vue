@@ -414,7 +414,6 @@ export default {
                 payload
             );
             this.offers = data.shop_offers;
-            console.log(this.offers);
             this.pagination.totalCount = parseInt(data.total_count) || 0;
             this.isGetOffersStart = false;
         },
