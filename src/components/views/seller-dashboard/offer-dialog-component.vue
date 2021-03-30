@@ -1,5 +1,5 @@
 <template>
-    <v-dialog width="500" persistent v-model="isOpenLocal">
+    <v-dialog width="600" persistent v-model="isOpenLocal">
         <v-card>
             <v-card-title>
                 <div>
@@ -226,7 +226,36 @@
                         </v-card-text>
                     </v-col>
                     <v-col cols="12">
-                        <v-card-subtitle>Note</v-card-subtitle>
+                        <v-list-item two-line>
+                            <v-list-item-avatar :size="50">
+                                <v-img
+                                    src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
+                                ></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>Sebastian</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    <span
+                                        title="Account was created 3 days ago"
+                                    >
+                                        Created 3 days ago
+                                    </span>
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn
+                                    color="primary"
+                                    depressed
+                                    small
+                                    class="text-capitalize"
+                                >
+                                    Chat Customer
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-card-subtitle>Customer's Note</v-card-subtitle>
                         <v-card-text>
                             Lorem ipsum dolor sit amet, consectetur adipisicing
                             elit. Accusamus adipisci dolores est porro sequi
