@@ -154,8 +154,8 @@
 <script>
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
-import { CREATE_PRODUCT_OFFER } from "@/store/types/product-store-type";
 import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
+import { CREATE_OFFER } from "@/store/types/offer-store-type";
 
 const defaultForm = {
     quantity: 1,
@@ -265,10 +265,7 @@ export default {
                 note: this.form.note,
                 shippingMethodId: this.form.shippingMethodId,
             };
-            const { data } = await this.$store.dispatch(
-                CREATE_PRODUCT_OFFER,
-                payload
-            );
+            const { data } = await this.$store.dispatch(CREATE_OFFER, payload);
             if (data) {
                 this.isCreateOfferStart = false;
                 this.isOpenLocal = false;

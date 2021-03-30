@@ -116,6 +116,7 @@
             :max="currentDate"
             :cancel="cancelGetOffersByCustomDate"
             :proceed="setCustomDates"
+            :disabled="hasCustomDates"
         ></seller-dashboard-view-date-range-picker-dialog-component>
         <seller-dashboard-view-offer-dialog-component
             :is-open.sync="isOfferDialogOpen"
@@ -140,6 +141,7 @@ import CustomRouterLinkComponent from "@/components/custom/router-link-component
 import moment from "moment";
 import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog-component";
 import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog-component";
+import { GET_SHOP_OFFERS } from "@/store/types/offer-store-type";
 
 export default {
     components: {
@@ -174,6 +176,8 @@ export default {
                 },
             ],
             isOfferDialogOpen: false,
+            isGetOffersStart: false,
+            offers: [],
         };
     },
 
@@ -358,6 +362,19 @@ export default {
             const { dateFrom, dateTo } = this.extractDate();
             if (this.isDateRangesDialogOpen)
                 this.isDateRangesDialogOpen = false;
+            this.isGetOffersStart = true;
+            const payload = {
+                shopId: this.selectedShopId,
+                dateFrom,
+                dateTo,
+            };
+            console.log(payload);
+            const { data } = await this.$store.dispatch(
+                GET_SHOP_OFFERS,
+                payload
+            );
+            console.log(data);
+            this.isGetOffersStart = false;
         },
 
         async setCustomDates() {
