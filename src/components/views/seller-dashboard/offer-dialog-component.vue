@@ -249,7 +249,7 @@
                                     small
                                     class="text-capitalize"
                                 >
-                                    Chat Customer
+                                    View Profile
                                 </v-btn>
                             </v-list-item-action>
                         </v-list-item>
