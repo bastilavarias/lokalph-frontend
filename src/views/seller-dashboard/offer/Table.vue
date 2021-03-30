@@ -109,9 +109,12 @@
             :footer-props="{
                 'items-per-page-options': pagination.rowsPerPageItems,
             }"
+            :loading="isGetOffersStart"
         >
             <template v-slot:item.status="{ item }">
-                <v-chip color="success" label small>Accepted</v-chip>
+                <seller-dashboard-view-offer-status-chip-component
+                    :status="item.status"
+                ></seller-dashboard-view-offer-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="isOfferDialogOpen = true">
@@ -151,9 +154,11 @@ import moment from "moment";
 import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog-component";
 import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog-component";
 import { GET_SHOP_OFFERS } from "@/store/types/offer-store-type";
+import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
 
 export default {
     components: {
+        SellerDashboardViewOfferStatusChipComponent,
         SellerDashboardViewOfferDialogComponent,
         SellerDashboardViewDateRangePickerDialogComponent,
         CustomRouterLinkComponent,

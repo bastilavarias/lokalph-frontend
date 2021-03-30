@@ -283,7 +283,7 @@ import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
 
 export default {
-    name: "product-post-view-offer-dialog-component",
+    name: "seller-dashboard-view-offer-dialog-component",
     components: { CustomStockInputComponent },
     mixins: [commonUtility],
 
