@@ -85,9 +85,6 @@
                                 <div
                                     class="d-flex align-content-center align-center"
                                 >
-                                    <v-icon class="mr-1" small
-                                        >mdi-currency-php</v-icon
-                                    >
                                     <span
                                         class="subtitle-1 mr-1 font-weight-bold secondary--text"
                                         title="Price per unit"

@@ -116,6 +116,16 @@
         ></seller-dashboard-view-date-range-picker-dialog-component>
         <seller-dashboard-view-offer-dialog-component
             :is-open.sync="isOfferDialogOpen"
+            :preview="{
+                url:
+                    'https://res.cloudinary.com/deqllunb9/image/upload/v1616231198/lokal-ph-development/products/d4b4ea816fd1796c1985cf2566300dd1_nfltf6.jpg',
+            }"
+            name="Awei A70BL"
+            created-at="2021-03-20T09:06:37.949Z"
+            :condition="{ label: 'Brand New' }"
+            :stock="10"
+            :price="1500"
+            :category="{ label: 'Electronics' }"
         ></seller-dashboard-view-offer-dialog-component>
     </v-card>
 </template>
@@ -125,8 +135,8 @@ import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import moment from "moment";
-import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog";
-import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog";
+import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog-component";
+import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog-component";
 
 export default {
     components: {
