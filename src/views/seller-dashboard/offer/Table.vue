@@ -111,6 +111,27 @@
             }"
             :loading="isGetOffersStart"
         >
+            <template v-slot:item.product="{ item }">
+                <custom-router-link-component
+                    :to="{
+                        name: 'product-post-view',
+                        params: {
+                            shopId: item.shop.id,
+                            slug: item.product.slug,
+                        },
+                    }"
+                >
+                    <span class="black--text font-weight-bold">{{
+                        item.product.name
+                    }}</span>
+                </custom-router-link-component>
+            </template>
+            <template v-slot:item.price="{ item }">
+                {{ formatMoney("PHP", item.total_price) }}
+            </template>
+            <template v-slot:item.shippingMethod="{ item }">
+                {{ item.shipping_method.label }}
+            </template>
             <template v-slot:item.status="{ item }">
                 <seller-dashboard-view-offer-status-chip-component
                     :status="item.status"
@@ -118,7 +139,7 @@
             </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="isOfferDialogOpen = true">
-                    <v-icon>mdi-eye-outline</v-icon>
+                    <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
             </template>
         </v-data-table>
@@ -206,9 +227,9 @@ export default {
                     value: "price",
                 },
                 {
-                    text: "Shipping Methods",
+                    text: "Shipping Method",
                     sortable: false,
-                    value: "shippingMethods",
+                    value: "shippingMethod",
                 },
                 {
                     text: "Status",
