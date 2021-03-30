@@ -338,7 +338,7 @@
                                             >
                                                 Preferred for
                                                 <span class="font-weight-bold">
-                                                    {{ preferredFor }}
+                                                    {{ preferShippingMethods }}
                                                 </span>
                                             </span>
                                         </div>
@@ -674,10 +674,10 @@ export default {
             return this.$route.params.slug;
         },
 
-        preferredFor() {
+        preferShippingMethods() {
             if (!this.product) return null;
             const sm = this.product.shipping_methods.map((sm) => sm.label);
-            return sm.length === 1 ? sm[0] : "Meet Up & Pick Up";
+            return sm.length === 1 ? sm[0] : "Meet Up or Pick Up";
         },
 
         breadcrumbs() {

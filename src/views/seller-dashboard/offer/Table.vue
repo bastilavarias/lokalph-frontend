@@ -163,6 +163,12 @@
             :product-stock="selectedOffer.product.stock"
             :product-price="selectedOffer.product.price"
             :product-category="selectedOffer.product.category"
+            :product-shipping-methods="selectedOffer.product.shipping_methods"
+            :offer-total-price="selectedOffer.total_price"
+            :offer-quantity="selectedOffer.quantity"
+            :offer-status="selectedOffer.status"
+            :offer-shipping-method="selectedOffer.shipping_method"
+            :offer-created-at="selectedOffer.created_at"
             v-if="selectedOffer"
         ></seller-dashboard-view-offer-dialog-component>
     </v-card>
@@ -409,6 +415,7 @@ export default {
                 payload
             );
             this.offers = data.shop_offers;
+            console.log(this.offers);
             this.pagination.totalCount = parseInt(data.total_count) || 0;
             this.isGetOffersStart = false;
         },

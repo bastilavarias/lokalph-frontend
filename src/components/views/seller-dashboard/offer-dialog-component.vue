@@ -4,8 +4,10 @@
             <v-card-title>
                 <div>
                     <span class="mr-2">Offer</span>
-                    <span title="You accepted this offer 3 days ago">
-                        <v-chip small color="success">Accepted</v-chip>
+                    <span :title="customOfferStatusSpanTitle">
+                        <seller-dashboard-view-offer-status-chip-component
+                            :status="offerStatus"
+                        ></seller-dashboard-view-offer-status-chip-component>
                     </span>
                 </div>
                 <v-spacer> </v-spacer>
@@ -122,7 +124,12 @@
                                             <span
                                                 class="font-weight-bold secondary--text"
                                             >
-                                                {{ formatMoney("PHP", 6000) }}
+                                                {{
+                                                    formatMoney(
+                                                        "PHP",
+                                                        offerTotalPrice
+                                                    )
+                                                }}
                                             </span>
                                         </span>
                                     </div>
@@ -141,7 +148,7 @@
                                             <span
                                                 class="font-weight-bold black--text"
                                             >
-                                                3
+                                                {{ offerQuantity }}
                                             </span>
                                             pcs
                                         </span>
@@ -159,7 +166,7 @@
                                             <span
                                                 class="font-weight-bold black--text"
                                             >
-                                                Meet Up
+                                                {{ offerShippingMethod.label }}
                                             </span>
                                         </span>
                                     </div>
@@ -177,12 +184,17 @@
                                     >
                                         <span
                                             class="subtitle-1"
-                                            title="Offer Price"
+                                            title="Prefer Total Price"
                                         >
                                             <span
                                                 class="font-weight-bold secondary--text"
                                             >
-                                                {{ formatMoney("PHP", 6000) }}
+                                                {{
+                                                    formatMoney(
+                                                        "PHP",
+                                                        preferTotalPrice
+                                                    )
+                                                }}
                                             </span>
                                         </span>
                                     </div>
@@ -201,7 +213,7 @@
                                             <span
                                                 class="font-weight-bold black--text"
                                             >
-                                                3
+                                                {{ offerQuantity }}
                                             </span>
                                             pcs
                                         </span>
@@ -219,7 +231,7 @@
                                             <span
                                                 class="font-weight-bold black--text"
                                             >
-                                                Meet Up or Pick Up
+                                                {{ preferShippingMethods }}
                                             </span>
                                         </span>
                                     </div>
@@ -283,10 +295,14 @@
 <script>
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
+import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
 
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
-    components: { CustomStockInputComponent },
+    components: {
+        SellerDashboardViewOfferStatusChipComponent,
+        CustomStockInputComponent,
+    },
     mixins: [commonUtility],
 
     props: {
@@ -328,12 +344,68 @@ export default {
             type: Object,
             required: true,
         },
+
+        productShippingMethods: {
+            type: Array,
+            required: true,
+        },
+
+        offerTotalPrice: {
+            type: Number,
+            required: true,
+        },
+
+        offerQuantity: {
+            type: Number,
+            required: true,
+        },
+
+        offerStatus: {
+            type: String,
+            required: true,
+        },
+
+        offerShippingMethod: {
+            type: Object,
+            required: true,
+        },
+
+        offerCreatedAt: {
+            type: String,
+            required: true,
+        },
     },
 
     data() {
         return {
             isOpenLocal: this.isOpen,
         };
+    },
+
+    computed: {
+        customOfferStatusSpanTitle() {
+            const title = {
+                pending: `Customer sent this offer ${this.formatRelativeTime(
+                    this.offerCreatedAt
+                )}`,
+                accepted: `You accepted this offer ${this.formatRelativeTime(
+                    this.offerCreatedAt
+                )}`,
+                cancelled: `You cancelled this offer ${this.formatRelativeTime(
+                    this.offerCreatedAt
+                )}`,
+            };
+            return title[this.offerStatus];
+        },
+
+        preferTotalPrice() {
+            return this.productPrice * this.offerQuantity;
+        },
+
+        preferShippingMethods() {
+            const sm = this.productShippingMethods.map((sm) => sm.label);
+            return sm.length === 1 ? sm[0] : "Meet Up or Pick Up";
+        },
     },
 
     watch: {
