@@ -242,12 +242,12 @@
                     <v-col cols="12">
                         <v-list-item two-line>
                             <v-list-item-avatar :size="50">
-                                <v-img
-                                    src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
-                                ></v-img>
+                                <v-img :src="accountImageUrl"></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
-                                <v-list-item-title>Sebastian</v-list-item-title>
+                                <v-list-item-title>{{
+                                    accountFirstName
+                                }}</v-list-item-title>
                                 <v-list-item-subtitle>
                                     <span
                                         :title="`Offer was created ${formatRelativeTime(
@@ -265,18 +265,60 @@
                                     depressed
                                     small
                                     class="text-capitalize"
+                                    :to="{
+                                        name: 'profile-view',
+                                        params: { email: accountEmail },
+                                    }"
                                 >
                                     View Profile
                                 </v-btn>
                             </v-list-item-action>
                         </v-list-item>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="offerNote">
                         <v-card-subtitle>Customer's Note</v-card-subtitle>
                         <v-card-text>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Accusamus adipisci dolores est porro sequi
-                            voluptates! Culpa deserunt iure quasi voluptatum.
+                            <div class="mb-3">
+                                <template v-if="offerNote.length <= 74">
+                                    <div>{{ offerNote }}</div>
+                                </template>
+                                <template
+                                    v-if="
+                                        offerNote.length >= 75 &&
+                                        !isOfferNoteExpanded
+                                    "
+                                >
+                                    <div
+                                        v-html="truncateString(offerNote, 75)"
+                                    ></div>
+                                </template>
+                                <template
+                                    v-if="
+                                        offerNote.length >= 75 &&
+                                        isOfferNoteExpanded
+                                    "
+                                >
+                                    <div>{{ offerNote }}</div>
+                                </template>
+                            </div>
+                            <span
+                                class="font-weight-bold secondary--text"
+                                :style="{ cursor: 'pointer' }"
+                                @click="
+                                    isOfferNoteExpanded = !isOfferNoteExpanded
+                                "
+                                v-if="offerNote.length >= 75"
+                                >{{
+                                    isOfferNoteExpanded
+                                        ? "Show less"
+                                        : "Read more"
+                                }}
+                                <v-icon color="secondary">{{
+                                    isOfferNoteExpanded
+                                        ? "mdi-chevron-up"
+                                        : "mdi-chevron-down"
+                                }}</v-icon></span
+                            >
                         </v-card-text>
                     </v-col>
                 </v-row>
@@ -377,11 +419,32 @@ export default {
             type: String,
             required: true,
         },
+
+        offerNote: {
+            type: String,
+            required: false,
+        },
+
+        accountFirstName: {
+            type: String,
+            required: false,
+        },
+
+        accountImageUrl: {
+            type: String,
+            required: false,
+        },
+
+        accountEmail: {
+            type: String,
+            required: false,
+        },
     },
 
     data() {
         return {
             isOpenLocal: this.isOpen,
+            isOfferNoteExpanded: false,
         };
     },
 

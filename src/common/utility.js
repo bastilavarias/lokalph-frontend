@@ -22,6 +22,10 @@ const commonUtility = {
             }).format(amount);
         },
 
+        truncateString(string, count) {
+            return truncate(string, count);
+        },
+
         truncateHTML(html, count) {
             return truncate(html, count, { stripTags: true });
         },

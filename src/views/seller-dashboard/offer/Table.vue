@@ -169,6 +169,10 @@
             :offer-status="selectedOffer.status"
             :offer-shipping-method="selectedOffer.shipping_method"
             :offer-created-at="selectedOffer.created_at"
+            :offer-note="selectedOffer.note"
+            :account-first-name="selectedOffer.account.profile.first_name"
+            :account-image-url="selectedOffer.account.profile.image_url"
+            :account-email="selectedOffer.account.email"
             v-if="selectedOffer"
         ></seller-dashboard-view-offer-dialog-component>
     </v-card>
