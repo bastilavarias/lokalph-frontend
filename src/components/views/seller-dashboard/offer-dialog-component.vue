@@ -6,7 +6,7 @@
                     <span class="mr-2">Offer</span>
                     <span :title="customOfferStatusSpanTitle">
                         <seller-dashboard-view-offer-status-chip-component
-                            :status="offerStatus"
+                            :status="offerStatusLocal"
                         ></seller-dashboard-view-offer-status-chip-component>
                     </span>
                 </div>
@@ -463,6 +463,7 @@ export default {
             isOfferNoteExpanded: false,
             isCancelOfferStart: false,
             offersLocal: this.offers,
+            offerStatusLocal: this.offerStatus,
         };
     },
 
@@ -508,6 +509,10 @@ export default {
         offersLocal(value) {
             this.$emit("update:offers", value);
         },
+
+        offerStatus(value) {
+            this.offerStatusLocal = value;
+        },
     },
 
     methods: {
@@ -520,6 +525,7 @@ export default {
             if (data) {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
+                        this.offerStatusLocal = data.status;
                         offer.cancelled_by = Object.assign(
                             {},
                             data.cancelled_by
