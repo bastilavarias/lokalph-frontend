@@ -325,7 +325,12 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="error" depressed>
+                <v-btn
+                    color="error"
+                    depressed
+                    :loading="isCancelOfferStart"
+                    @click="cancelOffer"
+                >
                     <v-icon class="mr-1">mdi-cancel</v-icon>
                     <span class="text-capitalize">Cancel</span>
                 </v-btn>
@@ -341,6 +346,7 @@
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
 import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
+import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
@@ -395,6 +401,11 @@ export default {
             required: true,
         },
 
+        offerId: {
+            type: Number,
+            required: true,
+        },
+
         offerTotalPrice: {
             type: Number,
             required: true,
@@ -425,6 +436,11 @@ export default {
             required: false,
         },
 
+        offers: {
+            type: Array,
+            required: true,
+        },
+
         accountFirstName: {
             type: String,
             required: false,
@@ -445,6 +461,8 @@ export default {
         return {
             isOpenLocal: this.isOpen,
             isOfferNoteExpanded: false,
+            isCancelOfferStart: false,
+            offersLocal: this.offers,
         };
     },
 
@@ -481,6 +499,39 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+
+        offers(value) {
+            this.offersLocal = value;
+        },
+
+        offersLocal(value) {
+            this.$emit("update:offers", value);
+        },
+    },
+
+    methods: {
+        async cancelOffer() {
+            this.isCancelOfferStart = true;
+            const { data } = await this.$store.dispatch(
+                CANCEL_OFFER,
+                this.offerId
+            );
+            if (data) {
+                this.offersLocal = this.offersLocal.map((offer) => {
+                    if (offer.id === data.id) {
+                        offer.cancelled_by = Object.assign(
+                            {},
+                            data.cancelled_by
+                        );
+                        offer.status = data.status;
+                    }
+                    return offer;
+                });
+                this.isCancelOfferStart = false;
+                return;
+            }
+            this.isCancelOfferStart = false;
         },
     },
 };
