@@ -323,7 +323,7 @@
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions v-if="showDialogActions">
                 <v-spacer></v-spacer>
                 <v-btn
                     color="error"
@@ -490,6 +490,10 @@ export default {
         preferShippingMethods() {
             const sm = this.productShippingMethods.map((sm) => sm.label);
             return sm.length === 1 ? sm[0] : "Meet Up or Pick Up";
+        },
+
+        showDialogActions() {
+            return this.offerStatusLocal === "pending";
         },
     },
 
