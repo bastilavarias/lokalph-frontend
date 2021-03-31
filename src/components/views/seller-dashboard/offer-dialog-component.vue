@@ -323,18 +323,29 @@
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-card-actions v-if="showDialogActions">
+            <v-card-actions>
+                <span
+                    class="subtitle-1 font-italic"
+                    v-if="!showDialogActions"
+                    >{{ statusMessage }}</span
+                >
                 <v-spacer></v-spacer>
                 <v-btn
                     color="error"
                     depressed
                     :loading="isCancelOfferStart"
                     @click="cancelOffer"
+                    :disabled="!showDialogActions"
                 >
                     <v-icon class="mr-1">mdi-cancel</v-icon>
                     <span class="text-capitalize">Cancel</span>
                 </v-btn>
-                <v-btn color="success" depressed class="text-capitalize">
+                <v-btn
+                    color="success"
+                    depressed
+                    class="text-capitalize"
+                    :disabled="!showDialogActions || isCancelOfferStart"
+                >
                     Accept Offer
                 </v-btn>
             </v-card-actions>
@@ -441,6 +452,10 @@ export default {
             required: true,
         },
 
+        offerCancelledBy: {
+            required: true,
+        },
+
         accountFirstName: {
             type: String,
             required: false,
@@ -464,6 +479,9 @@ export default {
             isCancelOfferStart: false,
             offersLocal: this.offers,
             offerStatusLocal: this.offerStatus,
+            offerCancelledByLocal: this.offerCancelledBy
+                ? Object.assign({}, this.offerCancelledBy)
+                : null,
         };
     },
 
@@ -495,6 +513,20 @@ export default {
         showDialogActions() {
             return this.offerStatusLocal === "pending";
         },
+
+        user() {
+            return this.$store.state.authentication.user;
+        },
+
+        statusMessage() {
+            let message = null;
+            if (!this.offerCancelledByLocal) return message;
+            const isOwner = this.user.id === this.offerCancelledByLocal.id;
+            message = isOwner
+                ? `You ${this.offerStatusLocal} this offer.`
+                : `${this.offerCancelledByLocal.profile.first_name} ${this.offerStatusLocal} this offer.`;
+            return message;
+        },
     },
 
     watch: {
@@ -517,6 +549,12 @@ export default {
         offerStatus(value) {
             this.offerStatusLocal = value;
         },
+
+        offerCancelledBy(value) {
+            this.offerCancelledByLocal = value
+                ? Object.assign({}, value)
+                : null;
+        },
     },
 
     methods: {
@@ -530,6 +568,10 @@ export default {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
                         this.offerStatusLocal = data.status;
+                        this.offerCancelledByLocal = Object.assign(
+                            {},
+                            data.cancelled_by
+                        );
                         offer.cancelled_by = Object.assign(
                             {},
                             data.cancelled_by

@@ -172,6 +172,7 @@
             :offer-created-at="selectedOffer.created_at"
             :offer-note="selectedOffer.note"
             :offers="offers"
+            :offer-cancelled-by="selectedOffer.cancelled_by"
             :account-first-name="selectedOffer.account.profile.first_name"
             :account-image-url="selectedOffer.account.profile.image_url"
             :account-email="selectedOffer.account.email"
