@@ -6,7 +6,7 @@
                     <span class="mr-2">Offer</span>
                     <span :title="customOfferStatusSpanTitle">
                         <seller-dashboard-view-offer-status-chip-component
-                            :status="offerStatus"
+                            :status="offerStatusLocal"
                         ></seller-dashboard-view-offer-status-chip-component>
                     </span>
                 </div>
@@ -324,12 +324,28 @@
                 </v-row>
             </v-card-text>
             <v-card-actions>
+                <span
+                    class="subtitle-1 font-italic"
+                    v-if="!showDialogActions"
+                    >{{ statusMessage }}</span
+                >
                 <v-spacer></v-spacer>
-                <v-btn color="error" depressed>
+                <v-btn
+                    color="error"
+                    depressed
+                    :loading="isCancelOfferStart"
+                    @click="cancelOffer"
+                    :disabled="!showDialogActions"
+                >
                     <v-icon class="mr-1">mdi-cancel</v-icon>
                     <span class="text-capitalize">Cancel</span>
                 </v-btn>
-                <v-btn color="success" depressed class="text-capitalize">
+                <v-btn
+                    color="success"
+                    depressed
+                    class="text-capitalize"
+                    :disabled="!showDialogActions || isCancelOfferStart"
+                >
                     Accept Offer
                 </v-btn>
             </v-card-actions>
@@ -341,6 +357,7 @@
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
 import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
+import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
@@ -395,6 +412,11 @@ export default {
             required: true,
         },
 
+        offerId: {
+            type: Number,
+            required: true,
+        },
+
         offerTotalPrice: {
             type: Number,
             required: true,
@@ -425,6 +447,15 @@ export default {
             required: false,
         },
 
+        offers: {
+            type: Array,
+            required: true,
+        },
+
+        offerCancelledBy: {
+            required: true,
+        },
+
         accountFirstName: {
             type: String,
             required: false,
@@ -445,6 +476,12 @@ export default {
         return {
             isOpenLocal: this.isOpen,
             isOfferNoteExpanded: false,
+            isCancelOfferStart: false,
+            offersLocal: this.offers,
+            offerStatusLocal: this.offerStatus,
+            offerCancelledByLocal: this.offerCancelledBy
+                ? Object.assign({}, this.offerCancelledBy)
+                : null,
         };
     },
 
@@ -472,6 +509,24 @@ export default {
             const sm = this.productShippingMethods.map((sm) => sm.label);
             return sm.length === 1 ? sm[0] : "Meet Up or Pick Up";
         },
+
+        showDialogActions() {
+            return this.offerStatusLocal === "pending";
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
+        },
+
+        statusMessage() {
+            let message = null;
+            if (!this.offerCancelledByLocal) return message;
+            const isOwner = this.user.id === this.offerCancelledByLocal.id;
+            message = isOwner
+                ? `You ${this.offerStatusLocal} this offer.`
+                : `${this.offerCancelledByLocal.profile.first_name} ${this.offerStatusLocal} this offer.`;
+            return message;
+        },
     },
 
     watch: {
@@ -481,6 +536,54 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+
+        offers(value) {
+            this.offersLocal = value;
+        },
+
+        offersLocal(value) {
+            this.$emit("update:offers", value);
+        },
+
+        offerStatus(value) {
+            this.offerStatusLocal = value;
+        },
+
+        offerCancelledBy(value) {
+            this.offerCancelledByLocal = value
+                ? Object.assign({}, value)
+                : null;
+        },
+    },
+
+    methods: {
+        async cancelOffer() {
+            this.isCancelOfferStart = true;
+            const { data } = await this.$store.dispatch(
+                CANCEL_OFFER,
+                this.offerId
+            );
+            if (data) {
+                this.offersLocal = this.offersLocal.map((offer) => {
+                    if (offer.id === data.id) {
+                        this.offerStatusLocal = data.status;
+                        this.offerCancelledByLocal = Object.assign(
+                            {},
+                            data.cancelled_by
+                        );
+                        offer.cancelled_by = Object.assign(
+                            {},
+                            data.cancelled_by
+                        );
+                        offer.status = data.status;
+                    }
+                    return offer;
+                });
+                this.isCancelOfferStart = false;
+                return;
+            }
+            this.isCancelOfferStart = false;
         },
     },
 };

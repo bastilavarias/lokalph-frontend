@@ -1,4 +1,8 @@
-import { CREATE_OFFER, GET_SHOP_OFFERS } from "@/store/types/offer-store-type";
+import {
+    CANCEL_OFFER,
+    CREATE_OFFER,
+    GET_SHOP_OFFERS,
+} from "@/store/types/offer-store-type";
 import offerRepository from "@/repositories/offer-repository";
 
 const offerStoreModule = {
@@ -34,6 +38,17 @@ const offerStoreModule = {
                     page,
                     perPage,
                 });
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CANCEL_OFFER](_, offerId) {
+            try {
+                const payload = {
+                    offer_id: offerId,
+                };
+                return await offerRepository.cancelOffer(payload);
             } catch (error) {
                 return error.response.data;
             }
