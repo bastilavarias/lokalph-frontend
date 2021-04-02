@@ -149,7 +149,6 @@
         <seller-dashboard-view-date-range-picker-dialog-component
             :is-open.sync="isDateRangesDialogOpen"
             :custom-dates.sync="customDates"
-            :max="currentDate"
             :cancel="cancelGetOffersByCustomDate"
             :proceed="setCustomDates"
             :disabled="hasCustomDates"
@@ -307,10 +306,6 @@ export default {
             return this.datePresets.find(
                 (range) => range.value === this.selectedDatePresetValue
             );
-        },
-
-        currentDate() {
-            return moment().format("YYYY-MM-DD");
         },
 
         hasCustomDates() {

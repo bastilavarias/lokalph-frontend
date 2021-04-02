@@ -3,7 +3,7 @@
         <v-date-picker
             v-model="customDatesLocal"
             range
-            :max="max"
+            :max="currentDate"
             :reactive="false"
         >
             <v-spacer></v-spacer>
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import commonUtility from "@/common/utility";
+
 export default {
     name: "seller-dashboard-view-date-range-picker-dialog-component",
 
@@ -51,6 +53,8 @@ export default {
             required: false,
         },
     },
+
+    mixins: [commonUtility],
 
     data() {
         return {
