@@ -25,7 +25,7 @@
                     <v-divider></v-divider>
                     <v-stepper-step :step="3"> Finish </v-stepper-step>
                 </v-stepper-header>
-                <v-stepper-content :step="1">
+                <v-stepper-content :step="1" class="pa-0">
                     <v-card-text>
                         <v-row>
                             <v-col cols="12" md="6">
