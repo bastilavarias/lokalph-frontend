@@ -411,9 +411,17 @@
                             <v-col cols="12">
                                 <custom-date-picker-component
                                     :date.sync="form.date"
-                                    :label="`${offerShippingMethod.label} Time`"
+                                    :label="`${offerShippingMethod.label} Date`"
                                     outlined
                                 ></custom-date-picker-component>
+                            </v-col>
+                            <v-col cols="12">
+                                <custom-time-picker-component
+                                    :time.sync="form.time"
+                                    :label="`${offerShippingMethod.label} Time`"
+                                    outlined
+                                >
+                                </custom-time-picker-component>
                             </v-col>
                         </v-card-text>
                         <v-card-actions>
@@ -444,6 +452,7 @@ import CustomStockInputComponent from "@/components/custom/stock-input-component
 import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 import CustomDatePickerComponent from "@/components/custom/date-picker-component";
+import CustomTimePickerComponent from "@/components/custom/time-picker-component";
 
 const defaultForm = {
     address: null,
@@ -454,6 +463,7 @@ const defaultForm = {
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
     components: {
+        CustomTimePickerComponent,
         CustomDatePickerComponent,
         SellerDashboardViewOfferStatusChipComponent,
         CustomStockInputComponent,

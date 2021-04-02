@@ -1,15 +1,18 @@
 <template>
     <v-menu
+        ref="menu"
         v-model="menu"
         :close-on-content-click="false"
         :nudge-right="40"
+        :return-value.sync="timeLocal"
         transition="scale-transition"
         offset-y
-        min-width="auto"
+        max-width="290px"
+        min-width="290px"
     >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                prepend-inner-icon="mdi-calendar"
+                prepend-inner-icon="mdi-clock-time-four-outline"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -18,10 +21,12 @@
                 :value="formattedDate"
             ></v-text-field>
         </template>
-        <v-date-picker
-            v-model="dateLocal"
-            @input="menu = false"
-        ></v-date-picker>
+        <v-time-picker
+            v-if="menu"
+            v-model="timeLocal"
+            full-width
+            @click:minute="$refs.menu.save(time)"
+        ></v-time-picker>
     </v-menu>
 </template>
 
@@ -29,10 +34,10 @@
 import commonUtility from "@/common/utility";
 
 export default {
-    name: "custom-date-picker-component",
+    name: "custom-time-picker-component",
 
     props: {
-        date: {
+        time: {
             required: true,
         },
 
@@ -52,24 +57,24 @@ export default {
     data() {
         return {
             menu: false,
-            dateLocal: this.date,
+            timeLocal: this.time,
         };
     },
 
     computed: {
         formattedDate() {
-            if (!this.dateLocal) return "";
-            return this.formatDate(this.dateLocal);
+            if (!this.timeLocal) return "";
+            return this.formatTime(this.timeLocal);
         },
     },
 
     watch: {
-        date(value) {
-            this.dateLocal = value;
+        time(value) {
+            this.timeLocal = value;
         },
 
-        dateLocal(value) {
-            this.$emit("update:date", value);
+        timeLocal(value) {
+            this.$emit("update:time", value);
         },
     },
 };
