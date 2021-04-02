@@ -21,6 +21,7 @@
         <v-date-picker
             v-model="dateLocal"
             @input="menu = false"
+            :min="currentDate"
         ></v-date-picker>
     </v-menu>
 </template>

@@ -2,6 +2,12 @@ import moment from "moment";
 import truncate from "truncate-html";
 
 const commonUtility = {
+    computed: {
+        currentDate() {
+            return moment().format("YYYY-MM-DD");
+        },
+    },
+
     methods: {
         formatBirthDate(date) {
             return moment(new Date(date)).format("MMMM DD, YYYY");
