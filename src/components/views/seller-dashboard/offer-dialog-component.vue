@@ -461,13 +461,18 @@
                                 </v-icon>
                                 <h1 class="display-1 success--text">Success</h1>
                                 <p class="body-1">
-                                    Accepting this offer successfully complete.
+                                    Successfully accepted this offer.
                                 </p>
                             </div>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn text class="text-capitalize">Exit</v-btn>
+                            <v-btn
+                                text
+                                class="text-capitalize"
+                                @click="exitOfferDialog"
+                                >Exit</v-btn
+                            >
                             <v-btn
                                 color="primary"
                                 depressed
@@ -624,7 +629,7 @@ export default {
             offerCancelledByLocal: this.offerCancelledBy
                 ? Object.assign({}, this.offerCancelledBy)
                 : null,
-            stepper: 3,
+            stepper: 1,
             form: Object.assign({}, defaultForm),
             defaultForm,
             isAcceptOfferStart: false,
@@ -748,26 +753,23 @@ export default {
             };
             const { data } = await this.$store.dispatch(ACCEPT_OFFER, payload);
             if (data) {
-                console.log(data);
-                // this.offersLocal = this.offersLocal.map((offer) => {
-                //   if (offer.id === data.id) {
-                //     this.offerStatusLocal = data.status;
-                //     this.offerCancelledByLocal = Object.assign(
-                //         {},
-                //         data.cancelled_by
-                //     );
-                //     offer.cancelled_by = Object.assign(
-                //         {},
-                //         data.cancelled_by
-                //     );
-                //     offer.status = data.status;
-                //   }
-                //   return offer;
-                // });
-                //
+                this.offersLocal = this.offersLocal.map((offer) => {
+                    if (offer.id === data.offer.id) {
+                        this.offerStatusLocal = data.offer.status;
+                        offer.status = data.offer.status;
+                    }
+                    return offer;
+                });
+                this.stepper = 3;
                 this.isAcceptOfferStart = false;
             }
             this.isAcceptOfferStart = false;
+        },
+
+        exitOfferDialog() {
+            this.stepper = 1;
+            this.form = Object.assign({}, this.defaultForm);
+            this.isOpenLocal = false;
         },
     },
 };
