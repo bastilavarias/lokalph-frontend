@@ -407,6 +407,15 @@
                         </v-card-actions>
                     </v-stepper-content>
                     <v-stepper-content :step="2" class="pa-0">
+                        <v-card-text>
+                            <v-col cols="12">
+                                <custom-date-picker-component
+                                    :date.sync="form.date"
+                                    :label="`${offerShippingMethod.label} Time`"
+                                    outlined
+                                ></custom-date-picker-component>
+                            </v-col>
+                        </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
@@ -434,10 +443,18 @@ import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
 import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
+import CustomDatePickerComponent from "@/components/custom/date-picker-component";
+
+const defaultForm = {
+    address: null,
+    date: null,
+    time: null,
+};
 
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
     components: {
+        CustomDatePickerComponent,
         SellerDashboardViewOfferStatusChipComponent,
         CustomStockInputComponent,
     },
@@ -560,6 +577,8 @@ export default {
                 ? Object.assign({}, this.offerCancelledBy)
                 : null,
             stepper: 1,
+            form: Object.assign({}, defaultForm),
+            defaultForm,
         };
     },
 

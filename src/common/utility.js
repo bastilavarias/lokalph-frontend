@@ -29,6 +29,10 @@ const commonUtility = {
         truncateHTML(html, count) {
             return truncate(html, count, { stripTags: true });
         },
+
+        formatDate(date) {
+            return moment(new Date(date)).format("dddd, MMMM DD, YYYY");
+        },
     },
 };
 
