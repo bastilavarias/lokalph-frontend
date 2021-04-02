@@ -12,7 +12,7 @@
     >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                prepend-inner-icon="mdi-clock-time-four-outline"
+                append-icon="mdi-clock"
                 readonly
                 v-bind="attrs"
                 v-on="on"

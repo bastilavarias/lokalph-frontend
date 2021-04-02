@@ -423,6 +423,13 @@
                                 >
                                 </custom-time-picker-component>
                             </v-col>
+                            <v-col cols="12">
+                                <custom-places-component
+                                    :label="`${offerShippingMethod.label} Address`"
+                                    outlined
+                                    :place.sync="form.address"
+                                ></custom-places-component>
+                            </v-col>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -432,7 +439,11 @@
                                 @click="stepper = 1"
                                 >Back</v-btn
                             >
-                            <v-btn color="primary" depressed>
+                            <v-btn
+                                color="primary"
+                                depressed
+                                :disabled="!isFormValid"
+                            >
                                 <span class="text-capitalize mr-1"
                                     >Accept Offer</span
                                 >
@@ -453,6 +464,7 @@ import SellerDashboardViewOfferStatusChipComponent from "@/components/views/sell
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 import CustomDatePickerComponent from "@/components/custom/date-picker-component";
 import CustomTimePickerComponent from "@/components/custom/time-picker-component";
+import CustomPlacesComponent from "@/components/custom/places-component";
 
 const defaultForm = {
     address: null,
@@ -463,6 +475,7 @@ const defaultForm = {
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
     components: {
+        CustomPlacesComponent,
         CustomTimePickerComponent,
         CustomDatePickerComponent,
         SellerDashboardViewOfferStatusChipComponent,
@@ -633,6 +646,11 @@ export default {
                 ? `You ${this.offerStatusLocal} this offer.`
                 : `${this.offerCancelledByLocal.profile.first_name} ${this.offerStatusLocal} this offer.`;
             return message;
+        },
+
+        isFormValid() {
+            const { date, time, address } = this.form;
+            return date && time && address;
         },
     },
 
