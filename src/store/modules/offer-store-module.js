@@ -1,4 +1,5 @@
 import {
+    ACCEPT_OFFER,
     CANCEL_OFFER,
     CREATE_OFFER,
     GET_SHOP_OFFERS,
@@ -49,6 +50,32 @@ const offerStoreModule = {
                     offer_id: offerId,
                 };
                 return await offerRepository.cancelOffer(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [ACCEPT_OFFER](_, { offerId, date, time, address }) {
+            try {
+                const payload = {
+                    offer_id: offerId,
+                    date,
+                    time,
+                    address: {
+                        value: address.value,
+                        name: address.name,
+                        county: address.county,
+                        city: address.city,
+                        suburb: address.suburb,
+                        country: address.country,
+                        country_code: address.countryCode,
+                        type: address.type,
+                        latitude: address.latlng.lat.toString(),
+                        longitude: address.latlng.lng.toString(),
+                        postcode: address.postcode,
+                    },
+                };
+                return await offerRepository.acceptOffer(payload);
             } catch (error) {
                 return error.response.data;
             }

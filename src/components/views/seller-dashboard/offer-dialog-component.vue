@@ -443,12 +443,37 @@
                                 color="primary"
                                 depressed
                                 :disabled="!isFormValid"
+                                :loading="isAcceptOfferStart"
+                                @click="acceptOffer"
                             >
                                 <span class="text-capitalize mr-1"
                                     >Accept Offer</span
                                 >
                                 <v-icon>mdi-check</v-icon>
                             </v-btn>
+                        </v-card-actions>
+                    </v-stepper-content>
+                    <v-stepper-content :step="3">
+                        <v-card-text>
+                            <div class="text-center">
+                                <v-icon :size="125" color="success">
+                                    mdi-cash-check
+                                </v-icon>
+                                <h1 class="display-1 success--text">Success</h1>
+                                <p class="body-1">
+                                    Accepting this offer successfully complete.
+                                </p>
+                            </div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn text class="text-capitalize">Exit</v-btn>
+                            <v-btn
+                                color="primary"
+                                depressed
+                                class="text-capitalize"
+                                >View Transaction</v-btn
+                            >
                         </v-card-actions>
                     </v-stepper-content>
                 </v-stepper-items>
@@ -461,7 +486,7 @@
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
 import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
-import { CANCEL_OFFER } from "@/store/types/offer-store-type";
+import { ACCEPT_OFFER, CANCEL_OFFER } from "@/store/types/offer-store-type";
 import CustomDatePickerComponent from "@/components/custom/date-picker-component";
 import CustomTimePickerComponent from "@/components/custom/time-picker-component";
 import CustomPlacesComponent from "@/components/custom/places-component";
@@ -599,9 +624,10 @@ export default {
             offerCancelledByLocal: this.offerCancelledBy
                 ? Object.assign({}, this.offerCancelledBy)
                 : null,
-            stepper: 1,
+            stepper: 3,
             form: Object.assign({}, defaultForm),
             defaultForm,
+            isAcceptOfferStart: false,
         };
     },
 
@@ -706,9 +732,42 @@ export default {
                     return offer;
                 });
                 this.isCancelOfferStart = false;
+
                 return;
             }
             this.isCancelOfferStart = false;
+        },
+
+        async acceptOffer() {
+            this.isAcceptOfferStart = true;
+            const payload = {
+                offerId: this.offerId,
+                date: this.form.date || null,
+                time: this.form.time || null,
+                address: this.form.address || null,
+            };
+            const { data } = await this.$store.dispatch(ACCEPT_OFFER, payload);
+            if (data) {
+                console.log(data);
+                // this.offersLocal = this.offersLocal.map((offer) => {
+                //   if (offer.id === data.id) {
+                //     this.offerStatusLocal = data.status;
+                //     this.offerCancelledByLocal = Object.assign(
+                //         {},
+                //         data.cancelled_by
+                //     );
+                //     offer.cancelled_by = Object.assign(
+                //         {},
+                //         data.cancelled_by
+                //     );
+                //     offer.status = data.status;
+                //   }
+                //   return offer;
+                // });
+                //
+                this.isAcceptOfferStart = false;
+            }
+            this.isAcceptOfferStart = false;
         },
     },
 };

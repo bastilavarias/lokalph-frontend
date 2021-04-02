@@ -17,6 +17,11 @@ const offerRepository = {
         const response = await axiosService.put("/offer/cancel", payload);
         return response.data;
     },
+
+    async acceptOffer(payload) {
+        const response = await axiosService.put("/offer/accept", payload);
+        return response.data;
+    },
 };
 
 export default offerRepository;
