@@ -16,7 +16,7 @@
                 </v-btn>
             </v-card-title>
             <v-stepper v-model="stepper" class="elevation-0">
-                <v-stepper-header class="elevation-0">
+                <v-stepper-header class="elevation-0" v-if="isStatusPending">
                     <v-stepper-step :step="1"> Offer Details </v-stepper-step>
                     <v-divider></v-divider>
                     <v-stepper-step :step="2"> Date & Time </v-stepper-step>
@@ -377,18 +377,13 @@
                             </v-row>
                         </v-card-text>
                         <v-card-actions>
-                            <span
-                                class="subtitle-1 font-italic"
-                                v-if="!showDialogActions"
-                                >{{ statusMessage }}</span
-                            >
                             <v-spacer></v-spacer>
                             <v-btn
                                 color="error"
                                 depressed
                                 :loading="isCancelOfferStart"
                                 @click="cancelOffer"
-                                :disabled="!showDialogActions"
+                                v-if="isStatusPending"
                             >
                                 <v-icon class="mr-1">mdi-cancel</v-icon>
                                 <span class="text-capitalize">Cancel</span>
@@ -397,9 +392,8 @@
                                 color="success"
                                 depressed
                                 class="text-capitalize"
-                                :disabled="
-                                    !showDialogActions || isCancelOfferStart
-                                "
+                                :disabled="isCancelOfferStart"
+                                v-if="isStatusPending"
                                 @click="stepper = 2"
                             >
                                 Continue
@@ -652,6 +646,10 @@ export default {
             return title[this.offerStatus];
         },
 
+        statusAlertColor() {
+            return this.offerStatus === "accepted" ? "success" : "error";
+        },
+
         preferTotalPrice() {
             return this.productPrice * this.offerQuantity;
         },
@@ -661,22 +659,12 @@ export default {
             return sm.length === 1 ? sm[0] : "Meet Up or Pick Up";
         },
 
-        showDialogActions() {
+        isStatusPending() {
             return this.offerStatusLocal === "pending";
         },
 
         user() {
             return this.$store.state.authentication.user;
-        },
-
-        statusMessage() {
-            let message = null;
-            if (!this.offerCancelledByLocal) return message;
-            const isOwner = this.user.id === this.offerCancelledByLocal.id;
-            message = isOwner
-                ? `You ${this.offerStatusLocal} this offer.`
-                : `${this.offerCancelledByLocal.profile.first_name} ${this.offerStatusLocal} this offer.`;
-            return message;
         },
 
         isFormValid() {
