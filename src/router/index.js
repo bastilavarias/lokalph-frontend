@@ -173,13 +173,21 @@ const routes = [
 
                     {
                         path: "transaction",
-                        component: () =>
-                            import("@/views/seller-dashboard/Transaction"),
-                        name: "seller-dashboard-transaction",
-                        meta: {
-                            requiresAuth: true,
-                            roles: ["seller"],
-                        },
+                        component: () => import("@/layouts/router-view-layout"),
+                        children: [
+                            {
+                                path: "",
+                                name: "seller-dashboard-transaction",
+                                component: () =>
+                                    import(
+                                        "@/views/seller-dashboard/transaction/Table"
+                                    ),
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+                        ],
                     },
                 ],
             },
