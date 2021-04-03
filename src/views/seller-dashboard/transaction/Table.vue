@@ -68,20 +68,18 @@
                     }}</span>
                 </custom-router-link-component>
             </template>
-            <template v-slot:item.quantity="{ item }">
-                {{ item.offer.quantity }}
-            </template>
             <template v-slot:item.price="{ item }">
                 {{ formatMoney("PHP", item.offer.total_price) }}
             </template>
-            <template v-slot:item.shippingMethod="{ item }">
-                {{ item.offer.shipping_method.label }}
+            <template v-slot:item.details="{ item }">
+                {{ item.offer.shipping_method.label }} ·
+                {{ formatDate(item.date) }} {{ formatTime(item.time) }}
             </template>
-            <template v-slot:item.date="{ item }">
-                {{ formatDate(item.date) }}
-            </template>
-            <template v-slot:item.time="{ item }">
-                {{ formatTime(item.time) }}
+            <template v-slot:item.status="{ item }">
+                <seller-dashboard-view-transaction-status-chip-component
+                    :is-received="item.is_received"
+                    :is-cancelled="item.is_cancelled"
+                ></seller-dashboard-view-transaction-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon>
@@ -97,9 +95,13 @@ import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import { GET_SHOP_TRANSACTIONS } from "@/store/types/transaction-store-type";
+import SellerDashboardViewTransactionStatusChipComponent from "@/components/views/seller-dashboard/transaction-status-chip-component";
 
 export default {
-    components: { CustomRouterLinkComponent },
+    components: {
+        SellerDashboardViewTransactionStatusChipComponent,
+        CustomRouterLinkComponent,
+    },
 
     mixins: [commonUtility],
 
@@ -127,29 +129,14 @@ export default {
                     value: "product",
                 },
                 {
-                    text: "Quantity",
-                    sortable: false,
-                    value: "quantity",
-                },
-                {
                     text: "Total Price",
                     sortable: false,
                     value: "price",
                 },
                 {
-                    text: "Shiping Method",
+                    text: "Details",
                     sortable: false,
-                    value: "shippingMethod",
-                },
-                {
-                    text: "Date",
-                    sortable: false,
-                    value: "date",
-                },
-                {
-                    text: "Time",
-                    sortable: false,
-                    value: "time",
+                    value: "details",
                 },
                 {
                     text: "Status",
