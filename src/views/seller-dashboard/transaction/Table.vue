@@ -41,31 +41,11 @@
                 </v-menu>
             </div>
             <v-spacer></v-spacer>
-            <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                    <v-btn
-                        color="primary"
-                        depressed
-                        :to="{
-                            name: 'seller-dashboard-product-form',
-                            params: {
-                                operation: 'create',
-                                params: { operation: 'create' },
-                            },
-                        }"
-                        v-on="on"
-                    >
-                        <span class="mr-1 text-capitalize">Create</span>
-                        <v-icon>mdi-plus</v-icon>
-                    </v-btn>
-                </template>
-                <span>Create a new Product</span>
-            </v-tooltip>
         </v-card-title>
         <v-data-table
             :headers="tableHeaders"
-            :loading="isGetProductsStart"
-            :items="products"
+            :loading="isGetTransactionsStart"
+            :items="transactions"
             :server-items-length="pagination.totalCount"
             :items-per-page.sync="pagination.perPage"
             :page.sync="pagination.page"
@@ -73,50 +53,39 @@
                 'items-per-page-options': pagination.rowsPerPageItems,
             }"
         >
-            <template v-slot:top>
-                <v-card-text>
-                    <v-text-field
-                        filled
-                        rounded
-                        placeholder="Search"
-                        append-icon="mdi-magnify"
-                        autofocus
-                        v-model="search"
-                        :disabled="!selectedShop"
-                    ></v-text-field>
-                </v-card-text>
-            </template>
-            <template v-slot:item.name="{ item }">
+            <template v-slot:item.product="{ item }">
                 <custom-router-link-component
                     :to="{
                         name: 'product-post-view',
-                        params: { shopId: item.shop.id, slug: item.slug },
+                        params: {
+                            shopId: item.offer.shop.id,
+                            slug: item.offer.product.slug,
+                        },
                     }"
                 >
                     <span class="black--text font-weight-bold">{{
-                        item.name
+                        item.offer.product.name
                     }}</span>
                 </custom-router-link-component>
             </template>
-            <template v-slot:item.category="{ item }">
-                {{ item.category.label }}
+            <template v-slot:item.quantity="{ item }">
+                {{ item.offer.quantity }}
             </template>
             <template v-slot:item.price="{ item }">
-                {{ formatMoney("PHP", item.price) }}
+                {{ formatMoney("PHP", item.offer.total_price) }}
             </template>
-            <template v-slot:item.shippingMethods="{ item }">
-                <template v-for="(method, index) in item.shipping_methods">
-                    <v-chip :key="index" small color="primary" class="ma-1">
-                        {{ method.label }}
-                    </v-chip>
-                </template>
+            <template v-slot:item.shippingMethod="{ item }">
+                {{ item.offer.shipping_method.label }}
             </template>
-            <template v-slot:item.actions>
-                <v-btn icon class="mr-1">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                </v-btn>
+            <template v-slot:item.date="{ item }">
+                {{ formatDate(item.date) }}
+            </template>
+            <template v-slot:item.time="{ item }">
+                {{ formatTime(item.time) }}
+            </template>
+            <template v-slot:item.action="{ item }">
                 <v-btn icon>
-                    <v-icon>mdi-trash-can-outline</v-icon>
+                    <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
             </template>
         </v-data-table>
@@ -125,21 +94,21 @@
 
 <script>
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
-import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
-import commonUtility, { debounce } from "@/common/utility";
+import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
+import { GET_SHOP_TRANSACTIONS } from "@/store/types/transaction-store-type";
 
 export default {
     components: { CustomRouterLinkComponent },
+
     mixins: [commonUtility],
 
     data() {
         return {
             shops: [],
             isGetShopsStart: false,
-            isGetProductsStart: false,
-            products: [],
-            search: null,
+            isGetTransactionsStart: false,
+            transactions: [],
             pagination: {
                 page: 1,
                 perPage: 10,
@@ -153,28 +122,43 @@ export default {
         tableHeaders() {
             return [
                 {
-                    text: "Name",
+                    text: "Product",
                     sortable: false,
-                    value: "name",
+                    value: "product",
                 },
                 {
-                    text: "Category",
+                    text: "Quantity",
                     sortable: false,
-                    value: "category",
+                    value: "quantity",
                 },
                 {
-                    text: "Price per unit",
+                    text: "Total Price",
                     sortable: false,
                     value: "price",
                 },
                 {
-                    text: "Shipping Methods",
+                    text: "Shiping Method",
                     sortable: false,
-                    value: "shippingMethods",
+                    value: "shippingMethod",
                 },
                 {
-                    text: "Actions",
-                    value: "actions",
+                    text: "Date",
+                    sortable: false,
+                    value: "date",
+                },
+                {
+                    text: "Time",
+                    sortable: false,
+                    value: "time",
+                },
+                {
+                    text: "Status",
+                    sortable: false,
+                    value: "status",
+                },
+                {
+                    text: "Action",
+                    value: "action",
                     sortable: false,
                     align: "right",
                 },
@@ -197,20 +181,16 @@ export default {
     },
 
     watch: {
-        search: debounce(async function () {
-            await this.getProducts();
-        }, 800),
-
         async "pagination.page"() {
-            await this.getProducts();
+            await this.getTransactions();
         },
 
         async "pagination.perPage"() {
-            await this.getProducts();
+            await this.getTransactions();
         },
 
         async selectedShopId(value) {
-            if (value) await this.getProducts();
+            if (value) await this.getTransactions();
         },
     },
 
@@ -233,22 +213,21 @@ export default {
             }
         },
 
-        async getProducts() {
+        async getTransactions() {
             const payload = {
                 shopId: this.selectedShopId,
                 page: this.pagination.page,
                 perPage: this.pagination.perPage,
-                search: this.search,
             };
-            this.isGetProductsStart = true;
+            this.isGetTransactionsStart = true;
             const { data } = await this.$store.dispatch(
-                GET_SHOP_PRODUCTS,
+                GET_SHOP_TRANSACTIONS,
                 payload
             );
-            this.isGetProductsStart = false;
-            this.products = data.products;
-            if (!this.search) this.pagination.totalCount = data.total_count;
-            if (this.search) this.pagination.totalCount = this.shops.length;
+            console.log(data);
+            this.isGetTransactionsStart = false;
+            this.transactions = data;
+            if (!this.search) this.pagination.totalCount = 10;
         },
 
         async setRouteQueries(shopId) {
@@ -261,7 +240,7 @@ export default {
 
     async created() {
         await this.getShops();
-        if (this.selectedShopId) await this.getProducts();
+        if (this.selectedShopId) await this.getTransactions();
     },
 };
 </script>

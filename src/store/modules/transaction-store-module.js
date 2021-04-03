@@ -1,9 +1,9 @@
-import { GET_SHOP_OFFERS } from "@/store/types/offer-store-type";
 import transactionRepository from "@/repositories/transaction-repository";
+import { GET_SHOP_TRANSACTIONS } from "@/store/types/transaction-store-type";
 
 const transactionStoreModule = {
     actions: {
-        async [GET_SHOP_OFFERS](_, { shopId, page, perPage }) {
+        async [GET_SHOP_TRANSACTIONS](_, { shopId, page, perPage }) {
             try {
                 return await transactionRepository.getShopTransactions({
                     shopId,
