@@ -133,7 +133,7 @@
                 {{ item.shipping_method.label }}
             </template>
             <template v-slot:item.datetime="{ item }">
-                {{ formatDateTime(item.created_at) }}
+                {{ formatRelativeTime(item.created_at) }}
             </template>
             <template v-slot:item.status="{ item }">
                 <seller-dashboard-view-offer-status-chip-component
@@ -239,6 +239,11 @@ export default {
                     text: "Offer Price",
                     sortable: false,
                     value: "price",
+                },
+                {
+                    text: "Shiping Method",
+                    sortable: false,
+                    value: "shippingMethod",
                 },
                 {
                     text: "Offered At",

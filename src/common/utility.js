@@ -37,7 +37,7 @@ const commonUtility = {
         },
 
         formatDate(date) {
-            return moment(new Date(date)).format("dddd, MMMM DD, YYYY");
+            return moment(new Date(date)).format("dddd, MMMM DD YYYY");
         },
 
         formatTime(time) {

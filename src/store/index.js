@@ -6,6 +6,7 @@ import shopStoreModule from "@/store/modules/shop-store-module";
 import accountStoreModule from "@/store/modules/account-store-module";
 import productStoreModule from "@/store/modules/product-store-module";
 import offerStoreModule from "@/store/modules/offer-store-module";
+import transactionStoreModule from "@/store/modules/transaction-store-module";
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
         account: accountStoreModule,
         product: productStoreModule,
         offer: offerStoreModule,
+        transaction: transactionStoreModule,
     },
 });
