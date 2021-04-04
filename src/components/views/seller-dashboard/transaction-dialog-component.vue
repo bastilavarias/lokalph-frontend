@@ -257,13 +257,12 @@
                                     accountFirstName
                                 }}</v-list-item-title>
                                 <v-list-item-subtitle>
-                                    <span
-                                        :title="`Transaction was created ${formatRelativeTime(
-                                            offerCreatedAt
-                                        )}`"
-                                    >
-                                        Offered this
-                                        {{ formatRelativeTime(offerCreatedAt) }}
+                                    <span title="Transaction Code">
+                                        Transaction Code:
+                                        <span
+                                            class="font-weight-bold secondary--text"
+                                            >{{ transactionCode }}</span
+                                        >
                                     </span>
                                 </v-list-item-subtitle>
                             </v-list-item-content>
@@ -287,6 +286,13 @@
                     </v-col>
                 </v-row>
             </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="error" depressed>
+                    <v-icon class="mr-1">mdi-cancel</v-icon>
+                    <span class="text-capitalize">Cancel</span>
+                </v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
@@ -400,6 +406,11 @@ export default {
 
         transactionAddress: {
             type: Object,
+            required: true,
+        },
+
+        transactionCode: {
+            type: String,
             required: true,
         },
     },

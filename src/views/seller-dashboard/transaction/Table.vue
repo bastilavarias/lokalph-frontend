@@ -109,6 +109,7 @@
             :transaction-date="selectedTransaction.date"
             :transaction-time="selectedTransaction.time"
             :transaction-address="selectedTransaction.address"
+            :transaction-code="selectedTransaction.code"
             v-if="selectedTransaction"
         ></seller-dashboard-view-transaction-dialog-component>
     </v-card>
