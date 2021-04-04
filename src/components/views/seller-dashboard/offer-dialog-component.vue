@@ -133,147 +133,152 @@
                         </v-card-text>
                         <v-card-text>
                             <v-row dense>
-                                <v-col cols="12" md="6">
-                                    <v-card-subtitle
-                                        >Customer Offer</v-card-subtitle
+                                <v-col cols="12">
+                                    <v-card
+                                        outlined
+                                        rounded
+                                        class="grey lighten-5"
                                     >
-                                    <v-card-text>
                                         <v-row dense>
-                                            <v-col cols="12">
-                                                <div
-                                                    class="d-flex align-content-center align-center"
+                                            <v-col cols="12" md="6">
+                                                <v-card-subtitle
+                                                    class="font-weight-bold"
+                                                    >Customer
+                                                    Offer</v-card-subtitle
                                                 >
-                                                    <span
-                                                        class="subtitle-1"
-                                                        title="Offer Price"
-                                                    >
-                                                        <span
-                                                            class="font-weight-bold secondary--text"
-                                                        >
-                                                            {{
-                                                                formatMoney(
-                                                                    "PHP",
-                                                                    offerTotalPrice
-                                                                )
-                                                            }}
-                                                        </span>
-                                                    </span>
-                                                </div>
+                                                <v-card-text>
+                                                    <v-row dense>
+                                                        <v-col cols="12">
+                                                            <div
+                                                                class="d-flex align-content-center align-center"
+                                                            >
+                                                                <span
+                                                                    class="subtitle-1 font-weight-bold secondary--text"
+                                                                    title="Offer Price"
+                                                                >
+                                                                    {{
+                                                                        formatMoney(
+                                                                            "PHP",
+                                                                            offerTotalPrice
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                            </div>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <div
+                                                                class="d-flex align-content-center align-center"
+                                                            >
+                                                                <v-icon
+                                                                    class="mr-1"
+                                                                    >mdi-file-table-box-multiple</v-icon
+                                                                >
+                                                                <span
+                                                                    class="subtitle-1"
+                                                                    title="Quantity"
+                                                                >
+                                                                    <span
+                                                                        class="font-weight-bold black--text"
+                                                                    >
+                                                                        {{
+                                                                            offerQuantity
+                                                                        }}
+                                                                    </span>
+                                                                    pcs
+                                                                </span>
+                                                            </div>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <div
+                                                                class="d-flex align-content-center align-center"
+                                                            >
+                                                                <v-icon
+                                                                    class="mr-1"
+                                                                    >mdi-truck</v-icon
+                                                                >
+                                                                <span
+                                                                    class="subtitle-1 black--text"
+                                                                    title="Prefer Shipping Method"
+                                                                >
+                                                                    {{
+                                                                        offerShippingMethod.label
+                                                                    }}
+                                                                </span>
+                                                            </div>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-card-text>
                                             </v-col>
-                                            <v-col cols="12">
-                                                <div
-                                                    class="d-flex align-content-center align-center"
+                                            <v-col cols="12" md="6">
+                                                <v-card-subtitle
+                                                    class="font-weight-bold"
+                                                    >You Prefer</v-card-subtitle
                                                 >
-                                                    <v-icon class="mr-1"
-                                                        >mdi-file-table-box-multiple</v-icon
-                                                    >
-                                                    <span
-                                                        class="subtitle-1"
-                                                        title="Quantity"
-                                                    >
-                                                        <span
-                                                            class="font-weight-bold black--text"
-                                                        >
-                                                            {{ offerQuantity }}
-                                                        </span>
-                                                        pcs
-                                                    </span>
-                                                </div>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <div
-                                                    class="d-flex align-content-center align-center"
-                                                >
-                                                    <v-icon class="mr-1"
-                                                        >mdi-truck</v-icon
-                                                    >
-                                                    <span
-                                                        class="subtitle-1"
-                                                        title="Prefer Shipping Method"
-                                                    >
-                                                        <span
-                                                            class="font-weight-bold black--text"
-                                                        >
-                                                            {{
-                                                                offerShippingMethod.label
-                                                            }}
-                                                        </span>
-                                                    </span>
-                                                </div>
+                                                <v-card-text>
+                                                    <v-row dense>
+                                                        <v-col cols="12">
+                                                            <div
+                                                                class="d-flex align-content-center align-center"
+                                                            >
+                                                                <span
+                                                                    class="subtitle-1 secondary--text font-weight-bold"
+                                                                    title="Prefer Total Price"
+                                                                >
+                                                                    {{
+                                                                        formatMoney(
+                                                                            "PHP",
+                                                                            preferTotalPrice
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                            </div>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <div
+                                                                class="d-flex align-content-center align-center"
+                                                            >
+                                                                <v-icon
+                                                                    class="mr-1"
+                                                                    >mdi-file-table-box-multiple</v-icon
+                                                                >
+                                                                <span
+                                                                    class="subtitle-1"
+                                                                    title="Quantity"
+                                                                >
+                                                                    <span
+                                                                        class="font-weight-bold black--text"
+                                                                    >
+                                                                        {{
+                                                                            offerQuantity
+                                                                        }}
+                                                                    </span>
+                                                                    pcs
+                                                                </span>
+                                                            </div>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <div
+                                                                class="d-flex align-content-center align-center"
+                                                            >
+                                                                <v-icon
+                                                                    class="mr-1"
+                                                                    >mdi-truck</v-icon
+                                                                >
+                                                                <span
+                                                                    class="subtitle-1 black--text"
+                                                                    title="Prefer Shipping Method"
+                                                                >
+                                                                    {{
+                                                                        preferShippingMethods
+                                                                    }}
+                                                                </span>
+                                                            </div>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-card-text>
                                             </v-col>
                                         </v-row>
-                                    </v-card-text>
-                                </v-col>
-                                <v-col cols="12" md="6">
-                                    <v-card-subtitle
-                                        >You Prefer</v-card-subtitle
-                                    >
-                                    <v-card-text>
-                                        <v-row dense>
-                                            <v-col cols="12">
-                                                <div
-                                                    class="d-flex align-content-center align-center"
-                                                >
-                                                    <span
-                                                        class="subtitle-1"
-                                                        title="Prefer Total Price"
-                                                    >
-                                                        <span
-                                                            class="font-weight-bold secondary--text"
-                                                        >
-                                                            {{
-                                                                formatMoney(
-                                                                    "PHP",
-                                                                    preferTotalPrice
-                                                                )
-                                                            }}
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <div
-                                                    class="d-flex align-content-center align-center"
-                                                >
-                                                    <v-icon class="mr-1"
-                                                        >mdi-file-table-box-multiple</v-icon
-                                                    >
-                                                    <span
-                                                        class="subtitle-1"
-                                                        title="Quantity"
-                                                    >
-                                                        <span
-                                                            class="font-weight-bold black--text"
-                                                        >
-                                                            {{ offerQuantity }}
-                                                        </span>
-                                                        pcs
-                                                    </span>
-                                                </div>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <div
-                                                    class="d-flex align-content-center align-center"
-                                                >
-                                                    <v-icon class="mr-1"
-                                                        >mdi-truck</v-icon
-                                                    >
-                                                    <span
-                                                        class="subtitle-1"
-                                                        title="Prefer Shipping Method"
-                                                    >
-                                                        <span
-                                                            class="font-weight-bold black--text"
-                                                        >
-                                                            {{
-                                                                preferShippingMethods
-                                                            }}
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </v-col>
-                                        </v-row>
-                                    </v-card-text>
+                                    </v-card>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-list-item two-line>

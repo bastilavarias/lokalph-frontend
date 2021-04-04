@@ -121,19 +121,15 @@
                                                     class="d-flex align-content-center align-center"
                                                 >
                                                     <span
-                                                        class="subtitle-1"
+                                                        class="subtitle-1 font-weight-bold secondary--text"
                                                         title="Offer Price"
                                                     >
-                                                        <span
-                                                            class="font-weight-bold secondary--text"
-                                                        >
-                                                            {{
-                                                                formatMoney(
-                                                                    "PHP",
-                                                                    offerTotalPrice
-                                                                )
-                                                            }}
-                                                        </span>
+                                                        {{
+                                                            formatMoney(
+                                                                "PHP",
+                                                                offerTotalPrice
+                                                            )
+                                                        }}
                                                     </span>
                                                 </div>
                                             </v-col>
