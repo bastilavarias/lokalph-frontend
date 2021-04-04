@@ -471,6 +471,11 @@
                                 color="primary"
                                 depressed
                                 class="text-capitalize"
+                                :to="{
+                                    name: 'seller-dashboard-transaction',
+                                    queries: { shop_id: shopId },
+                                }"
+                                v-if="shopId"
                                 >View Transaction</v-btn
                             >
                         </v-card-actions>
@@ -646,10 +651,6 @@ export default {
             return title[this.offerStatus];
         },
 
-        statusAlertColor() {
-            return this.offerStatus === "accepted" ? "success" : "error";
-        },
-
         preferTotalPrice() {
             return this.productPrice * this.offerQuantity;
         },
@@ -670,6 +671,10 @@ export default {
         isFormValid() {
             const { date, time, address } = this.form;
             return date && time && address;
+        },
+
+        shopId() {
+            return this.$route.query.shop_id || null;
         },
     },
 
