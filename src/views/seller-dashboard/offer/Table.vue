@@ -140,7 +140,6 @@
                     :status="item.status"
                 ></seller-dashboard-view-offer-status-chip-component>
             </template>
-
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="openOfferDialog(item)">
                     <v-icon>mdi-chevron-right</v-icon>

@@ -81,11 +81,33 @@
                 ></seller-dashboard-view-transaction-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
-                <v-btn icon>
+                <v-btn icon @click="openTransactionDialog(item)">
                     <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
             </template>
         </v-data-table>
+        <seller-dashboard-view-transaction-dialog-component
+            :is-open.sync="isTransactionDialogOpen"
+            :product-preview="selectedTransaction.product.images[0]"
+            :product-name="selectedTransaction.product.name"
+            :product-created-at="selectedTransaction.product.created_at"
+            :product-condition="selectedTransaction.product.condition"
+            :product-stock="selectedTransaction.product.stock"
+            :product-price="selectedTransaction.product.price"
+            :product-category="selectedTransaction.product.category"
+            :product-shipping-methods="
+                selectedTransaction.product.shipping_methods
+            "
+            :offer-total-price="selectedTransaction.offer.total_price"
+            :offer-quantity="selectedTransaction.offer.quantity"
+            :offer-shipping-method="selectedTransaction.offer.shipping_method"
+            :offer-created-at="selectedTransaction.offer.created_at"
+            :account-first-name="selectedTransaction.account.profile.first_name"
+            :account-image-url="selectedTransaction.account.profile.image_url"
+            :account-email="selectedTransaction.account.email"
+            :transaction-status="selectedTransaction.status"
+            v-if="selectedTransaction"
+        ></seller-dashboard-view-transaction-dialog-component>
     </v-card>
 </template>
 
@@ -95,9 +117,11 @@ import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import { GET_SHOP_TRANSACTIONS } from "@/store/types/transaction-store-type";
 import SellerDashboardViewTransactionStatusChipComponent from "@/components/views/seller-dashboard/transaction-status-chip-component";
+import SellerDashboardViewTransactionDialogComponent from "@/components/views/seller-dashboard/transaction-dialog-component";
 
 export default {
     components: {
+        SellerDashboardViewTransactionDialogComponent,
         SellerDashboardViewTransactionStatusChipComponent,
         CustomRouterLinkComponent,
     },
@@ -116,6 +140,8 @@ export default {
                 totalCount: null,
                 rowsPerPageItems: [10, 25, 50],
             },
+            selectedTransaction: null,
+            isTransactionDialogOpen: false,
         };
     },
 
@@ -220,6 +246,11 @@ export default {
                 name: "seller-dashboard-transaction",
                 query: { shop_id: shopId },
             });
+        },
+
+        openTransactionDialog(transaction) {
+            this.selectedTransaction = Object.assign({}, transaction);
+            this.isTransactionDialogOpen = true;
         },
     },
 
