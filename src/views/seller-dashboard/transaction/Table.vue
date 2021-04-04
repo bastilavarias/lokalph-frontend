@@ -106,6 +106,9 @@
             :account-image-url="selectedTransaction.account.profile.image_url"
             :account-email="selectedTransaction.account.email"
             :transaction-status="selectedTransaction.status"
+            :transaction-date="selectedTransaction.date"
+            :transaction-time="selectedTransaction.time"
+            :transaction-address="selectedTransaction.address"
             v-if="selectedTransaction"
         ></seller-dashboard-view-transaction-dialog-component>
     </v-card>
