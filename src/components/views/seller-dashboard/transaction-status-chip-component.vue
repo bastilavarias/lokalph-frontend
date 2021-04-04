@@ -1,6 +1,6 @@
 <template>
     <v-chip small :color="color" class="text-capitalize">
-        {{ message }}
+        {{ status }}
     </v-chip>
 </template>
 
@@ -9,30 +9,20 @@ export default {
     name: "seller-dashboard-view-transaction-status-chip-component",
 
     props: {
-        isReceived: {
-            type: Boolean,
-            required: true,
-        },
-
-        isCancelled: {
-            type: Boolean,
+        status: {
+            type: String,
             required: true,
         },
     },
 
     computed: {
         color() {
-            let color = null;
-            if (this.isReceived) color = "success";
-            if (this.isCancelled) color = "error";
-            return color;
-        },
-
-        message() {
-            let message = "To Receive";
-            if (this.isReceived) message = "Received";
-            if (this.isCancelled) message = "Cancelled";
-            return message;
+            const colors = {
+                pending: null,
+                received: "success",
+                cancelled: "error",
+            };
+            return colors[this.status];
         },
     },
 };

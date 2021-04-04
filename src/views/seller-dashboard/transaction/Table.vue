@@ -77,8 +77,7 @@
             </template>
             <template v-slot:item.status="{ item }">
                 <seller-dashboard-view-transaction-status-chip-component
-                    :is-received="item.is_received"
-                    :is-cancelled="item.is_cancelled"
+                    :status="item.status"
                 ></seller-dashboard-view-transaction-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
@@ -211,10 +210,9 @@ export default {
                 GET_SHOP_TRANSACTIONS,
                 payload
             );
-            console.log(data);
             this.isGetTransactionsStart = false;
-            this.transactions = data;
-            if (!this.search) this.pagination.totalCount = 10;
+            this.transactions = data.shop_transactions;
+            this.pagination.totalCount = parseInt(data.total_count) || 0;
         },
 
         async setRouteQueries(shopId) {
