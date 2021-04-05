@@ -209,6 +209,63 @@ const routes = [
             },
         ],
     },
+
+    {
+        path: "/customer",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                component: () =>
+                    import("@/views/customer-dashboard/CustomerDashboard"),
+                children: [
+                    {
+                        path: "",
+                        name: "customer-dashboard-offer",
+                        component: () =>
+                            import("@/views/customer-dashboard/Offer"),
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["customer", "seller"],
+                        },
+                    },
+
+                    {
+                        path: "transaction",
+                        name: "customer-dashboard-transaction",
+                        component: () =>
+                            import("@/views/customer-dashboard/Transaction"),
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["customer", "seller"],
+                        },
+                    },
+
+                    {
+                        path: "chat",
+                        name: "customer-dashboard-chat",
+                        component: () =>
+                            import("@/views/customer-dashboard/Chat"),
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["customer", "seller"],
+                        },
+                    },
+
+                    {
+                        path: "like",
+                        name: "customer-dashboard-like",
+                        component: () =>
+                            import("@/views/customer-dashboard/Like"),
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["customer", "seller"],
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 const router = new VueRouter({

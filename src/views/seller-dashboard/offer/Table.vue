@@ -136,9 +136,9 @@
                 {{ formatRelativeTime(item.created_at) }}
             </template>
             <template v-slot:item.status="{ item }">
-                <seller-dashboard-view-offer-status-chip-component
+                <global-offer-status-chip-component
                     :status="item.status"
-                ></seller-dashboard-view-offer-status-chip-component>
+                ></global-offer-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="openOfferDialog(item)">
@@ -188,11 +188,11 @@ import moment from "moment";
 import SellerDashboardViewDateRangePickerDialogComponent from "@/components/views/seller-dashboard/date-picker-range-dialog-component";
 import SellerDashboardViewOfferDialogComponent from "@/components/views/seller-dashboard/offer-dialog-component";
 import { GET_SHOP_OFFERS } from "@/store/types/offer-store-type";
-import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
+import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
 
 export default {
     components: {
-        SellerDashboardViewOfferStatusChipComponent,
+        GlobalOfferStatusChipComponent,
         SellerDashboardViewOfferDialogComponent,
         SellerDashboardViewDateRangePickerDialogComponent,
         CustomRouterLinkComponent,

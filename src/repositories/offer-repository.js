@@ -22,6 +22,13 @@ const offerRepository = {
         const response = await axiosService.put("/offer/accept", payload);
         return response.data;
     },
+
+    async getAccountOffers({ accountId, page, perPage }) {
+        const response = await axiosService.get(
+            `/offer/account/${accountId}?page=${page}&per_page=${perPage}`
+        );
+        return response.data;
+    },
 };
 
 export default offerRepository;

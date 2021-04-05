@@ -5,9 +5,9 @@
                 <div>
                     <span class="mr-2">Offer</span>
                     <span :title="customOfferStatusSpanTitle">
-                        <seller-dashboard-view-offer-status-chip-component
+                        <global-offer-status-chip-component
                             :status="offerStatusLocal"
-                        ></seller-dashboard-view-offer-status-chip-component>
+                        ></global-offer-status-chip-component>
                     </span>
                 </div>
                 <v-spacer> </v-spacer>
@@ -494,11 +494,11 @@
 <script>
 import commonUtility from "@/common/utility";
 import CustomStockInputComponent from "@/components/custom/stock-input-component";
-import SellerDashboardViewOfferStatusChipComponent from "@/components/views/seller-dashboard/offer-status-chip-component";
 import { ACCEPT_OFFER, CANCEL_OFFER } from "@/store/types/offer-store-type";
 import CustomDatePickerComponent from "@/components/custom/date-picker-component";
 import CustomTimePickerComponent from "@/components/custom/time-picker-component";
 import CustomPlacesComponent from "@/components/custom/places-component";
+import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
 
 const defaultForm = {
     address: null,
@@ -509,10 +509,10 @@ const defaultForm = {
 export default {
     name: "seller-dashboard-view-offer-dialog-component",
     components: {
+        GlobalOfferStatusChipComponent,
         CustomPlacesComponent,
         CustomTimePickerComponent,
         CustomDatePickerComponent,
-        SellerDashboardViewOfferStatusChipComponent,
         CustomStockInputComponent,
     },
 
