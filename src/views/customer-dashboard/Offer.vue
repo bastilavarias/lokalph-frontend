@@ -39,8 +39,7 @@
                             >
                                 <span
                                     class="black--text text-decoration-underline"
-                                    >{{ offer.account.profile.first_name }}
-                                    {{ offer.account.profile.last_name }}</span
+                                    >You</span
                                 >
                             </custom-router-link-component>
                             ·
@@ -50,7 +49,13 @@
                         </span>
                     </v-list-item-subtitle>
                 </v-list-item-content>
+                <v-list-item-action>
+                    <global-offer-status-chip-component
+                        :status="offer.status"
+                    ></global-offer-status-chip-component>
+                </v-list-item-action>
             </v-list-item>
+            <v-divider v-if="offers.length - 1 !== index"></v-divider>
         </template>
         <infinite-loading @infinite="getOffers" :identifier="scrollOptions.id">
             <template v-slot:spinner>
@@ -75,9 +80,14 @@ import { GET_ACCOUNT_OFFERS } from "@/store/types/offer-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import commonUtility from "@/common/utility";
+import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
 
 export default {
-    components: { CustomRouterLinkComponent, CustomLoadingSpinnerComponent },
+    components: {
+        GlobalOfferStatusChipComponent,
+        CustomRouterLinkComponent,
+        CustomLoadingSpinnerComponent,
+    },
 
     mixins: [commonUtility],
 
