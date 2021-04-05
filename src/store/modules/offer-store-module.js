@@ -2,6 +2,7 @@ import {
     ACCEPT_OFFER,
     CANCEL_OFFER,
     CREATE_OFFER,
+    GET_ACCOUNT_OFFERS,
     GET_SHOP_OFFERS,
 } from "@/store/types/offer-store-type";
 import offerRepository from "@/repositories/offer-repository";
@@ -76,6 +77,14 @@ const offerStoreModule = {
                     },
                 };
                 return await offerRepository.acceptOffer(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_ACCOUNT_OFFERS](_, payload) {
+            try {
+                return await offerRepository.getAccountOffers(payload);
             } catch (error) {
                 return error.response.data;
             }
