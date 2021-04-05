@@ -209,6 +209,30 @@ const routes = [
             },
         ],
     },
+
+    {
+        path: "/customer",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                component: () =>
+                    import("@/views/customer-dashboard/CustomerDashboard"),
+                children: [
+                    {
+                        path: "",
+                        name: "customer-dashboard-offer",
+                        component: () =>
+                            import("@/views/customer-dashboard/Offer"),
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["customer", "seller"],
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 const router = new VueRouter({

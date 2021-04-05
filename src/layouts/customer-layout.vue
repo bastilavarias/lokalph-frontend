@@ -131,7 +131,12 @@
                     >
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn icon color="primary" depressed>
+                    <v-btn
+                        icon
+                        color="primary"
+                        depressed
+                        :to="{ name: 'customer-dashboard-offer' }"
+                    >
                         <v-icon large>mdi-cart-outline</v-icon>
                     </v-btn>
                 </v-row>
