@@ -120,7 +120,6 @@ export default {
                 payload
             );
             const offers = data.account_offers;
-            console.log(offers);
             if (offers.length === this.scrollOptions.perPage) {
                 this.offers = [...this.offers, ...offers];
                 $state.loaded();
