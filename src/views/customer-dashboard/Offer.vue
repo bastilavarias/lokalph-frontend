@@ -1,6 +1,57 @@
 <template>
     <v-card outlined>
         <v-card-title>Offers</v-card-title>
+        <template v-for="(offer, index) in offers">
+            <v-list-item :key="index" three-line>
+                <v-list-item-content>
+                    <v-list-item-title>
+                        <custom-router-link-component
+                            :to="{
+                                name: 'product-post-view',
+                                params: {
+                                    shopId: offer.shop.id,
+                                    slug: offer.product.slug,
+                                },
+                            }"
+                        >
+                            <span class="black--text font-weight-bold">{{
+                                offer.product.name
+                            }}</span>
+                        </custom-router-link-component>
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        <span class="font-weight-bold secondary--text">{{
+                            formatMoney("PHP", offer.total_price)
+                        }}</span>
+                        ·
+                        <span> {{ offer.quantity }} pcs </span>
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                        <span class="black--text">
+                            Offered by:
+                            <custom-router-link-component
+                                :to="{
+                                    name: 'profile-view',
+                                    params: {
+                                        email: offer.account.email,
+                                    },
+                                }"
+                            >
+                                <span
+                                    class="black--text text-decoration-underline"
+                                    >{{ offer.account.profile.first_name }}
+                                    {{ offer.account.profile.last_name }}</span
+                                >
+                            </custom-router-link-component>
+                            ·
+                            <span>{{
+                                formatRelativeTime(offer.created_at)
+                            }}</span>
+                        </span>
+                    </v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+        </template>
         <infinite-loading @infinite="getOffers" :identifier="scrollOptions.id">
             <template v-slot:spinner>
                 <custom-loading-spinner-component></custom-loading-spinner-component>
@@ -22,17 +73,21 @@
 <script>
 import { GET_ACCOUNT_OFFERS } from "@/store/types/offer-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
+import commonUtility from "@/common/utility";
 
 export default {
-    components: { CustomLoadingSpinnerComponent },
+    components: { CustomRouterLinkComponent, CustomLoadingSpinnerComponent },
+
+    mixins: [commonUtility],
+
     data() {
         return {
             offers: [],
             scrollOptions: {
                 page: 1,
-                perPage: 3,
+                perPage: 5,
                 id: +new Date(),
-                totalCount: 0,
             },
         };
     },
@@ -55,6 +110,7 @@ export default {
                 payload
             );
             const offers = data.account_offers;
+            console.log(offers);
             if (offers.length === this.scrollOptions.perPage) {
                 this.offers = [...this.offers, ...offers];
                 $state.loaded();
