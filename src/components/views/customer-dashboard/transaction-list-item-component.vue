@@ -179,6 +179,16 @@
                 </v-row>
             </v-card>
         </v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" depressed>
+                <v-icon class="mr-1">mdi-cancel</v-icon>
+                <span class="text-capitalize">Cancel</span>
+            </v-btn>
+            <v-btn color="success" depressed class="text-capitalize">
+                Mark <span class="text-lowercase mx-1">as</span> Received
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
