@@ -2,59 +2,20 @@
     <v-card outlined>
         <v-card-title>Offers</v-card-title>
         <template v-for="(offer, index) in offers">
-            <v-list-item :key="index" three-line>
-                <v-list-item-content>
-                    <v-list-item-title>
-                        <custom-router-link-component
-                            :to="{
-                                name: 'product-post-view',
-                                params: {
-                                    shopId: offer.shop.id,
-                                    slug: offer.product.slug,
-                                },
-                            }"
-                        >
-                            <span class="black--text font-weight-bold">{{
-                                offer.product.name
-                            }}</span>
-                        </custom-router-link-component>
-                    </v-list-item-title>
-                    <v-list-item-subtitle>
-                        <span class="font-weight-bold secondary--text">{{
-                            formatMoney("PHP", offer.total_price)
-                        }}</span>
-                        ·
-                        <span> {{ offer.quantity }} pcs </span>
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                        <span class="black--text">
-                            Offered by:
-                            <custom-router-link-component
-                                :to="{
-                                    name: 'profile-view',
-                                    params: {
-                                        email: offer.account.email,
-                                    },
-                                }"
-                            >
-                                <span
-                                    class="black--text text-decoration-underline"
-                                    >You</span
-                                >
-                            </custom-router-link-component>
-                            ·
-                            <span>{{
-                                formatRelativeTime(offer.created_at)
-                            }}</span>
-                        </span>
-                    </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                    <global-offer-status-chip-component
-                        :status="offer.status"
-                    ></global-offer-status-chip-component>
-                </v-list-item-action>
-            </v-list-item>
+            <customer-dashboard-view-offer-item-component
+                :offer-id="offer.id"
+                :shop-id="offer.shop.id"
+                :product-slug="offer.product.slug"
+                :product-name="offer.product.name"
+                :account-email="offer.account.email"
+                :offer-status="offer.status"
+                :offer-quantity="offer.quantity"
+                :offer-total-price="offer.total_price"
+                :offer-created-at="offer.created_at"
+                :product-preview="offer.product.images[0]"
+                :offers.sync="offers"
+                :offer-cancelled-by="offer.cancelled_by"
+            ></customer-dashboard-view-offer-item-component>
             <v-divider v-if="offers.length - 1 !== index"></v-divider>
         </template>
         <infinite-loading @infinite="getOffers" :identifier="scrollOptions.id">
@@ -81,9 +42,11 @@ import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-c
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import commonUtility from "@/common/utility";
 import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
+import CustomerDashboardViewOfferItemComponent from "@/components/views/customer-dashboard/offer-item-component";
 
 export default {
     components: {
+        CustomerDashboardViewOfferItemComponent,
         GlobalOfferStatusChipComponent,
         CustomRouterLinkComponent,
         CustomLoadingSpinnerComponent,
@@ -99,6 +62,7 @@ export default {
                 perPage: 5,
                 id: +new Date(),
             },
+            isCancelOfferStart: false,
         };
     },
 
@@ -111,7 +75,6 @@ export default {
     methods: {
         async getOffers($state) {
             const payload = {
-                accountId: this.user.id,
                 page: this.scrollOptions.page,
                 perPage: this.scrollOptions.perPage,
             };

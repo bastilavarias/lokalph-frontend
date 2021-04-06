@@ -391,7 +391,7 @@
                                 v-if="isStatusPending"
                             >
                                 <v-icon class="mr-1">mdi-cancel</v-icon>
-                                <span class="text-capitalize">Cancel</span>
+                                <span class="text-capitalize">Reject</span>
                             </v-btn>
                             <v-btn
                                 color="success"
