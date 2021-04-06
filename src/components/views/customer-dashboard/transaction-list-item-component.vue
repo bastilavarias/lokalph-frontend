@@ -29,7 +29,7 @@
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
                     <span
-                        :title="`This offer accepted by ${shopName} ${formatRelativeTime(
+                        :title="`This offer accepted by ${shopName} at ${formatDateTime(
                             transactionCreatedAt
                         )}`"
                     >
