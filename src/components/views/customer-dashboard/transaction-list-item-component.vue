@@ -1,45 +1,48 @@
 <template>
-    <v-list-item three-line>
-        <v-list-item-avatar tile :size="50">
-            <v-img :src="productPreview.url"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-content>
-            <v-list-item-title class="d-flex align-center">
-                <custom-router-link-component
-                    :to="{
-                        name: 'product-post-view',
-                        params: {
-                            shopId: shopId,
-                            slug: productSlug,
-                        },
-                    }"
-                >
-                    <span class="black--text font-weight-bold">{{
-                        productName
+    <v-card flat>
+        <v-list-item three-line>
+            <v-list-item-avatar tile :size="50">
+                <v-img :src="productPreview.url"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+                <v-list-item-title class="d-flex align-center">
+                    <custom-router-link-component
+                        :to="{
+                            name: 'product-post-view',
+                            params: {
+                                shopId: shopId,
+                                slug: productSlug,
+                            },
+                        }"
+                    >
+                        <span class="black--text font-weight-bold">{{
+                            productName
+                        }}</span>
+                    </custom-router-link-component>
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                    <span class="font-weight-bold secondary--text">{{
+                        formatMoney("PHP", offerTotalPrice)
                     }}</span>
-                </custom-router-link-component>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-                <span class="font-weight-bold secondary--text">{{
-                    formatMoney("PHP", offerTotalPrice)
-                }}</span>
-                ·
-                <span> {{ offerQuantity }} pcs </span>
-            </v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action>
-            <global-offer-status-chip-component
-                :status="transactionStatus"
-            ></global-offer-status-chip-component>
-        </v-list-item-action>
-    </v-list-item>
+                    ·
+                    <span> {{ offerQuantity }} pcs </span>
+                </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+                <global-offer-status-chip-component
+                    :status="transactionStatus"
+                ></global-offer-status-chip-component>
+            </v-list-item-action>
+        </v-list-item>
+        <v-card-text> sdfsdfs </v-card-text>
+    </v-card>
 </template>
 
 <script>
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
-import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
 import commonUtility from "@/common/utility";
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
+import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
 export default {
     name: "customer-dashboard-view-transaction-list-item-component",
 
@@ -109,6 +112,7 @@ export default {
             transactionStatusLocal: this.transactionStatus,
             isCancelOfferStart: false,
             transactionsLocal: this.transactions,
+            isExpanded: false,
         };
     },
 

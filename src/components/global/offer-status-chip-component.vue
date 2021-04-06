@@ -19,7 +19,7 @@ export default {
         color() {
             const colors = {
                 pending: null,
-                accepted: "success",
+                received: "success",
                 cancelled: "error",
             };
             return colors[this.status];

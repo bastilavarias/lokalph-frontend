@@ -76,9 +76,9 @@
                 {{ formatDate(item.date) }} {{ formatTime(item.time) }}
             </template>
             <template v-slot:item.status="{ item }">
-                <seller-dashboard-view-transaction-status-chip-component
+                <global-transaction-status-chip-component
                     :status="item.status"
-                ></seller-dashboard-view-transaction-status-chip-component>
+                ></global-transaction-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
                 <v-btn icon @click="openTransactionDialog(item)">
@@ -120,13 +120,13 @@ import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import { GET_SHOP_TRANSACTIONS } from "@/store/types/transaction-store-type";
-import SellerDashboardViewTransactionStatusChipComponent from "@/components/views/seller-dashboard/transaction-status-chip-component";
 import SellerDashboardViewTransactionDialogComponent from "@/components/views/seller-dashboard/transaction-dialog-component";
+import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
 
 export default {
     components: {
+        GlobalTransactionStatusChipComponent,
         SellerDashboardViewTransactionDialogComponent,
-        SellerDashboardViewTransactionStatusChipComponent,
         CustomRouterLinkComponent,
     },
 
