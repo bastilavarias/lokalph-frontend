@@ -27,6 +27,9 @@
                     ·
                     <span> {{ offerQuantity }} pcs </span>
                 </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                    Accepted {{ formatRelativeTime(transactionCreatedAt) }}
+                </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
                 <global-offer-status-chip-component
@@ -34,7 +37,9 @@
                 ></global-offer-status-chip-component>
             </v-list-item-action>
         </v-list-item>
-        <v-card-text> sdfsdfs </v-card-text>
+        <v-card-text v-if="!isStatusPending && isExpanded">
+            sdfsdfs
+        </v-card-text>
     </v-card>
 </template>
 
@@ -91,7 +96,7 @@ export default {
             required: true,
         },
 
-        offerCreatedAt: {
+        transactionCreatedAt: {
             type: String,
             required: true,
         },
@@ -114,6 +119,12 @@ export default {
             transactionsLocal: this.transactions,
             isExpanded: false,
         };
+    },
+
+    computed: {
+        isStatusPending() {
+            return this.transactionStatusLocal === "pending";
+        },
     },
 
     watch: {

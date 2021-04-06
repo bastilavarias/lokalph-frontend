@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "seller-dashboard-view-transaction-status-chip-component",
+    name: "global-transaction-status-chip-component",
 
     props: {
         status: {

@@ -11,7 +11,7 @@
                 :transaction-status="transaction.status"
                 :offer-quantity="transaction.offer.quantity"
                 :offer-total-price="transaction.offer.total_price"
-                :offer-created-at="transaction.offer.created_at"
+                :transaction-created-at="transaction.created_at"
                 :product-preview="transaction.product.images[0]"
                 :transactions.sync="transactions"
             ></customer-dashboard-view-transaction-list-item-component>
