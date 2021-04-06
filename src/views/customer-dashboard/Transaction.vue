@@ -16,6 +16,10 @@
                 :transaction-created-at="transaction.created_at"
                 :product-preview="transaction.product.images[0]"
                 :transactions.sync="transactions"
+                :transaction-date="transaction.date"
+                :transaction-time="transaction.time"
+                :transaction-address="transaction.address"
+                :transaction-code="transaction.code"
             ></customer-dashboard-view-transaction-list-item-component>
             <v-divider v-if="transactions.length - 1 !== index"></v-divider>
         </template>
