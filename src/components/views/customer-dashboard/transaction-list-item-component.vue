@@ -28,13 +28,41 @@
                     <span> {{ offerQuantity }} pcs </span>
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
-                    Accepted {{ formatRelativeTime(transactionCreatedAt) }}
+                    <span
+                        :title="`This offer accepted by ${shopName} ${formatRelativeTime(
+                            transactionCreatedAt
+                        )}`"
+                    >
+                        Accepted by {{ shopName }}
+                        {{ formatRelativeTime(transactionCreatedAt) }}
+                    </span>
+                    <template v-if="!isStatusPending">
+                        ·
+                        <span
+                            @click="isExpanded = !isExpanded"
+                            :style="{ cursor: 'pointer' }"
+                        >
+                            {{
+                                isExpanded
+                                    ? "Hide Details"
+                                    : `Expand ${offerShippingMethod.label} Details`
+                            }}
+                            <v-icon small>
+                                {{
+                                    isExpanded
+                                        ? "mdi-chevron-up"
+                                        : "mdi-chevron-down"
+                                }}
+                            </v-icon>
+                        </span>
+                    </template>
                 </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
-                <global-offer-status-chip-component
+                <global-transaction-status-chip-component
                     :status="transactionStatus"
-                ></global-offer-status-chip-component>
+                    :is-shop="false"
+                ></global-transaction-status-chip-component>
             </v-list-item-action>
         </v-list-item>
         <v-card-text v-if="!isStatusPending && isExpanded">
@@ -47,11 +75,14 @@
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import commonUtility from "@/common/utility";
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
-import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
+import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
 export default {
     name: "customer-dashboard-view-transaction-list-item-component",
 
-    components: { GlobalOfferStatusChipComponent, CustomRouterLinkComponent },
+    components: {
+        GlobalTransactionStatusChipComponent,
+        CustomRouterLinkComponent,
+    },
 
     mixins: [commonUtility],
 
@@ -63,6 +94,11 @@ export default {
 
         shopId: {
             type: Number,
+            required: true,
+        },
+
+        shopName: {
+            type: String,
             required: true,
         },
 
@@ -93,6 +129,11 @@ export default {
 
         offerTotalPrice: {
             type: Number,
+            required: true,
+        },
+
+        offerShippingMethod: {
+            type: Object,
             required: true,
         },
 

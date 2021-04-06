@@ -78,6 +78,7 @@
             <template v-slot:item.status="{ item }">
                 <global-transaction-status-chip-component
                     :status="item.status"
+                    is-shop
                 ></global-transaction-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">

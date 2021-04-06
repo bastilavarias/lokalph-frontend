@@ -6,6 +6,7 @@
                     <span class="mr-2">Transaction</span>
                     <global-transaction-status-chip-component
                         :status="transactionStatus"
+                        is-shop
                     ></global-transaction-status-chip-component>
                 </div>
                 <v-spacer> </v-spacer>
