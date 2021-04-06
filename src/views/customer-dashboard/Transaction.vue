@@ -96,7 +96,6 @@ export default {
                 payload
             );
             const transactions = data.account_transactions;
-            console.log(transactions);
             if (transactions.length === this.scrollOptions.perPage) {
                 this.transactions = [...this.transactions, ...transactions];
                 $state.loaded();
