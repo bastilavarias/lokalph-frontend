@@ -26,53 +26,10 @@
                 ·
                 <span> {{ offerQuantity }} pcs </span>
             </v-list-item-subtitle>
-            <v-list-item-subtitle>
-                <span class="black--text">
-                    Offered by:
-                    <custom-router-link-component
-                        :to="{
-                            name: 'profile-view',
-                            params: {
-                                email: accountEmail,
-                            },
-                        }"
-                    >
-                        <span class="black--text text-decoration-underline"
-                            >You</span
-                        >
-                    </custom-router-link-component>
-                    ·
-                    <span>{{ formatRelativeTime(offerCreatedAt) }}</span>
-                </span>
-            </v-list-item-subtitle>
         </v-list-item-content>
-        <v-list-item-action v-if="isStatusPending">
-            <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn icon v-on="on">
-                        <v-icon>mdi-dots-horizontal</v-icon>
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-subheader
-                        >Offer Status:
-                        <span class="ml-1 font-weight-bold text-capitalize">{{
-                            offerStatus
-                        }}</span></v-subheader
-                    >
-                    <v-divider></v-divider>
-                    <v-subheader>Action</v-subheader>
-                    <v-list-item
-                        @click="cancelOffer"
-                        :disabled="isCancelOfferStart"
-                        >Cancel Offer</v-list-item
-                    >
-                </v-list>
-            </v-menu>
-        </v-list-item-action>
-        <v-list-item-action v-if="!isStatusPending">
+        <v-list-item-action>
             <global-offer-status-chip-component
-                :status="offerStatus"
+                :status="transactionStatus"
             ></global-offer-status-chip-component>
         </v-list-item-action>
     </v-list-item>
@@ -116,7 +73,7 @@ export default {
             required: true,
         },
 
-        offerStatus: {
+        transactionStatus: {
             type: String,
             required: true,
         },
@@ -141,38 +98,31 @@ export default {
             required: true,
         },
 
-        offers: {
+        transactions: {
             type: Array,
-            required: true,
-        },
-
-        offerCancelledBy: {
             required: true,
         },
     },
 
     data() {
         return {
-            offerStatusLocal: this.offerStatus,
+            transactionStatusLocal: this.transactionStatus,
             isCancelOfferStart: false,
-            offersLocal: this.offers,
-            offerCancelledByLocal: this.offerCancelledBy
-                ? Object.assign({}, this.offerCancelledBy)
-                : null,
+            transactionsLocal: this.transactions,
         };
     },
 
     watch: {
-        offers(value) {
-            this.offersLocal = value;
+        transactions(value) {
+            this.transactionsLocal = value;
         },
 
-        offersLocal(value) {
-            this.$emit("update:offers", value);
+        transactionsLocal(value) {
+            this.$emit("update:transactions", value);
         },
 
-        offerStatus(value) {
-            this.offerStatusLocal = value;
+        transactionStatus(value) {
+            this.transactionStatusLocal = value;
         },
 
         offerCancelledBy(value) {
@@ -182,31 +132,17 @@ export default {
         },
     },
 
-    computed: {
-        isStatusPending() {
-            return this.offerStatusLocal === "pending";
-        },
-    },
-
     methods: {
-        async cancelOffer() {
+        async cancelTransaction() {
             this.isCancelOfferStart = true;
             const { data } = await this.$store.dispatch(
                 CANCEL_OFFER,
                 this.offerId
             );
             if (data) {
-                this.offersLocal = this.offersLocal.map((offer) => {
+                this.transactionsLocal = this.transactionsLocal.map((offer) => {
                     if (offer.id === data.id) {
-                        this.offerStatusLocal = data.status;
-                        this.offerCancelledByLocal = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
-                        offer.cancelled_by = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
+                        this.transactionStatusLocal = data.status;
                         offer.status = data.status;
                     }
                     return offer;
