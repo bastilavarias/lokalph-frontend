@@ -23,9 +23,9 @@ const offerRepository = {
         return response.data;
     },
 
-    async getAccountOffers({ accountId, page, perPage }) {
+    async getAccountOffers({ page, perPage }) {
         const response = await axiosService.get(
-            `/offer/account/${accountId}?page=${page}&per_page=${perPage}`
+            `/offer/account?page=${page}&per_page=${perPage}`
         );
         return response.data;
     },
