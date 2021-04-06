@@ -7,6 +7,13 @@ const transactionRepository = {
         );
         return response.data;
     },
+
+    async getAccountTransactions(page, perPage) {
+        const response = await axiosService.get(
+            `/transaction/account?page=${page}&per_page=${perPage}`
+        );
+        return response.data;
+    },
 };
 
 export default transactionRepository;

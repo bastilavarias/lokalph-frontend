@@ -82,9 +82,9 @@ const offerStoreModule = {
             }
         },
 
-        async [GET_ACCOUNT_OFFERS](_, payload) {
+        async [GET_ACCOUNT_OFFERS](_, { page, perPage }) {
             try {
-                return await offerRepository.getAccountOffers(payload);
+                return await offerRepository.getAccountOffers(page, perPage);
             } catch (error) {
                 return error.response.data;
             }

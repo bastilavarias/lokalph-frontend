@@ -84,7 +84,7 @@ import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chi
 import commonUtility from "@/common/utility";
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 export default {
-    name: "customer-dashboard-view-offer-item-component",
+    name: "customer-dashboard-view-offer-list-item-component",
 
     components: { GlobalOfferStatusChipComponent, CustomRouterLinkComponent },
 
