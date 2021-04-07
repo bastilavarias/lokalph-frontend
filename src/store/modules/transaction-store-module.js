@@ -1,5 +1,6 @@
 import transactionRepository from "@/repositories/transaction-repository";
 import {
+    CANCEL_TRANSACTION,
     GET_ACCOUNT_TRANSACTIONS,
     GET_SHOP_TRANSACTIONS,
 } from "@/store/types/transaction-store-type";
@@ -24,6 +25,18 @@ const transactionStoreModule = {
                     page,
                     perPage
                 );
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [CANCEL_TRANSACTION](_, { transactionId, cancelledBy }) {
+            const payload = {
+                transaction_id: transactionId,
+                cancelled_by: cancelledBy,
+            };
+            try {
+                return await transactionRepository.cancelTransaction(payload);
             } catch (error) {
                 return error.response.data;
             }

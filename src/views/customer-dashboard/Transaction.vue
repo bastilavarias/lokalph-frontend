@@ -3,7 +3,6 @@
         <v-card-title>Transactions</v-card-title>
         <template v-for="(transaction, index) in transactions">
             <customer-dashboard-view-transaction-list-item-component
-                :offer-id="transaction.offer.id"
                 :shop-id="transaction.shop.id"
                 :shop-name="transaction.shop.name"
                 :product-slug="transaction.product.slug"
@@ -13,13 +12,15 @@
                 :offer-quantity="transaction.offer.quantity"
                 :offer-total-price="transaction.offer.total_price"
                 :offer-shipping-method="transaction.offer.shipping_method"
-                :transaction-created-at="transaction.created_at"
                 :product-preview="transaction.product.images[0]"
+                :transaction-created-at="transaction.created_at"
+                :transaction-id="transaction.id"
                 :transactions.sync="transactions"
                 :transaction-date="transaction.date"
                 :transaction-time="transaction.time"
                 :transaction-address="transaction.address"
                 :transaction-code="transaction.code"
+                :transaction-cancelled-by="transaction.cancelled_by"
             ></customer-dashboard-view-transaction-list-item-component>
             <v-divider v-if="transactions.length - 1 !== index"></v-divider>
         </template>

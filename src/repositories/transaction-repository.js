@@ -14,6 +14,11 @@ const transactionRepository = {
         );
         return response.data;
     },
+
+    async cancelTransaction(payload) {
+        const response = await axiosService.put("/transaction/cancel", payload);
+        return response.data;
+    },
 };
 
 export default transactionRepository;
