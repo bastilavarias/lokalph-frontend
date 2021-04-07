@@ -129,12 +129,6 @@
             <template v-slot:item.price="{ item }">
                 {{ formatMoney("PHP", item.total_price) }}
             </template>
-            <template v-slot:item.shippingMethod="{ item }">
-                {{ item.shipping_method.label }}
-            </template>
-            <template v-slot:item.datetime="{ item }">
-                {{ formatRelativeTime(item.created_at) }}
-            </template>
             <template v-slot:item.status="{ item }">
                 <global-offer-status-chip-component
                     :status="item.status"
@@ -240,16 +234,6 @@ export default {
                     text: "Offer Price",
                     sortable: false,
                     value: "price",
-                },
-                {
-                    text: "Shiping Method",
-                    sortable: false,
-                    value: "shippingMethod",
-                },
-                {
-                    text: "Offered At",
-                    sortable: false,
-                    value: "datetime",
                 },
                 {
                     text: "Status",
