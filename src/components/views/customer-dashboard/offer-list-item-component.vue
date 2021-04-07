@@ -72,7 +72,8 @@
         </v-list-item-action>
         <v-list-item-action v-if="!isStatusPending">
             <global-offer-status-chip-component
-                :status="offerStatus"
+                :status="offerStatusLocal"
+                :cancelled-by="offerCancelledByLocal"
             ></global-offer-status-chip-component>
         </v-list-item-action>
     </v-list-item>

@@ -4,11 +4,10 @@
             <v-card-title>
                 <div>
                     <span class="mr-2">Offer</span>
-                    <span :title="customOfferStatusSpanTitle">
-                        <global-offer-status-chip-component
-                            :status="offerStatusLocal"
-                        ></global-offer-status-chip-component>
-                    </span>
+                    <global-offer-status-chip-component
+                        :status="offerStatusLocal"
+                        :cancelled-by="offerCancelledByLocal"
+                    ></global-offer-status-chip-component>
                 </div>
                 <v-spacer> </v-spacer>
                 <v-btn icon @click="isOpenLocal = false">
@@ -639,17 +638,6 @@ export default {
     },
 
     computed: {
-        customOfferStatusSpanTitle() {
-            let title = "This offer is waiting for your approval";
-            if (this.offerStatus === "accepted")
-                title = "You accepted this offer";
-            if (this.offerStatus === "cancelled")
-                title = `${
-                    this.offerCancelledByLocal === "shop" ? "You" : "Customer"
-                } cancelled this offer`;
-            return title;
-        },
-
         preferTotalPrice() {
             return this.productPrice * this.offerQuantity;
         },
