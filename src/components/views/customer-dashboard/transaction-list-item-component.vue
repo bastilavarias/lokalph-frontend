@@ -54,7 +54,8 @@
             </v-list-item-content>
             <v-list-item-action>
                 <global-transaction-status-chip-component
-                    :status="transactionStatus"
+                    :status="transactionStatusLocal"
+                    :cancelled-by="transactionCancelledBy"
                     :is-shop="false"
                 ></global-transaction-status-chip-component>
             </v-list-item-action>
@@ -179,9 +180,14 @@
                 </v-row>
             </v-card>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="isStatusPending">
             <v-spacer></v-spacer>
-            <v-btn color="error" depressed>
+            <v-btn
+                color="error"
+                depressed
+                @click="cancelTransaction"
+                :loading="isCancelTransactionStart"
+            >
                 <v-icon class="mr-1">mdi-cancel</v-icon>
                 <span class="text-capitalize">Cancel</span>
             </v-btn>
@@ -195,8 +201,8 @@
 <script>
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import commonUtility from "@/common/utility";
-import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
+import { CANCEL_TRANSACTION } from "@/store/types/transaction-store-type";
 export default {
     name: "customer-dashboard-view-transaction-list-item-component",
 
@@ -208,7 +214,7 @@ export default {
     mixins: [commonUtility],
 
     props: {
-        offerId: {
+        transactionId: {
             type: Number,
             required: true,
         },
@@ -240,6 +246,10 @@ export default {
 
         transactionStatus: {
             type: String,
+            required: true,
+        },
+
+        transactionCancelledBy: {
             required: true,
         },
 
@@ -297,10 +307,17 @@ export default {
     data() {
         return {
             transactionStatusLocal: this.transactionStatus,
-            isCancelOfferStart: false,
+            transactionCancelledByLocal: this.transactionCancelledBy,
+            isCancelTransactionStart: false,
             transactionsLocal: this.transactions,
             isExpanded: true,
         };
+    },
+
+    computed: {
+        isStatusPending() {
+            return this.transactionStatusLocal === "pending";
+        },
     },
 
     watch: {
@@ -316,33 +333,40 @@ export default {
             this.transactionStatusLocal = value;
         },
 
-        offerCancelledBy(value) {
-            this.offerCancelledByLocal = value
-                ? Object.assign({}, value)
-                : null;
+        transactionCancelledBy(value) {
+            this.transactionCancelledByLocal = value;
         },
     },
 
     methods: {
         async cancelTransaction() {
-            this.isCancelOfferStart = true;
+            this.isCancelTransactionStart = true;
+            const payload = {
+                transactionId: this.transactionId,
+                cancelledBy: "customer",
+            };
             const { data } = await this.$store.dispatch(
-                CANCEL_OFFER,
-                this.offerId
+                CANCEL_TRANSACTION,
+                payload
             );
             if (data) {
-                this.transactionsLocal = this.transactionsLocal.map((offer) => {
-                    if (offer.id === data.id) {
-                        this.transactionStatusLocal = data.status;
-                        offer.status = data.status;
+                this.transactionsLocal = this.transactionsLocal.map(
+                    (transaction) => {
+                        if (transaction.id === data.id) {
+                            this.transactionStatusLocal = data.status;
+                            transaction.status = data.status;
+                            this.transactionCancelledByLocal =
+                                data.cancelled_by;
+                            transaction.cancelled_by = data.cancelled_by;
+                        }
+                        return transaction;
                     }
-                    return offer;
-                });
-                this.isCancelOfferStart = false;
+                );
+                this.isCancelTransactionStart = false;
 
                 return;
             }
-            this.isCancelOfferStart = false;
+            this.isCancelTransactionStart = false;
         },
     },
 };

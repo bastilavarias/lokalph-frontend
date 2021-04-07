@@ -1,5 +1,5 @@
 <template>
-    <span :title="customOfferStatusSpanTitle">
+    <span :title="spanTitle">
         <v-chip small :color="color" class="text-capitalize">
             {{ status }}
         </v-chip>
@@ -17,7 +17,6 @@ export default {
         },
 
         cancelledBy: {
-            type: String,
             required: true,
         },
     },
@@ -31,7 +30,7 @@ export default {
             return colors[this.status];
         },
 
-        customOfferStatusSpanTitle() {
+        spanTitle() {
             let title = "This offer is waiting for your approval";
             if (this.status === "accepted") title = "You accepted this offer";
             if (this.status === "cancelled")
