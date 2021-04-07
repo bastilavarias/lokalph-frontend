@@ -1,7 +1,9 @@
 <template>
-    <v-chip small :color="color" class="text-capitalize">
-        {{ message }}
-    </v-chip>
+    <span :title="spanTitle">
+        <v-chip small :color="color" class="text-capitalize">
+            {{ message }}
+        </v-chip>
+    </span>
 </template>
 
 <script>
@@ -11,6 +13,10 @@ export default {
     props: {
         status: {
             type: String,
+            required: true,
+        },
+
+        cancelledBy: {
             required: true,
         },
 
@@ -36,6 +42,17 @@ export default {
             if (!this.isShop && this.status === "pending")
                 message = "To Receive";
             return message;
+        },
+
+        spanTitle() {
+            let title = "This transaction is waiting to be receive";
+            if (this.status === "accepted")
+                title = "Transaction is already received";
+            if (this.status === "cancelled")
+                title = `${
+                    this.cancelledBy === "shop" ? "You" : "Customer"
+                } cancelled this transaction`;
+            return title;
         },
     },
 };

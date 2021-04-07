@@ -54,7 +54,8 @@
             </v-list-item-content>
             <v-list-item-action>
                 <global-transaction-status-chip-component
-                    :status="transactionStatus"
+                    :status="transactionStatusLocal"
+                    :cancelled-by="transactionCancelledBy"
                     :is-shop="false"
                 ></global-transaction-status-chip-component>
             </v-list-item-action>
@@ -179,9 +180,14 @@
                 </v-row>
             </v-card>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="isStatusPending">
             <v-spacer></v-spacer>
-            <v-btn color="error" depressed @click="cancelTransaction">
+            <v-btn
+                color="error"
+                depressed
+                @click="cancelTransaction"
+                :loading="isCancelTransactionStart"
+            >
                 <v-icon class="mr-1">mdi-cancel</v-icon>
                 <span class="text-capitalize">Cancel</span>
             </v-btn>
@@ -308,6 +314,12 @@ export default {
         };
     },
 
+    computed: {
+        isStatusPending() {
+            return this.transactionStatusLocal === "pending";
+        },
+    },
+
     watch: {
         transactions(value) {
             this.transactionsLocal = value;
@@ -337,7 +349,6 @@ export default {
                 CANCEL_TRANSACTION,
                 payload
             );
-            console.log(data);
             if (data) {
                 this.transactionsLocal = this.transactionsLocal.map(
                     (transaction) => {
