@@ -157,9 +157,7 @@ export default {
             offerStatusLocal: this.offerStatus,
             isCancelOfferStart: false,
             offersLocal: this.offers,
-            offerCancelledByLocal: this.offerCancelledBy
-                ? Object.assign({}, this.offerCancelledBy)
-                : null,
+            offerCancelledByLocal: this.offerCancelledBy,
         };
     },
 
@@ -177,9 +175,7 @@ export default {
         },
 
         offerCancelledBy(value) {
-            this.offerCancelledByLocal = value
-                ? Object.assign({}, value)
-                : null;
+            this.offerCancelledByLocal = value;
         },
     },
 
@@ -201,15 +197,9 @@ export default {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
                         this.offerStatusLocal = data.status;
-                        this.offerCancelledByLocal = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
-                        offer.cancelled_by = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
                         offer.status = data.status;
+                        this.offerCancelledByLocal = data.cancelled_by;
+                        offer.cancelled_by = data.cancelled_by;
                     }
                     return offer;
                 });
