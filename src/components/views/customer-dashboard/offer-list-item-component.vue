@@ -191,10 +191,11 @@ export default {
     methods: {
         async cancelOffer() {
             this.isCancelOfferStart = true;
-            const { data } = await this.$store.dispatch(
-                CANCEL_OFFER,
-                this.offerId
-            );
+            const payload = {
+                offerId: this.offerId,
+                cancelledBy: "customer",
+            };
+            const { data } = await this.$store.dispatch(CANCEL_OFFER, payload);
             if (data) {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
