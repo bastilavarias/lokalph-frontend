@@ -630,9 +630,7 @@ export default {
             isCancelOfferStart: false,
             offersLocal: this.offers,
             offerStatusLocal: this.offerStatus,
-            offerCancelledByLocal: this.offerCancelledBy
-                ? Object.assign({}, this.offerCancelledBy)
-                : null,
+            offerCancelledByLocal: this.offerCancelledBy,
             stepper: 1,
             form: Object.assign({}, defaultForm),
             defaultForm,
@@ -642,18 +640,14 @@ export default {
 
     computed: {
         customOfferStatusSpanTitle() {
-            const title = {
-                pending: `Customer sent this offer ${this.formatRelativeTime(
-                    this.offerCreatedAt
-                )}`,
-                accepted: `You accepted this offer ${this.formatRelativeTime(
-                    this.offerCreatedAt
-                )}`,
-                cancelled: `You cancelled this offer ${this.formatRelativeTime(
-                    this.offerCreatedAt
-                )}`,
-            };
-            return title[this.offerStatus];
+            let title = "This offer is waiting for your approval";
+            if (this.offerStatus === "accepted")
+                title = "You accepted this offer";
+            if (this.offerStatus === "cancelled")
+                title = `${
+                    this.offerCancelledByLocal === "shop" ? "You" : "Customer"
+                } cancelled this offer`;
+            return title;
         },
 
         preferTotalPrice() {
@@ -714,23 +708,18 @@ export default {
     methods: {
         async cancelOffer() {
             this.isCancelOfferStart = true;
-            const { data } = await this.$store.dispatch(
-                CANCEL_OFFER,
-                this.offerId
-            );
+            const payload = {
+                offerId: this.offerId,
+                cancelledBy: "shop",
+            };
+            const { data } = await this.$store.dispatch(CANCEL_OFFER, payload);
             if (data) {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
                         this.offerStatusLocal = data.status;
-                        this.offerCancelledByLocal = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
-                        offer.cancelled_by = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
                         offer.status = data.status;
+                        this.offerCancelledByLocal = data.cancelled_by;
+                        offer.cancelled_by = data.cancelled_by;
                     }
                     return offer;
                 });

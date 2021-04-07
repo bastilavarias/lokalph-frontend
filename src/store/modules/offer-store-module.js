@@ -45,10 +45,11 @@ const offerStoreModule = {
             }
         },
 
-        async [CANCEL_OFFER](_, offerId) {
+        async [CANCEL_OFFER](_, { offerId, cancelledBy }) {
             try {
                 const payload = {
                     offer_id: offerId,
+                    cancelled_by: cancelledBy,
                 };
                 return await offerRepository.cancelOffer(payload);
             } catch (error) {
