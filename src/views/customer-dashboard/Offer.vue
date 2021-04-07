@@ -2,7 +2,7 @@
     <v-card outlined>
         <v-card-title>Offers</v-card-title>
         <template v-for="(offer, index) in offers">
-            <customer-dashboard-view-offer-item-component
+            <customer-dashboard-view-offer-list-item-component
                 :offer-id="offer.id"
                 :shop-id="offer.shop.id"
                 :product-slug="offer.product.slug"
@@ -15,7 +15,7 @@
                 :product-preview="offer.product.images[0]"
                 :offers.sync="offers"
                 :offer-cancelled-by="offer.cancelled_by"
-            ></customer-dashboard-view-offer-item-component>
+            ></customer-dashboard-view-offer-list-item-component>
             <v-divider v-if="offers.length - 1 !== index"></v-divider>
         </template>
         <infinite-loading @infinite="getOffers" :identifier="scrollOptions.id">
@@ -42,11 +42,11 @@ import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-c
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import commonUtility from "@/common/utility";
 import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chip-component";
-import CustomerDashboardViewOfferItemComponent from "@/components/views/customer-dashboard/offer-item-component";
+import CustomerDashboardViewOfferListItemComponent from "@/components/views/customer-dashboard/offer-list-item-component";
 
 export default {
     components: {
-        CustomerDashboardViewOfferItemComponent,
+        CustomerDashboardViewOfferListItemComponent,
         GlobalOfferStatusChipComponent,
         CustomRouterLinkComponent,
         CustomLoadingSpinnerComponent,

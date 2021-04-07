@@ -4,11 +4,10 @@
             <v-card-title>
                 <div>
                     <span class="mr-2">Offer</span>
-                    <span :title="customOfferStatusSpanTitle">
-                        <global-offer-status-chip-component
-                            :status="offerStatusLocal"
-                        ></global-offer-status-chip-component>
-                    </span>
+                    <global-offer-status-chip-component
+                        :status="offerStatusLocal"
+                        :cancelled-by="offerCancelledByLocal"
+                    ></global-offer-status-chip-component>
                 </div>
                 <v-spacer> </v-spacer>
                 <v-btn icon @click="isOpenLocal = false">
@@ -386,8 +385,8 @@
                             <v-btn
                                 color="error"
                                 depressed
-                                :loading="isCancelOfferStart"
-                                @click="cancelOffer"
+                                :loading="isRejectOfferStart"
+                                @click="rejectOffer"
                                 v-if="isStatusPending"
                             >
                                 <v-icon class="mr-1">mdi-cancel</v-icon>
@@ -397,7 +396,7 @@
                                 color="success"
                                 depressed
                                 class="text-capitalize"
-                                :disabled="isCancelOfferStart"
+                                :disabled="isRejectOfferStart"
                                 v-if="isStatusPending"
                                 @click="stepper = 2"
                             >
@@ -627,12 +626,10 @@ export default {
         return {
             isOpenLocal: this.isOpen,
             isOfferNoteExpanded: false,
-            isCancelOfferStart: false,
+            isRejectOfferStart: false,
             offersLocal: this.offers,
             offerStatusLocal: this.offerStatus,
-            offerCancelledByLocal: this.offerCancelledBy
-                ? Object.assign({}, this.offerCancelledBy)
-                : null,
+            offerCancelledByLocal: this.offerCancelledBy,
             stepper: 1,
             form: Object.assign({}, defaultForm),
             defaultForm,
@@ -641,21 +638,6 @@ export default {
     },
 
     computed: {
-        customOfferStatusSpanTitle() {
-            const title = {
-                pending: `Customer sent this offer ${this.formatRelativeTime(
-                    this.offerCreatedAt
-                )}`,
-                accepted: `You accepted this offer ${this.formatRelativeTime(
-                    this.offerCreatedAt
-                )}`,
-                cancelled: `You cancelled this offer ${this.formatRelativeTime(
-                    this.offerCreatedAt
-                )}`,
-            };
-            return title[this.offerStatus];
-        },
-
         preferTotalPrice() {
             return this.productPrice * this.offerQuantity;
         },
@@ -705,40 +687,33 @@ export default {
         },
 
         offerCancelledBy(value) {
-            this.offerCancelledByLocal = value
-                ? Object.assign({}, value)
-                : null;
+            this.offerCancelledByLocal = value;
         },
     },
 
     methods: {
-        async cancelOffer() {
-            this.isCancelOfferStart = true;
-            const { data } = await this.$store.dispatch(
-                CANCEL_OFFER,
-                this.offerId
-            );
+        async rejectOffer() {
+            this.isRejectOfferStart = true;
+            const payload = {
+                offerId: this.offerId,
+                cancelledBy: "shop",
+            };
+            const { data } = await this.$store.dispatch(CANCEL_OFFER, payload);
             if (data) {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
                         this.offerStatusLocal = data.status;
-                        this.offerCancelledByLocal = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
-                        offer.cancelled_by = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
                         offer.status = data.status;
+                        this.offerCancelledByLocal = data.cancelled_by;
+                        offer.cancelled_by = data.cancelled_by;
                     }
                     return offer;
                 });
-                this.isCancelOfferStart = false;
+                this.isRejectOfferStart = false;
 
                 return;
             }
-            this.isCancelOfferStart = false;
+            this.isRejectOfferStart = false;
         },
 
         async acceptOffer() {

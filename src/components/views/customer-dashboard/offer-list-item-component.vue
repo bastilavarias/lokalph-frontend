@@ -72,7 +72,8 @@
         </v-list-item-action>
         <v-list-item-action v-if="!isStatusPending">
             <global-offer-status-chip-component
-                :status="offerStatus"
+                :status="offerStatusLocal"
+                :cancelled-by="offerCancelledByLocal"
             ></global-offer-status-chip-component>
         </v-list-item-action>
     </v-list-item>
@@ -84,7 +85,7 @@ import GlobalOfferStatusChipComponent from "@/components/global/offer-status-chi
 import commonUtility from "@/common/utility";
 import { CANCEL_OFFER } from "@/store/types/offer-store-type";
 export default {
-    name: "customer-dashboard-view-offer-item-component",
+    name: "customer-dashboard-view-offer-list-item-component",
 
     components: { GlobalOfferStatusChipComponent, CustomRouterLinkComponent },
 
@@ -156,9 +157,7 @@ export default {
             offerStatusLocal: this.offerStatus,
             isCancelOfferStart: false,
             offersLocal: this.offers,
-            offerCancelledByLocal: this.offerCancelledBy
-                ? Object.assign({}, this.offerCancelledBy)
-                : null,
+            offerCancelledByLocal: this.offerCancelledBy,
         };
     },
 
@@ -176,9 +175,7 @@ export default {
         },
 
         offerCancelledBy(value) {
-            this.offerCancelledByLocal = value
-                ? Object.assign({}, value)
-                : null;
+            this.offerCancelledByLocal = value;
         },
     },
 
@@ -191,23 +188,18 @@ export default {
     methods: {
         async cancelOffer() {
             this.isCancelOfferStart = true;
-            const { data } = await this.$store.dispatch(
-                CANCEL_OFFER,
-                this.offerId
-            );
+            const payload = {
+                offerId: this.offerId,
+                cancelledBy: "customer",
+            };
+            const { data } = await this.$store.dispatch(CANCEL_OFFER, payload);
             if (data) {
                 this.offersLocal = this.offersLocal.map((offer) => {
                     if (offer.id === data.id) {
                         this.offerStatusLocal = data.status;
-                        this.offerCancelledByLocal = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
-                        offer.cancelled_by = Object.assign(
-                            {},
-                            data.cancelled_by
-                        );
                         offer.status = data.status;
+                        this.offerCancelledByLocal = data.cancelled_by;
+                        offer.cancelled_by = data.cancelled_by;
                     }
                     return offer;
                 });

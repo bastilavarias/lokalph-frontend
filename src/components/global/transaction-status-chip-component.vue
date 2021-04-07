@@ -1,16 +1,21 @@
 <template>
     <v-chip small :color="color" class="text-capitalize">
-        {{ status }}
+        {{ message }}
     </v-chip>
 </template>
 
 <script>
 export default {
-    name: "seller-dashboard-view-transaction-status-chip-component",
+    name: "global-transaction-status-chip-component",
 
     props: {
         status: {
             type: String,
+            required: true,
+        },
+
+        isShop: {
+            type: Boolean,
             required: true,
         },
     },
@@ -23,6 +28,14 @@ export default {
                 cancelled: "error",
             };
             return colors[this.status];
+        },
+
+        message() {
+            let message = this.status;
+            if (this.isShop && this.status === "pending") message = "Pending";
+            if (!this.isShop && this.status === "pending")
+                message = "To Receive";
+            return message;
         },
     },
 };

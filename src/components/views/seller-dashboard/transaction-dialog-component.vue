@@ -4,9 +4,10 @@
             <v-card-title>
                 <div>
                     <span class="mr-2">Transaction</span>
-                    <seller-dashboard-view-transaction-status-chip-component
+                    <global-transaction-status-chip-component
                         :status="transactionStatus"
-                    ></seller-dashboard-view-transaction-status-chip-component>
+                        is-shop
+                    ></global-transaction-status-chip-component>
                 </div>
                 <v-spacer> </v-spacer>
                 <v-btn icon @click="isOpenLocal = false">
@@ -295,12 +296,12 @@
 
 <script>
 import commonUtility from "@/common/utility";
-import SellerDashboardViewTransactionStatusChipComponent from "@/components/views/seller-dashboard/transaction-status-chip-component";
+import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
 
 export default {
     name: "seller-dashboard-view-transaction-dialog-component",
     components: {
-        SellerDashboardViewTransactionStatusChipComponent,
+        GlobalTransactionStatusChipComponent,
     },
 
     mixins: [commonUtility],

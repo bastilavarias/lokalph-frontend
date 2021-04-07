@@ -45,10 +45,11 @@ const offerStoreModule = {
             }
         },
 
-        async [CANCEL_OFFER](_, offerId) {
+        async [CANCEL_OFFER](_, { offerId, cancelledBy }) {
             try {
                 const payload = {
                     offer_id: offerId,
+                    cancelled_by: cancelledBy,
                 };
                 return await offerRepository.cancelOffer(payload);
             } catch (error) {
@@ -82,9 +83,9 @@ const offerStoreModule = {
             }
         },
 
-        async [GET_ACCOUNT_OFFERS](_, payload) {
+        async [GET_ACCOUNT_OFFERS](_, { page, perPage }) {
             try {
-                return await offerRepository.getAccountOffers(payload);
+                return await offerRepository.getAccountOffers(page, perPage);
             } catch (error) {
                 return error.response.data;
             }

@@ -138,6 +138,7 @@
             <template v-slot:item.status="{ item }">
                 <global-offer-status-chip-component
                     :status="item.status"
+                    :cancelled-by="item.cancelled_by"
                 ></global-offer-status-chip-component>
             </template>
             <template v-slot:item.action="{ item }">
