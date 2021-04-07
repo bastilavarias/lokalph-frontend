@@ -386,8 +386,8 @@
                             <v-btn
                                 color="error"
                                 depressed
-                                :loading="isCancelOfferStart"
-                                @click="cancelOffer"
+                                :loading="isRejectOfferStart"
+                                @click="rejectOffer"
                                 v-if="isStatusPending"
                             >
                                 <v-icon class="mr-1">mdi-cancel</v-icon>
@@ -397,7 +397,7 @@
                                 color="success"
                                 depressed
                                 class="text-capitalize"
-                                :disabled="isCancelOfferStart"
+                                :disabled="isRejectOfferStart"
                                 v-if="isStatusPending"
                                 @click="stepper = 2"
                             >
@@ -627,7 +627,7 @@ export default {
         return {
             isOpenLocal: this.isOpen,
             isOfferNoteExpanded: false,
-            isCancelOfferStart: false,
+            isRejectOfferStart: false,
             offersLocal: this.offers,
             offerStatusLocal: this.offerStatus,
             offerCancelledByLocal: this.offerCancelledBy,
@@ -699,15 +699,13 @@ export default {
         },
 
         offerCancelledBy(value) {
-            this.offerCancelledByLocal = value
-                ? Object.assign({}, value)
-                : null;
+            this.offerCancelledByLocal = value;
         },
     },
 
     methods: {
-        async cancelOffer() {
-            this.isCancelOfferStart = true;
+        async rejectOffer() {
+            this.isRejectOfferStart = true;
             const payload = {
                 offerId: this.offerId,
                 cancelledBy: "shop",
@@ -723,11 +721,11 @@ export default {
                     }
                     return offer;
                 });
-                this.isCancelOfferStart = false;
+                this.isRejectOfferStart = false;
 
                 return;
             }
-            this.isCancelOfferStart = false;
+            this.isRejectOfferStart = false;
         },
 
         async acceptOffer() {
