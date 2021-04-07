@@ -36,20 +36,6 @@
                         Accepted by {{ shopName }}
                         {{ formatRelativeTime(transactionCreatedAt) }}
                     </span>
-                    ·
-                    <span
-                        @click="isExpanded = !isExpanded"
-                        :style="{ cursor: 'pointer' }"
-                    >
-                        {{ isExpanded ? "Hide Details" : "Expand Details" }}
-                        <v-icon small>
-                            {{
-                                isExpanded
-                                    ? "mdi-chevron-up"
-                                    : "mdi-chevron-down"
-                            }}
-                        </v-icon>
-                    </span>
                 </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
@@ -60,7 +46,7 @@
                 ></global-transaction-status-chip-component>
             </v-list-item-action>
         </v-list-item>
-        <v-card-text v-if="isExpanded">
+        <v-card-text>
             <v-card outlined rounded class="grey lighten-5">
                 <v-row dense>
                     <v-col cols="12" md="6">
@@ -310,7 +296,6 @@ export default {
             transactionCancelledByLocal: this.transactionCancelledBy,
             isCancelTransactionStart: false,
             transactionsLocal: this.transactions,
-            isExpanded: true,
         };
     },
 
