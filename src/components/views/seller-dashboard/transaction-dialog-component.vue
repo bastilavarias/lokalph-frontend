@@ -6,6 +6,7 @@
                     <span class="mr-2">Transaction</span>
                     <global-transaction-status-chip-component
                         :status="transactionStatus"
+                        :cancelled-by="transactionCancelledBy"
                         is-shop
                     ></global-transaction-status-chip-component>
                 </div>
@@ -388,6 +389,10 @@ export default {
 
         transactionStatus: {
             type: String,
+            required: true,
+        },
+
+        transactionCancelledBy: {
             required: true,
         },
 

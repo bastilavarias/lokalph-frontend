@@ -78,6 +78,7 @@
             <template v-slot:item.status="{ item }">
                 <global-transaction-status-chip-component
                     :status="item.status"
+                    :cancelled-by="item.cancelled_by"
                     is-shop
                 ></global-transaction-status-chip-component>
             </template>
@@ -107,6 +108,7 @@
             :account-image-url="selectedTransaction.account.profile.image_url"
             :account-email="selectedTransaction.account.email"
             :transaction-status="selectedTransaction.status"
+            :transaction-cancelled-by="selectedTransaction.cancelled_by"
             :transaction-date="selectedTransaction.date"
             :transaction-time="selectedTransaction.time"
             :transaction-address="selectedTransaction.address"
