@@ -107,12 +107,14 @@
             :account-first-name="selectedTransaction.account.profile.first_name"
             :account-image-url="selectedTransaction.account.profile.image_url"
             :account-email="selectedTransaction.account.email"
+            :transaction-id="selectedTransaction.id"
             :transaction-status="selectedTransaction.status"
             :transaction-cancelled-by="selectedTransaction.cancelled_by"
             :transaction-date="selectedTransaction.date"
             :transaction-time="selectedTransaction.time"
             :transaction-address="selectedTransaction.address"
             :transaction-code="selectedTransaction.code"
+            :transactions.sync="transactions"
             v-if="selectedTransaction"
         ></seller-dashboard-view-transaction-dialog-component>
     </v-card>

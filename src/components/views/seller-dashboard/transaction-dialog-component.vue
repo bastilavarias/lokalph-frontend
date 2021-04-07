@@ -5,8 +5,8 @@
                 <div>
                     <span class="mr-2">Transaction</span>
                     <global-transaction-status-chip-component
-                        :status="transactionStatus"
-                        :cancelled-by="transactionCancelledBy"
+                        :status="transactionStatusLocal"
+                        :cancelled-by="transactionCancelledByLocal"
                         is-shop
                     ></global-transaction-status-chip-component>
                 </div>
@@ -284,9 +284,14 @@
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions v-if="isStatusPending">
                 <v-spacer></v-spacer>
-                <v-btn color="error" depressed>
+                <v-btn
+                    color="error"
+                    depressed
+                    @click="cancelTransaction"
+                    :loading="isCancelTransactionStart"
+                >
                     <v-icon class="mr-1">mdi-cancel</v-icon>
                     <span class="text-capitalize">Cancel</span>
                 </v-btn>
@@ -298,6 +303,7 @@
 <script>
 import commonUtility from "@/common/utility";
 import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
+import { CANCEL_TRANSACTION } from "@/store/types/transaction-store-type";
 
 export default {
     name: "seller-dashboard-view-transaction-dialog-component",
@@ -387,6 +393,11 @@ export default {
             required: false,
         },
 
+        transactionId: {
+            type: Number,
+            required: true,
+        },
+
         transactionStatus: {
             type: String,
             required: true,
@@ -415,17 +426,30 @@ export default {
             type: String,
             required: true,
         },
+
+        transactions: {
+            type: Array,
+            required: true,
+        },
     },
 
     data() {
         return {
             isOpenLocal: this.isOpen,
+            transactionStatusLocal: this.transactionStatus,
+            transactionCancelledByLocal: this.transactionCancelledBy,
+            isCancelTransactionStart: false,
+            transactionsLocal: this.transactions,
         };
     },
 
     computed: {
         user() {
             return this.$store.state.authentication.user;
+        },
+
+        isStatusPending() {
+            return this.transactionStatusLocal === "pending";
         },
     },
 
@@ -436,6 +460,54 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+
+        transactions(value) {
+            this.transactionsLocal = value;
+        },
+
+        transactionsLocal(value) {
+            this.$emit("update:transactions", value);
+        },
+
+        transactionStatus(value) {
+            this.transactionStatusLocal = value;
+        },
+
+        transactionCancelledBy(value) {
+            this.transactionCancelledByLocal = value;
+        },
+    },
+
+    methods: {
+        async cancelTransaction() {
+            this.isCancelTransactionStart = true;
+            const payload = {
+                transactionId: this.transactionId,
+                cancelledBy: "shop",
+            };
+            const { data } = await this.$store.dispatch(
+                CANCEL_TRANSACTION,
+                payload
+            );
+            if (data) {
+                this.transactionsLocal = this.transactionsLocal.map(
+                    (transaction) => {
+                        if (transaction.id === data.id) {
+                            this.transactionStatusLocal = data.status;
+                            transaction.status = data.status;
+                            this.transactionCancelledByLocal =
+                                data.cancelled_by;
+                            transaction.cancelled_by = data.cancelled_by;
+                        }
+                        return transaction;
+                    }
+                );
+                this.isCancelTransactionStart = false;
+
+                return;
+            }
+            this.isCancelTransactionStart = false;
         },
     },
 };
