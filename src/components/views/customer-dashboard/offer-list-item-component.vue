@@ -1,82 +1,110 @@
 <template>
-    <v-list-item three-line>
-        <v-list-item-avatar tile :size="50">
-            <v-img :src="productPreview.url"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-content>
-            <v-list-item-title class="d-flex align-center">
-                <custom-router-link-component
-                    :to="{
-                        name: 'product-post-view',
-                        params: {
-                            shopId: shopId,
-                            slug: productSlug,
-                        },
-                    }"
-                >
-                    <span class="black--text font-weight-bold">{{
-                        productName
-                    }}</span>
-                </custom-router-link-component>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-                <span class="font-weight-bold secondary--text">{{
-                    formatMoney("PHP", offerTotalPrice)
-                }}</span>
-                ·
-                <span> {{ offerQuantity }} pcs </span>
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-                <span class="black--text">
-                    Offered by:
+    <v-card flat>
+        <v-list-item three-line>
+            <v-list-item-avatar tile :size="50">
+                <v-img :src="productPreview.url"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+                <v-list-item-title class="d-flex align-center">
                     <custom-router-link-component
                         :to="{
-                            name: 'profile-view',
+                            name: 'product-post-view',
                             params: {
-                                email: accountEmail,
+                                shopId: shopId,
+                                slug: productSlug,
                             },
                         }"
                     >
-                        <span class="black--text text-decoration-underline"
-                            >You</span
-                        >
+                        <span class="black--text font-weight-bold">{{
+                            productName
+                        }}</span>
                     </custom-router-link-component>
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                    <span class="font-weight-bold secondary--text">{{
+                        formatMoney("PHP", offerTotalPrice)
+                    }}</span>
                     ·
-                    <span>{{ formatRelativeTime(offerCreatedAt) }}</span>
-                </span>
-            </v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action v-if="isStatusPending">
-            <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn icon v-on="on">
-                        <v-icon>mdi-dots-horizontal</v-icon>
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-subheader
-                        >Offer Status:
-                        <span class="ml-1 font-weight-bold text-capitalize">{{
-                            offerStatus
-                        }}</span></v-subheader
+                    <span> {{ offerQuantity }} pcs </span>
+                </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                    <span class="black--text">
+                        Offered by:
+                        <custom-router-link-component
+                            :to="{
+                                name: 'profile-view',
+                                params: {
+                                    email: accountEmail,
+                                },
+                            }"
+                        >
+                            <span class="black--text text-decoration-underline"
+                                >You</span
+                            >
+                        </custom-router-link-component>
+                        ·
+                        <span>{{ formatRelativeTime(offerCreatedAt) }}</span>
+                    </span>
+                </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action v-if="isStatusPending">
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on">
+                            <v-icon>mdi-dots-horizontal</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-subheader
+                            >Offer Status:
+                            <span
+                                class="ml-1 font-weight-bold text-capitalize"
+                                >{{ offerStatus }}</span
+                            ></v-subheader
+                        >
+                        <v-divider></v-divider>
+                        <v-subheader>Action</v-subheader>
+                        <v-list-item
+                            @click="cancelOffer"
+                            :disabled="isCancelOfferStart"
+                            >Cancel Offer</v-list-item
+                        >
+                    </v-list>
+                </v-menu>
+            </v-list-item-action>
+            <v-list-item-action v-if="!isStatusPending">
+                <global-offer-status-chip-component
+                    :status="offerStatusLocal"
+                    :cancelled-by="offerCancelledByLocal"
+                ></global-offer-status-chip-component>
+            </v-list-item-action>
+        </v-list-item>
+        <v-card-text>
+            <v-list-item>
+                <v-list-item-avatar :size="50">
+                    <v-img :src="shopImageUrl"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                    <v-list-item-title>{{ shopName }}</v-list-item-title>
+                    <v-list-item-subtitle
+                        >Created
+                        {{
+                            formatRelativeTime(shopCreatedAt)
+                        }}</v-list-item-subtitle
                     >
-                    <v-divider></v-divider>
-                    <v-subheader>Action</v-subheader>
-                    <v-list-item
-                        @click="cancelOffer"
-                        :disabled="isCancelOfferStart"
-                        >Cancel Offer</v-list-item
+                </v-list-item-content>
+                <v-list-item-action>
+                    <v-btn
+                        color="primary"
+                        depressed
+                        small
+                        class="text-capitalize"
+                        >Visit Shop</v-btn
                     >
-                </v-list>
-            </v-menu>
-        </v-list-item-action>
-        <v-list-item-action v-if="!isStatusPending">
-            <global-offer-status-chip-component
-                :status="offerStatusLocal"
-                :cancelled-by="offerCancelledByLocal"
-            ></global-offer-status-chip-component>
-        </v-list-item-action>
-    </v-list-item>
+                </v-list-item-action>
+            </v-list-item>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -148,6 +176,26 @@ export default {
         },
 
         offerCancelledBy: {
+            required: true,
+        },
+
+        shopImageUrl: {
+            type: String,
+            required: true,
+        },
+
+        shopName: {
+            type: String,
+            required: true,
+        },
+
+        shopSlug: {
+            type: String,
+            required: true,
+        },
+
+        shopCreatedAt: {
+            type: String,
             required: true,
         },
     },
