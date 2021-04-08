@@ -9,6 +9,11 @@
                 </v-btn>
             </v-card-title>
             <v-card-text>
+                <v-col cols="12" v-if="isErrorAlertOpen">
+                    <v-alert type="error">
+                        {{ errorAlertMessage }}
+                    </v-alert>
+                </v-col>
                 <v-col cols="12">
                     <v-list-item three-line>
                         <v-list-item-avatar tile :size="50">
@@ -81,6 +86,8 @@
                     depressed
                     block
                     :disabled="!isFormValid"
+                    :loading="isVerifyCodeStart"
+                    @click="verifyCode"
                     >Verify</v-btn
                 >
             </v-card-actions>
@@ -91,6 +98,7 @@
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 import commonUtility from "@/common/utility";
 import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
+import { RECEIVE_TRANSACTION } from "@/store/types/transaction-store-type";
 export default {
     name:
         "customer-dashboard-view-transaction-code-verification-dialog-component",
@@ -177,6 +185,10 @@ export default {
         return {
             isOpenLocal: this.isOpen,
             code: null,
+            isVerifyCodeStart: false,
+            isErrorAlertOpen: false,
+            errorAlertMessage: null,
+            transactionsLocal: this.transactions,
         };
     },
 
@@ -194,6 +206,49 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+
+        transactions(value) {
+            this.transactionsLocal = value;
+        },
+
+        transactionsLocal(value) {
+            this.$emit("update:transactions", value);
+        },
+    },
+
+    methods: {
+        async verifyCode() {
+            this.isVerifyCodeStart = true;
+            const payload = {
+                transactionId: this.transactionId,
+                code: this.code,
+            };
+            const { data, error, error_message } = await this.$store.dispatch(
+                RECEIVE_TRANSACTION,
+                payload
+            );
+            if (error) {
+                this.isErrorAlertOpen = true;
+                this.errorAlertMessage = error_message;
+                this.isVerifyCodeStart = false;
+                return;
+            }
+            if (data) {
+                this.isOpenLocal = false;
+                this.isVerifyCodeStart = false;
+                this.transactionsLocal = this.transactionsLocal.map(
+                    (transaction) => {
+                        if (transaction.id === data.id) {
+                            transaction.status = data.status;
+                        }
+                        return transaction;
+                    }
+                );
+                this.code = null;
+                this.isErrorAlertOpen = false;
+                this.errorAlertMessage = null;
+            }
         },
     },
 };

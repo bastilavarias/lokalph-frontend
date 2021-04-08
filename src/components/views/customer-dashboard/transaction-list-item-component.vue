@@ -199,7 +199,7 @@
             :product-preview="productPreview"
             :transaction-created-at="transactionCreatedAt"
             :transaction-id="transactionId"
-            :transactions.sync="transactions"
+            :transactions.sync="transactionsLocal"
             :transaction-cancelled-by="transactionCancelledByLocal"
         ></customer-dashboard-view-transaction-code-verification-dialog-component>
     </v-card>
