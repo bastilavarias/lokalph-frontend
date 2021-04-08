@@ -6,6 +6,10 @@ const commonUtility = {
         currentDate() {
             return moment().format("YYYY-MM-DD");
         },
+
+        currentTime() {
+            return moment().format("HH:mm");
+        },
     },
 
     methods: {

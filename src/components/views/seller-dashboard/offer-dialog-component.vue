@@ -417,6 +417,7 @@
                                 <custom-time-picker-component
                                     :time.sync="form.time"
                                     :label="`${offerShippingMethod.label} Time`"
+                                    :min="currentTime"
                                     outlined
                                 >
                                 </custom-time-picker-component>

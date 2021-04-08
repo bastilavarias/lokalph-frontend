@@ -26,6 +26,7 @@
             v-model="timeLocal"
             full-width
             @click:minute="$refs.menu.save(time)"
+            :min="min"
         ></v-time-picker>
     </v-menu>
 </template>
@@ -47,6 +48,11 @@ export default {
         },
 
         label: {
+            type: String,
+            required: false,
+        },
+
+        min: {
             type: String,
             required: false,
         },
