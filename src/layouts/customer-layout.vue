@@ -70,24 +70,6 @@
                                 <v-subheader>Actions</v-subheader>
                                 <v-list-item
                                     :to="{
-                                        name: 'profile-view',
-                                        params: { email: user.email },
-                                    }"
-                                >
-                                    <v-list-item-icon>
-                                        <v-icon color="secondary">
-                                            mdi-account-outline
-                                        </v-icon>
-                                    </v-list-item-icon>
-                                    <v-list-item-content>
-                                        <v-list-item-title
-                                            class="font-weight-medium"
-                                            >Profile</v-list-item-title
-                                        >
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item
-                                    :to="{
                                         name: 'seller-dashboard-view',
                                     }"
                                     v-if="isSeller"
