@@ -417,6 +417,7 @@
                                 <custom-time-picker-component
                                     :time.sync="form.time"
                                     :label="`${offerShippingMethod.label} Time`"
+                                    :min="currentTime"
                                     outlined
                                 >
                                 </custom-time-picker-component>
@@ -443,11 +444,9 @@
                                 :disabled="!isFormValid"
                                 :loading="isAcceptOfferStart"
                                 @click="acceptOffer"
+                                class="text-capitalize"
                             >
-                                <span class="text-capitalize mr-1"
-                                    >Accept Offer</span
-                                >
-                                <v-icon>mdi-check</v-icon>
+                                Accept Offer
                             </v-btn>
                         </v-card-actions>
                     </v-stepper-content>

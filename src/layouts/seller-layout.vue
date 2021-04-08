@@ -23,9 +23,6 @@
                                             :src="user.profile.image_url"
                                         ></v-img>
                                     </v-avatar>
-                                    <span class="text-capitalize mr-1">{{
-                                        user.profile.first_name
-                                    }}</span>
                                     <v-icon :size="20" color="white">
                                         mdi-chevron-down
                                     </v-icon>
@@ -33,23 +30,36 @@
                             </template>
                             <v-list>
                                 <v-list-item
+                                    two-line
                                     :to="{
                                         name: 'profile-view',
                                         params: { email: user.email },
                                     }"
                                 >
-                                    <v-list-item-icon>
-                                        <v-icon color="secondary">
-                                            mdi-account-outline
-                                        </v-icon>
-                                    </v-list-item-icon>
+                                    <v-list-item-avatar>
+                                        <v-img
+                                            :src="user.profile.image_url"
+                                        ></v-img>
+                                    </v-list-item-avatar>
                                     <v-list-item-content>
-                                        <v-list-item-title
-                                            class="font-weight-medium"
-                                            >Profile</v-list-item-title
+                                        <v-list-item-title>
+                                            {{
+                                                fullName.length >= 15
+                                                    ? `${truncateString(
+                                                          user.profile
+                                                              .first_name,
+                                                          12
+                                                      )}`
+                                                    : fullName
+                                            }}
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                            >View Profile</v-list-item-subtitle
                                         >
                                     </v-list-item-content>
                                 </v-list-item>
+                                <v-divider></v-divider>
+                                <v-subheader>Actions</v-subheader>
                                 <v-list-item
                                     :to="{
                                         name: 'seller-dashboard-view',
@@ -132,9 +142,12 @@
 <script>
 import { AUTHENTICATION_SET_LOGOUT } from "@/store/types/authentication-store-type";
 import GlobalSnackbar from "@/components/global/snackbar-component";
+import commonUtility from "@/common/utility";
 
 export default {
     name: "seller-layout",
+
+    mixins: [commonUtility],
 
     components: {
         GlobalSnackbar,
@@ -151,6 +164,10 @@ export default {
 
         isSeller() {
             return this.user && this.user.account_type.type === "seller";
+        },
+
+        fullName() {
+            return `${this.user.profile.first_name} ${this.user.profile.last_name}`;
         },
     },
 

@@ -5,6 +5,10 @@
             <customer-dashboard-view-offer-list-item-component
                 :offer-id="offer.id"
                 :shop-id="offer.shop.id"
+                :shop-name="offer.shop.name"
+                :shop-slug="offer.shop.slug"
+                :shop-image-url="offer.shop.image_url"
+                :shop-created-at="offer.shop.created_at"
                 :product-slug="offer.product.slug"
                 :product-name="offer.product.name"
                 :account-email="offer.account.email"
