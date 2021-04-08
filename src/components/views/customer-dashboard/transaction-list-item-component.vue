@@ -189,7 +189,7 @@
                     </v-list-item-content>
                     <v-list-item-action>
                         <v-btn
-                            color="primary"
+                            color="secondary"
                             depressed
                             small
                             class="text-capitalize"

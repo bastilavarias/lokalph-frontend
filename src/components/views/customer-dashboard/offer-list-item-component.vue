@@ -47,32 +47,7 @@
                     </span>
                 </v-list-item-subtitle>
             </v-list-item-content>
-            <v-list-item-action v-if="isStatusPending">
-                <v-menu offset-y>
-                    <template v-slot:activator="{ on }">
-                        <v-btn icon v-on="on">
-                            <v-icon>mdi-dots-horizontal</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-subheader
-                            >Offer Status:
-                            <span
-                                class="ml-1 font-weight-bold text-capitalize"
-                                >{{ offerStatus }}</span
-                            ></v-subheader
-                        >
-                        <v-divider></v-divider>
-                        <v-subheader>Action</v-subheader>
-                        <v-list-item
-                            @click="cancelOffer"
-                            :disabled="isCancelOfferStart"
-                            >Cancel Offer</v-list-item
-                        >
-                    </v-list>
-                </v-menu>
-            </v-list-item-action>
-            <v-list-item-action v-if="!isStatusPending">
+            <v-list-item-action>
                 <global-offer-status-chip-component
                     :status="offerStatusLocal"
                     :cancelled-by="offerCancelledByLocal"
@@ -95,7 +70,7 @@
                 </v-list-item-content>
                 <v-list-item-action>
                     <v-btn
-                        color="primary"
+                        color="secondary"
                         depressed
                         small
                         class="text-capitalize"
@@ -104,6 +79,18 @@
                 </v-list-item-action>
             </v-list-item>
         </v-card-text>
+        <v-card-actions v-if="isStatusPending">
+            <v-btn
+                block
+                color="primary"
+                depressed
+                :loading="isCancelOfferStart"
+                @click="cancelOffer"
+            >
+                <v-icon class="mr-1">mdi-cancel</v-icon>
+                <span class="text-capitalize">Cancel</span>
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
