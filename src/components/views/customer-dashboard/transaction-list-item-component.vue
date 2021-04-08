@@ -47,123 +47,156 @@
             </v-list-item-action>
         </v-list-item>
         <v-card-text>
-            <v-card outlined rounded class="grey lighten-5">
-                <v-row dense>
-                    <v-col cols="12" md="6">
-                        <v-card-subtitle class="font-weight-bold"
-                            >Offer Details</v-card-subtitle
-                        >
-                        <v-card-text>
-                            <v-row dense>
-                                <v-col cols="12">
-                                    <div
-                                        class="d-flex align-content-center align-center"
-                                    >
-                                        <span
-                                            class="subtitle-1 font-weight-bold secondary--text"
-                                            title="Offer Price"
-                                        >
-                                            {{
-                                                formatMoney(
-                                                    "PHP",
-                                                    offerTotalPrice
-                                                )
-                                            }}
-                                        </span>
-                                    </div>
-                                </v-col>
-                                <v-col cols="12">
-                                    <div
-                                        class="d-flex align-content-center align-center"
-                                    >
-                                        <v-icon class="mr-1"
-                                            >mdi-file-table-box-multiple</v-icon
-                                        >
-                                        <span
-                                            class="subtitle-1"
-                                            title="Quantity"
+            <v-card flat rounded>
+                <div class="grey lighten-5 mb-3">
+                    <v-row dense>
+                        <v-col cols="12" md="6">
+                            <v-card-subtitle class="font-weight-bold"
+                                >Offer Details</v-card-subtitle
+                            >
+                            <v-card-text>
+                                <v-row dense>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
                                         >
                                             <span
-                                                class="font-weight-bold black--text"
+                                                class="subtitle-1 font-weight-bold secondary--text"
+                                                title="Offer Price"
                                             >
-                                                {{ offerQuantity }}
+                                                {{
+                                                    formatMoney(
+                                                        "PHP",
+                                                        offerTotalPrice
+                                                    )
+                                                }}
                                             </span>
-                                            pcs
-                                        </span>
-                                    </div>
-                                </v-col>
-                                <v-col cols="12">
-                                    <div
-                                        class="d-flex align-content-center align-center"
-                                    >
-                                        <v-icon class="mr-1">mdi-truck</v-icon>
-                                        <span
-                                            class="subtitle-1 black--text"
-                                            title="Prefer Shipping Method"
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
                                         >
-                                            {{ offerShippingMethod.label }}
-                                        </span>
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-card-subtitle class="font-weight-bold"
-                            >{{
-                                offerShippingMethod.label
-                            }}
-                            Details</v-card-subtitle
+                                            <v-icon class="mr-1"
+                                                >mdi-file-table-box-multiple</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1"
+                                                title="Quantity"
+                                            >
+                                                <span
+                                                    class="font-weight-bold black--text"
+                                                >
+                                                    {{ offerQuantity }}
+                                                </span>
+                                                pcs
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-truck</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1 black--text"
+                                                title="Prefer Shipping Method"
+                                            >
+                                                {{ offerShippingMethod.label }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-card-subtitle class="font-weight-bold"
+                                >{{
+                                    offerShippingMethod.label
+                                }}
+                                Details</v-card-subtitle
+                            >
+                            <v-card-text>
+                                <v-row dense>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-calendar</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1 black--text"
+                                                :title="`${offerShippingMethod.label} Date`"
+                                            >
+                                                {{
+                                                    formatDate(transactionDate)
+                                                }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-clock</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1 black--text"
+                                                :title="`${offerShippingMethod.label} Time`"
+                                            >
+                                                {{
+                                                    formatTime(transactionTime)
+                                                }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex align-content-center align-center"
+                                        >
+                                            <v-icon class="mr-1"
+                                                >mdi-map-marker</v-icon
+                                            >
+                                            <span
+                                                class="subtitle-1 black--text"
+                                                :title="`${offerShippingMethod.label} Address`"
+                                            >
+                                                {{ transactionAddress.value }}
+                                            </span>
+                                        </div>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-col>
+                    </v-row>
+                </div>
+                <v-list-item>
+                    <v-list-item-avatar :size="50">
+                        <v-img :src="shopImageUrl"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title>{{ shopName }}</v-list-item-title>
+                        <v-list-item-subtitle
+                            >Created
+                            {{
+                                formatRelativeTime(shopCreatedAt)
+                            }}</v-list-item-subtitle
                         >
-                        <v-card-text>
-                            <v-row dense>
-                                <v-col cols="12">
-                                    <div
-                                        class="d-flex align-content-center align-center"
-                                    >
-                                        <v-icon class="mr-1"
-                                            >mdi-calendar</v-icon
-                                        >
-                                        <span
-                                            class="subtitle-1 black--text"
-                                            :title="`${offerShippingMethod.label} Date`"
-                                        >
-                                            {{ formatDate(transactionDate) }}
-                                        </span>
-                                    </div>
-                                </v-col>
-                                <v-col cols="12">
-                                    <div
-                                        class="d-flex align-content-center align-center"
-                                    >
-                                        <v-icon class="mr-1">mdi-clock</v-icon>
-                                        <span
-                                            class="subtitle-1 black--text"
-                                            :title="`${offerShippingMethod.label} Time`"
-                                        >
-                                            {{ formatTime(transactionTime) }}
-                                        </span>
-                                    </div>
-                                </v-col>
-                                <v-col cols="12">
-                                    <div
-                                        class="d-flex align-content-center align-center"
-                                    >
-                                        <v-icon class="mr-1"
-                                            >mdi-map-marker</v-icon
-                                        >
-                                        <span
-                                            class="subtitle-1 black--text"
-                                            :title="`${offerShippingMethod.label} Address`"
-                                        >
-                                            {{ transactionAddress.value }}
-                                        </span>
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                    </v-col>
-                </v-row>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                        <v-btn
+                            color="primary"
+                            depressed
+                            small
+                            class="text-capitalize"
+                            >Visit Shop</v-btn
+                        >
+                    </v-list-item-action>
+                </v-list-item>
             </v-card>
         </v-card-text>
         <v-card-actions v-if="isStatusPending">
@@ -304,6 +337,21 @@ export default {
 
         transactionAddress: {
             type: Object,
+            required: true,
+        },
+
+        shopImageUrl: {
+            type: String,
+            required: true,
+        },
+
+        shopSlug: {
+            type: String,
+            required: true,
+        },
+
+        shopCreatedAt: {
+            type: String,
             required: true,
         },
     },

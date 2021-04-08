@@ -5,6 +5,9 @@
             <customer-dashboard-view-transaction-list-item-component
                 :shop-id="transaction.shop.id"
                 :shop-name="transaction.shop.name"
+                :shop-slug="transaction.shop.slug"
+                :shop-image-url="transaction.shop.image_url"
+                :shop-created-at="transaction.shop.created_at"
                 :product-slug="transaction.product.slug"
                 :product-name="transaction.product.name"
                 :account-email="transaction.account.email"
