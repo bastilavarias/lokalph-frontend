@@ -1,5 +1,5 @@
 <template>
-    <v-dialog width="500" v-model="isOpenLocal">
+    <v-dialog width="500" v-model="isOpenLocal" persistent>
         <v-card>
             <v-card-title>
                 <span> Verify Transaction Code </span>
@@ -69,11 +69,18 @@
                         persistent-hint
                         hint="Ask the shop for the transaction code"
                         outlined
+                        :counter="10"
+                        v-model="code"
                     ></v-text-field>
                 </v-col>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="primary" class="text-capitalize" depressed block
+                <v-btn
+                    color="primary"
+                    class="text-capitalize"
+                    depressed
+                    block
+                    :disabled="!isFormValid"
                     >Verify</v-btn
                 >
             </v-card-actions>
@@ -169,7 +176,15 @@ export default {
     data() {
         return {
             isOpenLocal: this.isOpen,
+            code: null,
         };
+    },
+
+    computed: {
+        isFormValid() {
+            const code = this.code;
+            return code && code.length > 0 && code.length < 11;
+        },
     },
 
     watch: {
