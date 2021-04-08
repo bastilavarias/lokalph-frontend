@@ -19,7 +19,6 @@
                 :transaction-date="transaction.date"
                 :transaction-time="transaction.time"
                 :transaction-address="transaction.address"
-                :transaction-code="transaction.code"
                 :transaction-cancelled-by="transaction.cancelled_by"
             ></customer-dashboard-view-transaction-list-item-component>
             <v-divider v-if="transactions.length - 1 !== index"></v-divider>

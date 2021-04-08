@@ -283,11 +283,6 @@ export default {
             type: Object,
             required: true,
         },
-
-        transactionCode: {
-            type: String,
-            required: true,
-        },
     },
 
     data() {

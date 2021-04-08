@@ -88,7 +88,7 @@
                                         >
                                     </v-list-item-content>
                                 </v-list-item>
-                                <v-divider></v-divider>
+                                <v-divider v-if="isSeller"></v-divider>
                                 <v-list-item @click="logout">
                                     <v-list-item-icon>
                                         <v-icon color="secondary">

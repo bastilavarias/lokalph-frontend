@@ -443,11 +443,9 @@
                                 :disabled="!isFormValid"
                                 :loading="isAcceptOfferStart"
                                 @click="acceptOffer"
+                                class="text-capitalize"
                             >
-                                <span class="text-capitalize mr-1"
-                                    >Accept Offer</span
-                                >
-                                <v-icon>mdi-check</v-icon>
+                                Accept Offer
                             </v-btn>
                         </v-card-actions>
                     </v-stepper-content>
