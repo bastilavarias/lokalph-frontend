@@ -41,7 +41,7 @@
             <v-list-item-action>
                 <global-transaction-status-chip-component
                     :status="transactionStatusLocal"
-                    :cancelled-by="transactionCancelledBy"
+                    :cancelled-by="transactionCancelledByLocal"
                     :is-shop="false"
                 ></global-transaction-status-chip-component>
             </v-list-item-action>
@@ -177,10 +177,31 @@
                 <v-icon class="mr-1">mdi-cancel</v-icon>
                 <span class="text-capitalize">Cancel</span>
             </v-btn>
-            <v-btn color="success" depressed class="text-capitalize">
+            <v-btn
+                color="success"
+                depressed
+                class="text-capitalize"
+                @click="isDialogOpen = true"
+            >
                 Mark <span class="text-lowercase mx-1">as</span> Received
             </v-btn>
         </v-card-actions>
+        <customer-dashboard-view-transaction-code-verification-dialog-component
+            :is-open.sync="isDialogOpen"
+            :shop-id="shopId"
+            :shop-name="shopName"
+            :product-slug="productSlug"
+            :product-name="productName"
+            :account-email="accountEmail"
+            :transaction-status="transactionStatusLocal"
+            :offer-quantity="offerQuantity"
+            :offer-total-price="offerTotalPrice"
+            :product-preview="productPreview"
+            :transaction-created-at="transactionCreatedAt"
+            :transaction-id="transactionId"
+            :transactions.sync="transactions"
+            :transaction-cancelled-by="transactionCancelledByLocal"
+        ></customer-dashboard-view-transaction-code-verification-dialog-component>
     </v-card>
 </template>
 
@@ -189,10 +210,12 @@ import CustomRouterLinkComponent from "@/components/custom/router-link-component
 import commonUtility from "@/common/utility";
 import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
 import { CANCEL_TRANSACTION } from "@/store/types/transaction-store-type";
+import CustomerDashboardViewTransactionCodeVerificationDialogComponent from "@/components/views/customer-dashboard/transaction-code-verification-dialog-component";
 export default {
     name: "customer-dashboard-view-transaction-list-item-component",
 
     components: {
+        CustomerDashboardViewTransactionCodeVerificationDialogComponent,
         GlobalTransactionStatusChipComponent,
         CustomRouterLinkComponent,
     },
@@ -291,6 +314,7 @@ export default {
             transactionCancelledByLocal: this.transactionCancelledBy,
             isCancelTransactionStart: false,
             transactionsLocal: this.transactions,
+            isDialogOpen: false,
         };
     },
 
