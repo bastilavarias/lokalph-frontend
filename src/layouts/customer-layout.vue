@@ -68,6 +68,7 @@
                                 </v-list-item>
                                 <v-divider></v-divider>
                                 <v-subheader>Actions</v-subheader>
+
                                 <v-list-item
                                     :to="{
                                         name: 'seller-dashboard-view',
