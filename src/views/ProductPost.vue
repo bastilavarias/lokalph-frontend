@@ -79,8 +79,16 @@
             <v-col cols="12" md="5">
                 <v-row dense>
                     <v-col cols="12">
-                        <v-list-item two-line>
+                        <v-list-item
+                            :two-line="doesHaveStock"
+                            :three-line="!doesHaveStock"
+                        >
                             <v-list-item-content>
+                                <v-list-item-subtitle v-if="!doesHaveStock">
+                                    <v-chip small color="error"
+                                        >Out of Stock</v-chip
+                                    >
+                                </v-list-item-subtitle>
                                 <v-list-item-title>
                                     <span
                                         :title="product.name"
@@ -185,7 +193,13 @@
                         <v-card-text>
                             <v-row dense>
                                 <v-col cols="12" md="6">
-                                    <v-btn color="primary" outlined block large>
+                                    <v-btn
+                                        color="primary"
+                                        outlined
+                                        block
+                                        large
+                                        :disabled="!doesHaveStock"
+                                    >
                                         <v-icon class="mr-1"
                                             >mdi-chat-outline</v-icon
                                         >
@@ -201,6 +215,7 @@
                                         depressed
                                         large
                                         @click="isOfferDialogOpen = true"
+                                        :disabled="!doesHaveStock"
                                     >
                                         <v-icon class="mr-1"
                                             >mdi-currency-php</v-icon
@@ -491,6 +506,7 @@
                                     :counter="100"
                                     color="primary"
                                     v-model="inquiry"
+                                    :disabled="!doesHaveStock"
                                 ></v-textarea>
                             </v-col>
                             <v-col cols="12">
@@ -725,6 +741,10 @@ export default {
 
         likesCount() {
             return this.likes.length || 0;
+        },
+
+        doesHaveStock() {
+            return this.product.stock > 0;
         },
     },
 
