@@ -35,7 +35,7 @@ const authenticationStoreModule = {
             try {
                 const result = await authenticationRepository.login(
                     email.toString(),
-                    password.toString()
+                    password
                 );
                 const payload = {
                     accessToken: result.data.access_token,
