@@ -173,6 +173,8 @@ export default {
 
     methods: {
         async logout() {
+            if (this.$route.meta.requiresAuth)
+                await this.$router.push({ name: "home-view" });
             this.$store.commit(AUTHENTICATION_SET_LOGOUT);
         },
     },
