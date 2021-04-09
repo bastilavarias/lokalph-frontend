@@ -5,12 +5,20 @@
                 <v-row justify="space-between" align="center">
                     <v-spacer></v-spacer>
                     <div v-if="isAuthenticated">
-                        <v-btn text tile>
+                        <v-btn
+                            text
+                            tile
+                            :to="{ name: 'customer-dashboard-like' }"
+                        >
                             <v-icon :size="20" color="white"
                                 >mdi-heart-outline</v-icon
                             >
                         </v-btn>
-                        <v-btn text tile>
+                        <v-btn
+                            text
+                            tile
+                            :to="{ name: 'customer-dashboard-chat' }"
+                        >
                             <v-icon :size="20" color="white"
                                 >mdi-message-outline</v-icon
                             >
@@ -124,7 +132,12 @@
                     >
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn icon color="primary" depressed>
+                    <v-btn
+                        icon
+                        color="primary"
+                        depressed
+                        :to="{ name: 'customer-dashboard-offer' }"
+                    >
                         <v-icon large>mdi-cart-outline</v-icon>
                     </v-btn>
                 </v-row>
