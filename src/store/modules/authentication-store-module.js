@@ -37,7 +37,6 @@ const authenticationStoreModule = {
                     email.toString(),
                     password
                 );
-                console.log(result);
                 const payload = {
                     accessToken: result.data.access_token,
                     user: result.data.user,
