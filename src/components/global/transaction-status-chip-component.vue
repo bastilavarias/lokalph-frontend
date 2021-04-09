@@ -46,7 +46,7 @@ export default {
 
         spanTitle() {
             let title = "This transaction is waiting to be receive";
-            if (this.status === "accepted")
+            if (this.status === "received")
                 title = "Transaction is already received";
             if (this.status === "cancelled")
                 title = `${
