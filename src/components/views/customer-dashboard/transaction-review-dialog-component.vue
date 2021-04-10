@@ -9,9 +9,13 @@
                 </v-btn>
             </v-card-title>
             <v-stepper class="elevation-0" v-model="step">
-                <v-stepper-header>
+                <v-stepper-header class="elevation-0">
                     <template v-for="(stepper, index) in steppers">
-                        <v-stepper-step :key="index" :step="stepper.step">
+                        <v-stepper-step
+                            :key="index"
+                            :step="stepper.step"
+                            color="primary"
+                        >
                             <span class="text-capitalize">{{
                                 stepper.text
                             }}</span>
@@ -19,12 +23,70 @@
                         <v-divider v-if="stepper.step === 1"></v-divider>
                     </template>
                 </v-stepper-header>
+                <v-stepper-content :step="1">
+                    <v-card-text>
+                        <v-row dense>
+                            <v-col cols="12">
+                                <v-textarea
+                                    outlined
+                                    label="Review"
+                                    :counter="800"
+                                ></v-textarea>
+                            </v-col>
+                            <v-col cols="12">
+                                <div class="d-flex justify-center align-center">
+                                    <v-rating
+                                        background-color="primary"
+                                        color="primary"
+                                        large
+                                    ></v-rating>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary"
+                            class="text-capitalize"
+                            depressed
+                            @click="step = 2"
+                            >Continue</v-btn
+                        >
+                    </v-card-actions>
+                </v-stepper-content>
+                <v-stepper-content :step="2">
+                    <v-card-text>
+                        <v-row dense>
+                            <v-col cols="12">
+                                <v-textarea
+                                    outlined
+                                    label="Review"
+                                    :counter="800"
+                                ></v-textarea>
+                            </v-col>
+                            <v-col cols="12">
+                                <div class="d-flex justify-center align-center">
+                                    <v-rating
+                                        background-color="primary"
+                                        color="primary"
+                                        large
+                                    ></v-rating>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text class="text-capitalize" @click="step = 1"
+                            >Back</v-btn
+                        >
+                        <v-btn color="primary" class="text-capitalize" depressed
+                            >Post</v-btn
+                        >
+                    </v-card-actions>
+                </v-stepper-content>
             </v-stepper>
-            <v-card-actions>
-                <v-btn color="primary" block class="text-capitalize" depressed>
-                    Post
-                </v-btn>
-            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>

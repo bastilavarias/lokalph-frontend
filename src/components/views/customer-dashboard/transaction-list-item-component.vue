@@ -224,7 +224,7 @@
                 depressed
                 v-if="isStatusReceived"
                 class="text-capitalize"
-                color="success"
+                color="primary"
                 block
                 @click="isReviewDialogOpen = true"
             >
