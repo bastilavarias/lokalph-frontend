@@ -383,7 +383,6 @@ export default {
         },
 
         isStatusReceived() {
-            console.log(this.transactionStatusLocal);
             return this.transactionStatusLocal === "received";
         },
     },
