@@ -215,7 +215,7 @@
                 color="success"
                 depressed
                 class="text-capitalize"
-                @click="isReviewDialogOpen = true"
+                @click="isCodeVerificationDialogOpen = true"
                 v-if="isStatusPending"
             >
                 Mark <span class="text-lowercase mx-1">as</span> Received
@@ -226,6 +226,7 @@
                 class="text-capitalize"
                 color="success"
                 block
+                @click="isReviewDialogOpen = true"
             >
                 Write<span class="text-lowercase mx-1">a</span> Review
             </v-btn>
