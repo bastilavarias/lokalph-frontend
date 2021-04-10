@@ -8,6 +8,7 @@
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </v-card-title>
+
             <v-card-text>
                 <v-col cols="12" v-if="isErrorAlertOpen">
                     <v-alert type="error">

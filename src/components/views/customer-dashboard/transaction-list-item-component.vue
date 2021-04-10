@@ -215,7 +215,7 @@
                 color="success"
                 depressed
                 class="text-capitalize"
-                @click="isDialogOpen = true"
+                @click="isReviewDialogOpen = true"
                 v-if="isStatusPending"
             >
                 Mark <span class="text-lowercase mx-1">as</span> Received
@@ -231,7 +231,7 @@
             </v-btn>
         </v-card-actions>
         <customer-dashboard-view-transaction-code-verification-dialog-component
-            :is-open.sync="isDialogOpen"
+            :is-open.sync="isCodeVerificationDialogOpen"
             :shop-id="shopId"
             :shop-name="shopName"
             :product-slug="productSlug"
@@ -246,6 +246,9 @@
             :transactions.sync="transactionsLocal"
             :transaction-cancelled-by="transactionCancelledByLocal"
         ></customer-dashboard-view-transaction-code-verification-dialog-component>
+        <customer-dashboard-view-transaction-review-dialog-component
+            :is-open.sync="isReviewDialogOpen"
+        ></customer-dashboard-view-transaction-review-dialog-component>
     </v-card>
 </template>
 
@@ -255,10 +258,12 @@ import commonUtility from "@/common/utility";
 import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
 import { CANCEL_TRANSACTION } from "@/store/types/transaction-store-type";
 import CustomerDashboardViewTransactionCodeVerificationDialogComponent from "@/components/views/customer-dashboard/transaction-code-verification-dialog-component";
+import CustomerDashboardViewTransactionReviewDialogComponent from "@/components/views/customer-dashboard/transaction-review-dialog-component";
 export default {
     name: "customer-dashboard-view-transaction-list-item-component",
 
     components: {
+        CustomerDashboardViewTransactionReviewDialogComponent,
         CustomerDashboardViewTransactionCodeVerificationDialogComponent,
         GlobalTransactionStatusChipComponent,
         CustomRouterLinkComponent,
@@ -373,7 +378,8 @@ export default {
             transactionCancelledByLocal: this.transactionCancelledBy,
             isCancelTransactionStart: false,
             transactionsLocal: this.transactions,
-            isDialogOpen: false,
+            isCodeVerificationDialogOpen: false,
+            isReviewDialogOpen: false,
         };
     },
 
