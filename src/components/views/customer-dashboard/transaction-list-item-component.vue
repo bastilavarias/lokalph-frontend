@@ -199,13 +199,14 @@
                 </v-list-item>
             </v-card>
         </v-card-text>
-        <v-card-actions v-if="isStatusPending">
+        <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
                 color="error"
                 depressed
                 @click="cancelTransaction"
                 :loading="isCancelTransactionStart"
+                v-if="isStatusPending"
             >
                 <v-icon class="mr-1">mdi-cancel</v-icon>
                 <span class="text-capitalize">Cancel</span>
@@ -215,8 +216,18 @@
                 depressed
                 class="text-capitalize"
                 @click="isDialogOpen = true"
+                v-if="isStatusPending"
             >
                 Mark <span class="text-lowercase mx-1">as</span> Received
+            </v-btn>
+            <v-btn
+                depressed
+                v-if="isStatusReceived"
+                class="text-capitalize"
+                color="success"
+                block
+            >
+                Write<span class="text-lowercase mx-1">a</span> Review
             </v-btn>
         </v-card-actions>
         <customer-dashboard-view-transaction-code-verification-dialog-component
@@ -369,6 +380,11 @@ export default {
     computed: {
         isStatusPending() {
             return this.transactionStatusLocal === "pending";
+        },
+
+        isStatusReceived() {
+            console.log(this.transactionStatusLocal);
+            return this.transactionStatusLocal === "received";
         },
     },
 
