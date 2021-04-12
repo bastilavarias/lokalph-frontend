@@ -31,7 +31,16 @@
                                     outlined
                                     label="Review"
                                     :counter="800"
+                                    v-model="form.productReview"
                                 ></v-textarea>
+                            </v-col>
+                            <v-col cols="12">
+                                <custom-image-input-component
+                                    label="Images"
+                                    outlined
+                                    operation="create"
+                                    :images.sync="form.images"
+                                ></custom-image-input-component>
                             </v-col>
                             <v-col cols="12">
                                 <div class="d-flex justify-center align-center">
@@ -39,6 +48,7 @@
                                         background-color="primary"
                                         color="primary"
                                         large
+                                        v-model="form.productRating"
                                     ></v-rating>
                                 </div>
                             </v-col>
@@ -51,6 +61,7 @@
                             class="text-capitalize"
                             depressed
                             @click="step = 2"
+                            :disabled="!isProductReviewFormValid"
                             >Continue</v-btn
                         >
                     </v-card-actions>
@@ -63,6 +74,7 @@
                                     outlined
                                     label="Review"
                                     :counter="800"
+                                    v-model="form.shopReview"
                                 ></v-textarea>
                             </v-col>
                             <v-col cols="12">
@@ -71,6 +83,7 @@
                                         background-color="primary"
                                         color="primary"
                                         large
+                                        v-model="form.shopRating"
                                     ></v-rating>
                                 </div>
                             </v-col>
@@ -81,7 +94,11 @@
                         <v-btn text class="text-capitalize" @click="step = 1"
                             >Back</v-btn
                         >
-                        <v-btn color="primary" class="text-capitalize" depressed
+                        <v-btn
+                            color="primary"
+                            class="text-capitalize"
+                            depressed
+                            :disabled="!isShopReviewFormValid"
                             >Post</v-btn
                         >
                     </v-card-actions>
@@ -92,9 +109,19 @@
 </template>
 
 <script>
+import CustomImageInputComponent from "@/components/custom/image-input-component";
+
+const defaultForm = {
+    images: [],
+    productRating: null,
+    productReview: null,
+    shopRating: null,
+    shopReview: null,
+};
+
 export default {
     name: "customer-dashboard-view-transaction-review-dialog-component",
-
+    components: { CustomImageInputComponent },
     props: {
         isOpen: {
             type: Boolean,
@@ -106,6 +133,8 @@ export default {
         return {
             isOpenLocal: this.isOpen,
             step: 1,
+            form: Object.assign({}, defaultForm),
+            defaultForm,
         };
     },
 
@@ -121,6 +150,16 @@ export default {
                     step: 2,
                 },
             ];
+        },
+
+        isProductReviewFormValid() {
+            const { productRating } = this.form;
+            return productRating;
+        },
+
+        isShopReviewFormValid() {
+            const { shopRating } = this.form;
+            return shopRating;
         },
     },
 
