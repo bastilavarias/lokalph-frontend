@@ -135,6 +135,11 @@ export default {
             type: Number,
             required: true,
         },
+
+        transactionIsReviewed: {
+            type: Boolean,
+            required: true,
+        },
     },
 
     data() {
@@ -144,6 +149,7 @@ export default {
             form: Object.assign({}, defaultForm),
             defaultForm,
             isCreateReviewStart: false,
+            transactionIsReviewedLocal: this.transactionIsReviewed,
         };
     },
 
@@ -180,6 +186,14 @@ export default {
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
         },
+
+        transactionIsReviewed(value) {
+            this.transactionIsReviewedLocal = value;
+        },
+
+        transactionIsReviewedLocal(value) {
+            this.$emit("update:transactionIsReviewed", value);
+        },
     },
 
     methods: {
@@ -198,6 +212,7 @@ export default {
                 console.log(data);
                 this.isOpenLocal = false;
                 this.form = Object.assign({}, this.defaultForm);
+                this.transactionIsReviewedLocal = true;
                 return;
             }
             this.isOpenLocal = false;

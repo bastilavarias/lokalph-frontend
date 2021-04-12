@@ -255,6 +255,7 @@
         <customer-dashboard-view-transaction-review-dialog-component
             :is-open.sync="isReviewDialogOpen"
             :transaction-id="transactionId"
+            :transaction-is-reviewed.sync="transactionIsReviewedLocal"
         ></customer-dashboard-view-transaction-review-dialog-component>
     </v-card>
 </template>
@@ -400,10 +401,6 @@ export default {
         isStatusPending() {
             return this.transactionStatusLocal === "pending";
         },
-
-        isStatusReceived() {
-            return this.transactionStatusLocal === "received";
-        },
     },
 
     watch: {
@@ -421,6 +418,14 @@ export default {
 
         transactionCancelledBy(value) {
             this.transactionCancelledByLocal = value;
+        },
+
+        transactionIsReviewed(value) {
+            this.transactionIsReviewedLocal = value;
+        },
+
+        transactionIsReviewedLocal(value) {
+            this.$emit("update:transactionIsReviewed", value);
         },
     },
 
