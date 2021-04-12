@@ -44,7 +44,7 @@ const productStoreModule = {
         },
 
         async [CREATE_PRODUCT](
-            { commit },
+            _,
             {
                 shopId,
                 images,
