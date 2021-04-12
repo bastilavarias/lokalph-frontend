@@ -23,6 +23,7 @@
                 :transaction-time="transaction.time"
                 :transaction-address="transaction.address"
                 :transaction-cancelled-by="transaction.cancelled_by"
+                :transaction-is-reviewed="transaction.is_reviewed"
             ></customer-dashboard-view-transaction-list-item-component>
             <v-divider v-if="transactions.length - 1 !== index"></v-divider>
         </template>

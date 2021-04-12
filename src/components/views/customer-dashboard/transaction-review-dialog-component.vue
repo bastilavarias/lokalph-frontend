@@ -99,6 +99,8 @@
                             class="text-capitalize"
                             depressed
                             :disabled="!isShopReviewFormValid"
+                            :loading="isCreateReviewStart"
+                            @click="createReview"
                             >Post</v-btn
                         >
                     </v-card-actions>
@@ -110,6 +112,7 @@
 
 <script>
 import CustomImageInputComponent from "@/components/custom/image-input-component";
+import { CREATE_REVIEW } from "@/store/types/review-store-type";
 
 const defaultForm = {
     images: [],
@@ -127,6 +130,11 @@ export default {
             type: Boolean,
             required: true,
         },
+
+        transactionId: {
+            type: Number,
+            required: true,
+        },
     },
 
     data() {
@@ -135,6 +143,7 @@ export default {
             step: 1,
             form: Object.assign({}, defaultForm),
             defaultForm,
+            isCreateReviewStart: false,
         };
     },
 
@@ -170,6 +179,28 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+    },
+
+    methods: {
+        async createReview() {
+            this.isCreateReviewStart = true;
+            const payload = {
+                images: this.form.images || [],
+                productRating: this.form.productRating || 1,
+                productReview: this.form.productReview || null,
+                shopRating: this.form.shopRating || 1,
+                shopReview: this.form.shopReview || null,
+                transactionId: this.transactionId,
+            };
+            const { data } = await this.$store.dispatch(CREATE_REVIEW, payload);
+            if (data) {
+                console.log(data);
+                this.isOpenLocal = false;
+                this.form = Object.assign({}, this.defaultForm);
+                return;
+            }
+            this.isOpenLocal = false;
         },
     },
 };

@@ -222,7 +222,7 @@
             </v-btn>
             <v-btn
                 depressed
-                v-if="isStatusReceived"
+                v-if="!transactionIsReviewedLocal"
                 class="text-capitalize"
                 color="primary"
                 block
@@ -230,6 +230,11 @@
             >
                 Write<span class="text-lowercase mx-1">a</span> Review
             </v-btn>
+            <span
+                class="subtitle-2 font-italic"
+                v-if="transactionIsReviewedLocal"
+                >You already reviewed.</span
+            >
         </v-card-actions>
         <customer-dashboard-view-transaction-code-verification-dialog-component
             :is-open.sync="isCodeVerificationDialogOpen"
@@ -249,6 +254,7 @@
         ></customer-dashboard-view-transaction-code-verification-dialog-component>
         <customer-dashboard-view-transaction-review-dialog-component
             :is-open.sync="isReviewDialogOpen"
+            :transaction-id="transactionId"
         ></customer-dashboard-view-transaction-review-dialog-component>
     </v-card>
 </template>
@@ -371,6 +377,11 @@ export default {
             type: String,
             required: true,
         },
+
+        transactionIsReviewed: {
+            type: Boolean,
+            required: true,
+        },
     },
 
     data() {
@@ -381,6 +392,7 @@ export default {
             transactionsLocal: this.transactions,
             isCodeVerificationDialogOpen: false,
             isReviewDialogOpen: false,
+            transactionIsReviewedLocal: this.transactionIsReviewed,
         };
     },
 

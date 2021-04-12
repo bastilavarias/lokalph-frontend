@@ -5,10 +5,18 @@ const reviewStoreModule = {
     actions: {
         async [CREATE_REVIEW](
             _,
-            { images, productReview, productRating, shopReview, shopRating }
+            {
+                images,
+                productReview,
+                productRating,
+                shopReview,
+                shopRating,
+                transactionId,
+            }
         ) {
             try {
                 const formData = new FormData();
+                formData.append("transaction_id", transactionId);
                 formData.append("product_review", productReview);
                 formData.append("product_rating", productRating);
                 formData.append("shop_review", shopReview);
