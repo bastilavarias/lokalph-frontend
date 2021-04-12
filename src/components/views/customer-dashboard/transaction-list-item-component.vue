@@ -199,13 +199,14 @@
                 </v-list-item>
             </v-card>
         </v-card-text>
-        <v-card-actions v-if="isStatusPending">
+        <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
                 color="error"
                 depressed
                 @click="cancelTransaction"
                 :loading="isCancelTransactionStart"
+                v-if="isStatusPending"
             >
                 <v-icon class="mr-1">mdi-cancel</v-icon>
                 <span class="text-capitalize">Cancel</span>
@@ -214,13 +215,29 @@
                 color="success"
                 depressed
                 class="text-capitalize"
-                @click="isDialogOpen = true"
+                @click="isCodeVerificationDialogOpen = true"
+                v-if="isStatusPending"
             >
                 Mark <span class="text-lowercase mx-1">as</span> Received
             </v-btn>
+            <v-btn
+                depressed
+                v-if="!transactionIsReviewedLocal"
+                class="text-capitalize"
+                color="primary"
+                block
+                @click="isReviewDialogOpen = true"
+            >
+                Write<span class="text-lowercase mx-1">a</span> Review
+            </v-btn>
+            <span
+                class="subtitle-2 font-italic"
+                v-if="transactionIsReviewedLocal"
+                >You already reviewed.</span
+            >
         </v-card-actions>
         <customer-dashboard-view-transaction-code-verification-dialog-component
-            :is-open.sync="isDialogOpen"
+            :is-open.sync="isCodeVerificationDialogOpen"
             :shop-id="shopId"
             :shop-name="shopName"
             :product-slug="productSlug"
@@ -235,6 +252,11 @@
             :transactions.sync="transactionsLocal"
             :transaction-cancelled-by="transactionCancelledByLocal"
         ></customer-dashboard-view-transaction-code-verification-dialog-component>
+        <customer-dashboard-view-transaction-review-dialog-component
+            :is-open.sync="isReviewDialogOpen"
+            :transaction-id="transactionId"
+            :transaction-is-reviewed.sync="transactionIsReviewedLocal"
+        ></customer-dashboard-view-transaction-review-dialog-component>
     </v-card>
 </template>
 
@@ -244,10 +266,12 @@ import commonUtility from "@/common/utility";
 import GlobalTransactionStatusChipComponent from "@/components/global/transaction-status-chip-component";
 import { CANCEL_TRANSACTION } from "@/store/types/transaction-store-type";
 import CustomerDashboardViewTransactionCodeVerificationDialogComponent from "@/components/views/customer-dashboard/transaction-code-verification-dialog-component";
+import CustomerDashboardViewTransactionReviewDialogComponent from "@/components/views/customer-dashboard/transaction-review-dialog-component";
 export default {
     name: "customer-dashboard-view-transaction-list-item-component",
 
     components: {
+        CustomerDashboardViewTransactionReviewDialogComponent,
         CustomerDashboardViewTransactionCodeVerificationDialogComponent,
         GlobalTransactionStatusChipComponent,
         CustomRouterLinkComponent,
@@ -354,6 +378,11 @@ export default {
             type: String,
             required: true,
         },
+
+        transactionIsReviewed: {
+            type: Boolean,
+            required: true,
+        },
     },
 
     data() {
@@ -362,7 +391,9 @@ export default {
             transactionCancelledByLocal: this.transactionCancelledBy,
             isCancelTransactionStart: false,
             transactionsLocal: this.transactions,
-            isDialogOpen: false,
+            isCodeVerificationDialogOpen: false,
+            isReviewDialogOpen: false,
+            transactionIsReviewedLocal: this.transactionIsReviewed,
         };
     },
 
@@ -387,6 +418,14 @@ export default {
 
         transactionCancelledBy(value) {
             this.transactionCancelledByLocal = value;
+        },
+
+        transactionIsReviewed(value) {
+            this.transactionIsReviewedLocal = value;
+        },
+
+        transactionIsReviewedLocal(value) {
+            this.$emit("update:transactionIsReviewed", value);
         },
     },
 
