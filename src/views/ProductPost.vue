@@ -1019,6 +1019,7 @@ export default {
                 productId: this.product.id,
                 page: this.reviewsPaginationOptions.page,
                 perPage: this.reviewsPaginationOptions.perPage,
+                search: this.selectedReviewFilter,
             };
             const { data } = await this.$store.dispatch(
                 GET_PRODUCT_REVIEWS,
