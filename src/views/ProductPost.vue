@@ -484,110 +484,151 @@
                 </v-row>
             </v-col>
             <v-col cols="12" md="9">
-                <v-card outlined rounded>
-                    <v-card-title v-if="user && !isOwner"
-                        >Questions about this Product</v-card-title
-                    >
-                    <v-card-text v-if="user && !isOwner">
-                        <v-row dense>
-                            <v-col cols="1">
-                                <div class="d-flex justify-center">
-                                    <v-avatar>
-                                        <v-img
-                                            :src="user.profile.image_url"
-                                        ></v-img>
-                                    </v-avatar>
-                                </div>
-                            </v-col>
-                            <v-col cols="11">
-                                <v-textarea
-                                    outlined
-                                    placeholder="Write your question(s) here"
-                                    :counter="100"
+                <v-row dense>
+                    <v-col cols="12">
+                        <v-card outlined rounded>
+                            <v-card-title>
+                                Reviews from bought this Product
+                            </v-card-title>
+                            <v-card-subtitle
+                                >Showing {{ reviewsCount }} out of
+                                {{ reviewsTotalCount }} reviews</v-card-subtitle
+                            >
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    depressed
                                     color="primary"
-                                    v-model="inquiry"
-                                    :disabled="!doesHaveStock"
-                                ></v-textarea>
-                            </v-col>
-                            <v-col cols="12">
-                                <div
-                                    class="d-flex justify-space-between align-center align-content-center"
+                                    class="text-capitalize"
+                                    v-if="reviewsCount < reviewsTotalCount"
+                                    >See More</v-btn
                                 >
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="primary"
-                                        depressed
-                                        class="text-capitalize"
-                                        :loading="isCreateProductInquiryStart"
-                                        @click="createProductInquiry"
-                                        :disabled="!isInquiryFormValid"
-                                        >Ask</v-btn
+                            </v-card-actions>
+                            <v-card-subtitle
+                                >Showing {{ reviewsCount }} out of
+                                {{ reviewsTotalCount }} reviews</v-card-subtitle
+                            >
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-card outlined rounded>
+                            <v-card-title v-if="user && !isOwner"
+                                >Questions about this Product</v-card-title
+                            >
+                            <v-card-text v-if="user && !isOwner">
+                                <v-row dense>
+                                    <v-col cols="1">
+                                        <div class="d-flex justify-center">
+                                            <v-avatar>
+                                                <v-img
+                                                    :src="
+                                                        user.profile.image_url
+                                                    "
+                                                ></v-img>
+                                            </v-avatar>
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="11">
+                                        <v-textarea
+                                            outlined
+                                            placeholder="Write your question(s) here"
+                                            :counter="100"
+                                            color="primary"
+                                            v-model="inquiry"
+                                            :disabled="!doesHaveStock"
+                                        ></v-textarea>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <div
+                                            class="d-flex justify-space-between align-center align-content-center"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="primary"
+                                                depressed
+                                                class="text-capitalize"
+                                                :loading="
+                                                    isCreateProductInquiryStart
+                                                "
+                                                @click="createProductInquiry"
+                                                :disabled="!isInquiryFormValid"
+                                                >Ask</v-btn
+                                            >
+                                        </div>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                            <v-card-title v-if="user && isOwner"
+                                >Questions about your product</v-card-title
+                            >
+                            <v-card-title v-if="!user && !isOwner"
+                                >Questions about this product</v-card-title
+                            >
+                            <v-card-title v-if="user && !isOwner"
+                                >Other Questions</v-card-title
+                            >
+                            <v-card-subtitle
+                                >Showing {{ inquiriesCount }} out of
+                                {{ inquiriesTotalCount }}
+                                inquiries</v-card-subtitle
+                            >
+                            <v-card-text>
+                                <v-row dense>
+                                    <template
+                                        v-for="(inquiry, index) in inquiries"
                                     >
-                                </div>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
-                    <v-card-title v-if="user && isOwner"
-                        >Questions about your product</v-card-title
-                    >
-                    <v-card-title v-if="!user && !isOwner"
-                        >Questions about this product</v-card-title
-                    >
-                    <v-card-title v-if="user && !isOwner"
-                        >Other Questions</v-card-title
-                    >
-                    <v-card-subtitle
-                        >Showing {{ inquiriesCount }} out of
-                        {{ inquiriesTotalCount }} inquiries</v-card-subtitle
-                    >
-                    <v-card-text>
-                        <v-row dense>
-                            <template v-for="(inquiry, index) in inquiries">
-                                <v-col cols="12" :key="index">
-                                    <product-post-view-inquiry-card-component
-                                        :product-id="inquiry.product.id"
-                                        :inquiry-id="inquiry.id"
-                                        :first-name="
-                                            inquiry.account.profile.first_name
-                                        "
-                                        :created-at="inquiry.created_at"
-                                        :message="inquiry.message"
-                                        :image-url="
-                                            inquiry.account.profile.image_url
-                                        "
-                                        :owner-id="product.shop.account.id"
-                                    ></product-post-view-inquiry-card-component>
-                                </v-col>
-                            </template>
-                        </v-row>
-                    </v-card-text>
-                    <infinite-loading
-                        @infinite="getProductInquiries"
-                        :identifier="scrollOptions.id"
-                    >
-                        <template v-slot:spinner>
-                            <custom-loading-spinner-component></custom-loading-spinner-component>
-                        </template>
-                        <template v-slot:no-more>
-                            <span></span>
-                        </template>
-                        <template v-slot:no-results>
-                            <div class="text-center py-5">
-                                <span class="font-italic">
-                                    {{
-                                        inquiries.length === 0
-                                            ? "No inquiries yet."
-                                            : ""
-                                    }}
-                                </span>
-                            </div>
-                        </template>
-                    </infinite-loading>
-                    <v-card-subtitle
-                        >Showing {{ inquiriesCount }} out of
-                        {{ inquiriesTotalCount }} inquiries</v-card-subtitle
-                    >
-                </v-card>
+                                        <v-col cols="12" :key="index">
+                                            <product-post-view-inquiry-card-component
+                                                :product-id="inquiry.product.id"
+                                                :inquiry-id="inquiry.id"
+                                                :first-name="
+                                                    inquiry.account.profile
+                                                        .first_name
+                                                "
+                                                :created-at="inquiry.created_at"
+                                                :message="inquiry.message"
+                                                :image-url="
+                                                    inquiry.account.profile
+                                                        .image_url
+                                                "
+                                                :owner-id="
+                                                    product.shop.account.id
+                                                "
+                                            ></product-post-view-inquiry-card-component>
+                                        </v-col>
+                                    </template>
+                                </v-row>
+                            </v-card-text>
+                            <infinite-loading
+                                @infinite="getProductInquiries"
+                                :identifier="scrollOptions.id"
+                            >
+                                <template v-slot:spinner>
+                                    <custom-loading-spinner-component></custom-loading-spinner-component>
+                                </template>
+                                <template v-slot:no-more>
+                                    <span></span>
+                                </template>
+                                <template v-slot:no-results>
+                                    <div class="text-center py-5">
+                                        <span class="font-italic">
+                                            {{
+                                                inquiries.length === 0
+                                                    ? "No inquiries yet."
+                                                    : ""
+                                            }}
+                                        </span>
+                                    </div>
+                                </template>
+                            </infinite-loading>
+                            <v-card-subtitle
+                                >Showing {{ inquiriesCount }} out of
+                                {{ inquiriesTotalCount }}
+                                inquiries</v-card-subtitle
+                            >
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-col>
             <v-col cols="12" md="3">
                 <v-card flat>
@@ -674,6 +715,8 @@ export default {
             shouldShowProductViewsAndLikes: false,
             isCreateProductLikeStart: false,
             isDeleteProductLikeStart: false,
+            reviews: [],
+            reviewsTotalCount: 0,
         };
     },
 
@@ -745,6 +788,10 @@ export default {
 
         doesHaveStock() {
             return this.product.stock > 0;
+        },
+
+        reviewsCount() {
+            return this.reviews.length;
         },
     },
 
