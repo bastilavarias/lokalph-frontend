@@ -492,7 +492,10 @@
                             </v-card-title>
                             <v-card-subtitle
                                 >Showing {{ reviewsCount }} out of
-                                {{ reviewsTotalCount }} reviews</v-card-subtitle
+                                {{
+                                    reviewsPaginationOptions.totalCount
+                                }}
+                                reviews</v-card-subtitle
                             >
                             <v-card-text>
                                 <template
@@ -533,13 +536,19 @@
                                     depressed
                                     color="primary"
                                     class="text-capitalize"
-                                    v-if="reviewsCount < reviewsTotalCount"
+                                    v-if="
+                                        reviewsCount <
+                                        reviewsPaginationOptions.totalCount
+                                    "
                                     >See More</v-btn
                                 >
                             </v-card-actions>
                             <v-card-subtitle
                                 >Showing {{ reviewsCount }} out of
-                                {{ reviewsTotalCount }} reviews</v-card-subtitle
+                                {{
+                                    reviewsPaginationOptions.totalCount
+                                }}
+                                reviews</v-card-subtitle
                             >
                         </v-card>
                     </v-col>
@@ -750,7 +759,6 @@ export default {
             isCreateProductLikeStart: false,
             isDeleteProductLikeStart: false,
             reviews: [],
-            reviewsTotalCount: 0,
             selectedReviewFilter: null,
             reviewsPaginationOptions: {
                 page: 1,
@@ -1025,7 +1033,9 @@ export default {
                 GET_PRODUCT_REVIEWS,
                 payload
             );
+            console.log(data);
             const reviews = data.product_review;
+            this.reviewsPaginationOptions.totalCount = data.total_count || 0;
             if (reviews.length === this.reviewsPaginationOptions.perPage) {
                 this.reviews = [...this.reviews, ...reviews];
                 this.reviewsPaginationOptions.page += 1;
