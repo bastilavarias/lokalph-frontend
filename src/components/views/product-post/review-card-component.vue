@@ -19,6 +19,11 @@
                                     {{ formatRelativeTime(createdAt) }}
                                 </span>
                             </div>
+                            <div>
+                                <global-review-rating-chip-component
+                                    :rating="rating"
+                                ></global-review-rating-chip-component>
+                            </div>
                         </v-col>
                         <v-col cols="12">
                             <v-row dense>
@@ -41,10 +46,11 @@
 
 <script>
 import commonUtility from "@/common/utility";
+import GlobalReviewRatingChipComponent from "@/components/global/review-rating-chip-component";
 
 export default {
     name: "product-post-view-review-card-component",
-
+    components: { GlobalReviewRatingChipComponent },
     mixins: [commonUtility],
 
     props: {
@@ -65,6 +71,11 @@ export default {
 
         imageUrl: {
             type: String,
+            required: true,
+        },
+
+        rating: {
+            type: Number,
             required: true,
         },
     },

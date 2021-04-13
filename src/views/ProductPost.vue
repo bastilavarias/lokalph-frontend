@@ -492,9 +492,7 @@
                             </v-card-title>
                             <v-card-subtitle
                                 >Showing {{ reviewsCount }} out of
-                                {{
-                                    reviewsPaginationOptions.totalCount
-                                }}
+                                {{ reviewsPaginationOptions.totalCount }}
                                 reviews</v-card-subtitle
                             >
                             <v-card-text>
@@ -523,6 +521,25 @@
                                         <span>{{ filter.text }}</span>
                                     </v-chip>
                                 </template>
+                                <div class="pt-5" v-if="reviewsCount > 0">
+                                    <template
+                                        v-for="(review, index) in reviews"
+                                    >
+                                        <product-post-view-review-card-component
+                                            :key="index"
+                                            :first-name="
+                                                review.account.profile
+                                                    .first_name
+                                            "
+                                            :created-at="review.created_at"
+                                            :message="review.text"
+                                            :image-url="
+                                                review.account.profile.image_url
+                                            "
+                                            :rating="review.rating"
+                                        ></product-post-view-review-card-component>
+                                    </template>
+                                </div>
                                 <div
                                     class="d-flex justify-center align-center align-content-center py-5"
                                     v-if="isGetProductReviewsStart"
@@ -545,9 +562,7 @@
                             </v-card-actions>
                             <v-card-subtitle
                                 >Showing {{ reviewsCount }} out of
-                                {{
-                                    reviewsPaginationOptions.totalCount
-                                }}
+                                {{ reviewsPaginationOptions.totalCount }}
                                 reviews</v-card-subtitle
                             >
                         </v-card>
@@ -720,9 +735,11 @@ import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-c
 import ProductPostViewOfferDialogComponent from "@/components/views/product-post/offer-dialog-component";
 import ProductPostViewSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
 import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
+import ProductPostViewReviewCardComponent from "@/components/views/product-post/review-card-component";
 
 export default {
     components: {
+        ProductPostViewReviewCardComponent,
         ProductPostViewSkeletonLoadersComponent,
         ProductPostViewOfferDialogComponent,
         CustomLoadingSpinnerComponent,
