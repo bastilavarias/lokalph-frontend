@@ -35,6 +35,26 @@
                                         {{ message }}
                                     </div>
                                 </v-col>
+                                <v-col cols="12" v-if="images.length > 0">
+                                    <v-row dense>
+                                        <template
+                                            v-for="(image, index) in images"
+                                        >
+                                            <v-col
+                                                cols="12"
+                                                md="4"
+                                                :key="index"
+                                            >
+                                                <v-img
+                                                    width="auto"
+                                                    height="100"
+                                                    :src="image.url"
+                                                    position="center"
+                                                ></v-img>
+                                            </v-col>
+                                        </template>
+                                    </v-row>
+                                </v-col>
                             </v-row>
                         </v-col>
                     </v-row>
@@ -76,6 +96,11 @@ export default {
 
         rating: {
             type: Number,
+            required: true,
+        },
+
+        images: {
+            type: Array,
             required: true,
         },
     },

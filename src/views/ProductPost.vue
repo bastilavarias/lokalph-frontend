@@ -537,6 +537,7 @@
                                                 review.account.profile.image_url
                                             "
                                             :rating="review.rating"
+                                            :images="review.images"
                                         ></product-post-view-review-card-component>
                                     </template>
                                 </div>

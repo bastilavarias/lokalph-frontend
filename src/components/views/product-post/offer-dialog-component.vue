@@ -283,7 +283,15 @@ export default {
             if (data) {
                 this.isCreateOfferStart = false;
                 this.isOpenLocal = false;
-                this.form = Object.assign({}, this.defaultForm);
+                this.form = Object.assign(
+                    {},
+                    {
+                        quantity: 1,
+                        shippingMethodId: null,
+                        note: null,
+                        totalPrice: this.price * 1,
+                    }
+                );
                 this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
                     isOpen: true,
                     text: "Your offer sent!",
