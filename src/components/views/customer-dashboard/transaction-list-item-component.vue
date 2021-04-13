@@ -222,7 +222,7 @@
             </v-btn>
             <v-btn
                 depressed
-                v-if="!transactionIsReviewedLocal"
+                v-if="isStatusReceived && !transactionIsReviewedLocal"
                 class="text-capitalize"
                 color="primary"
                 block
@@ -232,7 +232,7 @@
             </v-btn>
             <span
                 class="subtitle-2 font-italic"
-                v-if="transactionIsReviewedLocal"
+                v-if="isStatusReceived && transactionIsReviewedLocal"
                 >You already reviewed.</span
             >
         </v-card-actions>
@@ -400,6 +400,10 @@ export default {
     computed: {
         isStatusPending() {
             return this.transactionStatusLocal === "pending";
+        },
+
+        isStatusReceived() {
+            return this.transactionStatusLocal === "received";
         },
     },
 

@@ -30,7 +30,7 @@
                                 <v-textarea
                                     outlined
                                     label="Review"
-                                    :counter="800"
+                                    :counter="250"
                                     v-model="form.productReview"
                                 ></v-textarea>
                             </v-col>
@@ -73,7 +73,7 @@
                                 <v-textarea
                                     outlined
                                     label="Review"
-                                    :counter="800"
+                                    :counter="250"
                                     v-model="form.shopReview"
                                 ></v-textarea>
                             </v-col>
@@ -168,13 +168,19 @@ export default {
         },
 
         isProductReviewFormValid() {
-            const { productRating } = this.form;
-            return productRating;
+            const { productRating, productReview } = this.form;
+            const reviewValidation = productReview
+                ? productReview.length >= 4 && productReview.length <= 250
+                : true;
+            return productRating && reviewValidation;
         },
 
         isShopReviewFormValid() {
-            const { shopRating } = this.form;
-            return shopRating;
+            const { shopRating, shopReview } = this.form;
+            const reviewValidation = shopReview
+                ? shopReview.length >= 4 && shopReview.length <= 250
+                : true;
+            return shopRating && reviewValidation;
         },
     },
 
@@ -200,7 +206,7 @@ export default {
         async createReview() {
             this.isCreateReviewStart = true;
             const payload = {
-                images: this.form.images || [],
+                images: this.form.images.slice(0, 3) || [],
                 productRating: this.form.productRating || 1,
                 productReview: this.form.productReview || null,
                 shopRating: this.form.shopRating || 1,
