@@ -494,6 +494,33 @@
                                 >Showing {{ reviewsCount }} out of
                                 {{ reviewsTotalCount }} reviews</v-card-subtitle
                             >
+                            <v-card-text>
+                                <template
+                                    v-for="(
+                                        filter, index
+                                    ) in reviewsRatingFilters"
+                                >
+                                    <v-chip
+                                        small
+                                        color="primary"
+                                        :outlined="
+                                            !isSelectedReviewFilter(
+                                                filter.value
+                                            )
+                                        "
+                                        class="ma-1"
+                                        @click="
+                                            selectedReviewFilter = filter.value
+                                        "
+                                        :key="index"
+                                    >
+                                        <v-icon small class="mr-1"
+                                            >mdi-star</v-icon
+                                        >
+                                        <span>{{ filter.text }}</span>
+                                    </v-chip>
+                                </template>
+                            </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn
@@ -717,6 +744,7 @@ export default {
             isDeleteProductLikeStart: false,
             reviews: [],
             reviewsTotalCount: 0,
+            selectedReviewFilter: null,
         };
     },
 
@@ -792,6 +820,40 @@ export default {
 
         reviewsCount() {
             return this.reviews.length;
+        },
+
+        reviewsRatingFilters() {
+            return [
+                {
+                    text: "All",
+                    value: null,
+                },
+
+                {
+                    text: "5 Stars",
+                    value: 5,
+                },
+
+                {
+                    text: "4 Stars",
+                    value: 4,
+                },
+
+                {
+                    text: "3 Stars",
+                    value: 3,
+                },
+
+                {
+                    text: "2 Stars",
+                    value: 2,
+                },
+
+                {
+                    text: "1 Star",
+                    value: 1,
+                },
+            ];
         },
     },
 
@@ -929,6 +991,10 @@ export default {
                 return;
             }
             this.isDeleteProductLikeStart = false;
+        },
+
+        isSelectedReviewFilter(filter) {
+            return this.selectedReviewFilter === filter;
         },
     },
 
