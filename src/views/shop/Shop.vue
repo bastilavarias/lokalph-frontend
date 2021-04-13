@@ -135,9 +135,7 @@
             </v-tabs>
         </v-card>
         <v-tabs-items v-model="tab">
-            <v-tab-item>
-                <router-view></router-view>
-            </v-tab-item>
+            <router-view></router-view>
         </v-tabs-items>
     </div>
 </template>

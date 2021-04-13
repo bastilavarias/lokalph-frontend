@@ -137,7 +137,6 @@ export default {
         },
 
         price: {
-            type: String,
             required: true,
         },
 
