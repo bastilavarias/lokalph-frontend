@@ -522,30 +522,48 @@
                                     </v-chip>
                                 </template>
                                 <div class="pt-5" v-if="reviewsCount > 0">
-                                    <template
-                                        v-for="(review, index) in reviews"
-                                    >
-                                        <product-post-view-review-card-component
-                                            :key="index"
-                                            :first-name="
-                                                review.account.profile
-                                                    .first_name
-                                            "
-                                            :created-at="review.created_at"
-                                            :message="review.text"
-                                            :image-url="
-                                                review.account.profile.image_url
-                                            "
-                                            :rating="review.rating"
-                                            :images="review.images"
-                                        ></product-post-view-review-card-component>
-                                    </template>
+                                    <v-row dense>
+                                        <template
+                                            v-for="(review, index) in reviews"
+                                        >
+                                            <v-col cols="12" :key="index">
+                                                <product-post-view-review-card-component
+                                                    :first-name="
+                                                        review.account.profile
+                                                            .first_name
+                                                    "
+                                                    :created-at="
+                                                        review.created_at
+                                                    "
+                                                    :message="review.text"
+                                                    :image-url="
+                                                        review.account.profile
+                                                            .image_url
+                                                    "
+                                                    :rating="review.rating"
+                                                    :images="review.images"
+                                                ></product-post-view-review-card-component>
+                                            </v-col>
+                                        </template>
+                                    </v-row>
                                 </div>
                                 <div
                                     class="d-flex justify-center align-center align-content-center py-5"
                                     v-if="isGetProductReviewsStart"
                                 >
                                     <custom-loading-spinner-component></custom-loading-spinner-component>
+                                </div>
+                                <div
+                                    class="text-center pt-5"
+                                    v-if="
+                                        !isGetProductReviewsStart &&
+                                        reviewsCount === 0
+                                    "
+                                >
+                                    <span
+                                        class="subtitle-1 black--text font-italic"
+                                        >No reviews yet.</span
+                                    >
                                 </div>
                             </v-card-text>
                             <v-card-actions>
@@ -1065,12 +1083,11 @@ export default {
                 payload
             );
             const reviews = data.product_review;
+            this.reviewsPaginationOptions.totalCount = data.total_count || 0;
             if (reviews.length === this.reviewsPaginationOptions.perPage) {
                 this.reviews = [...this.reviews, ...reviews];
                 this.reviewsPaginationOptions.page += 1;
                 this.isGetProductReviewsStart = false;
-                this.reviewsPaginationOptions.totalCount =
-                    data.total_count || 0;
                 return;
             }
             this.reviews = [...this.reviews, ...reviews];
