@@ -628,7 +628,7 @@
                             </v-card-text>
                             <infinite-loading
                                 @infinite="getProductInquiries"
-                                :identifier="scrollOptions.id"
+                                :identifier="inquiriesScrollOptions.id"
                             >
                                 <template v-slot:spinner>
                                     <custom-loading-spinner-component></custom-loading-spinner-component>
@@ -729,7 +729,7 @@ export default {
             inquiries: [],
             isCreateProductInquiryStart: false,
             inquiry: null,
-            scrollOptions: {
+            inquiriesScrollOptions: {
                 page: 1,
                 perPage: 3,
                 id: +new Date(),
@@ -745,6 +745,11 @@ export default {
             reviews: [],
             reviewsTotalCount: 0,
             selectedReviewFilter: null,
+            reviewsPaginationOptions: {
+                page: 1,
+                perPage: 3,
+                totalCount: 0,
+            },
         };
     },
 
@@ -919,8 +924,8 @@ export default {
         async getProductInquiries($state) {
             const payload = {
                 productId: this.product.id,
-                page: this.scrollOptions.page,
-                perPage: this.scrollOptions.perPage,
+                page: this.inquiriesScrollOptions.page,
+                perPage: this.inquiriesScrollOptions.perPage,
             };
             const { data } = await this.$store.dispatch(
                 GET_PRODUCT_INQUIRIES,
@@ -928,9 +933,9 @@ export default {
             );
             const inquiries = data.inquiries;
             this.inquiriesTotalCount = data.total_count || 0;
-            if (inquiries.length === this.scrollOptions.perPage) {
+            if (inquiries.length === this.inquiriesScrollOptions.perPage) {
                 this.inquiries = [...this.inquiries, ...inquiries];
-                this.scrollOptions.page += 1;
+                this.inquiriesScrollOptions.page += 1;
                 $state.loaded();
                 return;
             }
@@ -940,11 +945,14 @@ export default {
 
         clearInquiries() {
             this.inquiries = [];
-            this.scrollOptions = Object.assign(this.scrollOptions, {
-                page: 1,
-                id: this.scrollOptions.id + 1,
-                totalCount: 0,
-            });
+            this.inquiriesScrollOptions = Object.assign(
+                this.inquiriesScrollOptions,
+                {
+                    page: 1,
+                    id: this.inquiriesScrollOptions.id + 1,
+                    totalCount: 0,
+                }
+            );
         },
 
         async getProductViews() {
