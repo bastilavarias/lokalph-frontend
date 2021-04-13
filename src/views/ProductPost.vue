@@ -554,6 +554,7 @@
                                     depressed
                                     color="primary"
                                     class="text-capitalize"
+                                    @click="getProductReviews"
                                     v-if="
                                         reviewsCount <
                                         reviewsPaginationOptions.totalCount
@@ -1053,11 +1054,12 @@ export default {
             );
             console.log(data);
             const reviews = data.product_review;
-            this.reviewsPaginationOptions.totalCount = data.total_count || 0;
             if (reviews.length === this.reviewsPaginationOptions.perPage) {
                 this.reviews = [...this.reviews, ...reviews];
                 this.reviewsPaginationOptions.page += 1;
                 this.isGetProductReviewsStart = false;
+                this.reviewsPaginationOptions.totalCount =
+                    data.total_count || 0;
                 return;
             }
             this.reviews = [...this.reviews, ...reviews];
