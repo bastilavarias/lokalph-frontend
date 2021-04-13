@@ -28,11 +28,11 @@
                         <global-shop-preview-component
                             :image-url="shop.image_url"
                             :name="shop.name"
-                            :introduction="shop.introduction"
                             :created-at="shop.created_at"
                             :address="shop.address.value"
                             :contact-number="shop.contact_number"
                             :store-owner="shop.account"
+                            :slug="shop.slug"
                         ></global-shop-preview-component>
                     </v-col>
                 </template>
