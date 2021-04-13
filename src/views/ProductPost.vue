@@ -520,6 +520,12 @@
                                         <span>{{ filter.text }}</span>
                                     </v-chip>
                                 </template>
+                                <div
+                                    class="d-flex justify-center align-center align-content-center py-5"
+                                    v-if="isGetProductReviewsStart"
+                                >
+                                    <custom-loading-spinner-component></custom-loading-spinner-component>
+                                </div>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -704,6 +710,7 @@ import ProductPostViewInquiryCardComponent from "@/components/views/product-post
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 import ProductPostViewOfferDialogComponent from "@/components/views/product-post/offer-dialog-component";
 import ProductPostViewSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
+import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
 
 export default {
     components: {
@@ -750,6 +757,7 @@ export default {
                 perPage: 3,
                 totalCount: 0,
             },
+            isGetProductReviewsStart: false,
         };
     },
 
@@ -1004,11 +1012,34 @@ export default {
         isSelectedReviewFilter(filter) {
             return this.selectedReviewFilter === filter;
         },
+
+        async getProductReviews() {
+            this.isGetProductReviewsStart = true;
+            const payload = {
+                productId: this.product.id,
+                page: this.reviewsPaginationOptions.page,
+                perPage: this.reviewsPaginationOptions.perPage,
+            };
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCT_REVIEWS,
+                payload
+            );
+            const reviews = data.product_review;
+            if (reviews.length === this.reviewsPaginationOptions.perPage) {
+                this.reviews = [...this.reviews, ...reviews];
+                this.reviewsPaginationOptions.page += 1;
+                this.isGetProductReviewsStart = false;
+                return;
+            }
+            this.reviews = [...this.reviews, ...reviews];
+            this.isGetProductReviewsStart = false;
+        },
     },
 
     async created() {
         this.shouldShowProductViewsAndLikes = false;
         await this.getProductDetails();
+        await this.getProductReviews();
     },
 };
 </script>

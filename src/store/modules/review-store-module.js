@@ -1,4 +1,7 @@
-import { CREATE_REVIEW } from "@/store/types/review-store-type";
+import {
+    CREATE_REVIEW,
+    GET_PRODUCT_REVIEWS,
+} from "@/store/types/review-store-type";
 import reviewRepository from "@/repositories/review-repository";
 
 const reviewStoreModule = {
@@ -25,6 +28,20 @@ const reviewStoreModule = {
                     images.map((image) => formData.append("images", image));
                 }
                 return await reviewRepository.createReview(formData);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCT_REVIEWS](_, { productId, page, perPage, search }) {
+            try {
+                const payload = {
+                    productId,
+                    page,
+                    perPage,
+                    search,
+                };
+                return await reviewRepository.getProductReviews(payload);
             } catch (error) {
                 return error.response.data;
             }
