@@ -911,6 +911,18 @@ export default {
                 this.shouldShowProductViewsAndLikes = true;
             }
         },
+
+        async selectedReviewFilter() {
+            this.reviewsPaginationOptions = Object.assign(
+                this.reviewsPaginationOptions,
+                {
+                    page: 1,
+                    perPage: 2,
+                }
+            );
+            this.reviews = [];
+            await this.getProductReviews();
+        },
     },
 
     methods: {
@@ -1052,7 +1064,6 @@ export default {
                 GET_PRODUCT_REVIEWS,
                 payload
             );
-            console.log(data);
             const reviews = data.product_review;
             if (reviews.length === this.reviewsPaginationOptions.perPage) {
                 this.reviews = [...this.reviews, ...reviews];
