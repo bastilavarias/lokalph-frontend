@@ -266,6 +266,48 @@ const routes = [
             },
         ],
     },
+
+    {
+        path: "/shop/:slug",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                component: () => import("@/views/shop/Shop"),
+                children: [
+                    {
+                        path: "",
+                        name: "shop-view",
+                        component: () => import("@/views/shop/Home"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+
+                    {
+                        path: "product",
+                        name: "shop-product-view",
+                        component: () => import("@/views/shop/Product"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+
+                    {
+                        path: "review",
+                        name: "shop-review-view",
+                        component: () => import("@/views/shop/Review"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 const router = new VueRouter({

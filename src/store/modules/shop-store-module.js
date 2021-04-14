@@ -1,4 +1,8 @@
-import { SHOP_CREATE, GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import {
+    SHOP_CREATE,
+    GET_ACCOUNT_SHOPS,
+    GET_SHOP_DETAILS_BY_SLUG,
+} from "@/store/types/shop-store-type";
 import shopRepository from "@/repositories/shop-repository";
 
 const shopStoreModule = {
@@ -50,6 +54,14 @@ const shopStoreModule = {
                     search,
                 };
                 return await shopRepository.getAccountShops(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_SHOP_DETAILS_BY_SLUG](_, slug) {
+            try {
+                return await shopRepository.getShopDetailsBySlug(slug);
             } catch (error) {
                 return error.response.data;
             }

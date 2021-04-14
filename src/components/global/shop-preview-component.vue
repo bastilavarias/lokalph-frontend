@@ -1,16 +1,20 @@
 <template>
     <v-card outlined>
-        <v-list-item three-line>
+        <v-list-item two-line-line>
             <v-list-item-avatar :size="50">
                 <v-img :src="imageUrl"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
-                <v-list-item-title class="font-weight-bold text-truncate">{{
-                    name
-                }}</v-list-item-title>
-                <v-list-item-subtitle class="text-truncate">{{
-                    introduction
-                }}</v-list-item-subtitle>
+                <v-list-item-title>
+                    <custom-router-link-component
+                        :to="{ name: 'shop-view', params: { slug } }"
+                    >
+                        <span
+                            class="black--text font-weight-bold text-truncate"
+                            >{{ name }}</span
+                        >
+                    </custom-router-link-component>
+                </v-list-item-title>
                 <v-list-item-subtitle>
                     Created {{ formatRelativeTime(createdAt) }}
                 </v-list-item-subtitle>
@@ -70,7 +74,11 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn outlined color="primary" class="text-capitalize"
+            <v-btn
+                outlined
+                color="primary"
+                class="text-capitalize"
+                :to="{ name: 'shop-view', params: { slug } }"
                 >View Shop</v-btn
             >
         </v-card-actions>
@@ -79,10 +87,11 @@
 
 <script>
 import commonUtility from "@/common/utility";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
     name: "global-shop-preview-component",
-
+    components: { CustomRouterLinkComponent },
     mixins: [commonUtility],
 
     props: {
@@ -92,11 +101,6 @@ export default {
         },
 
         name: {
-            type: String,
-            required: true,
-        },
-
-        introduction: {
             type: String,
             required: true,
         },
@@ -118,6 +122,11 @@ export default {
 
         storeOwner: {
             type: Object,
+            required: true,
+        },
+
+        slug: {
+            type: String,
             required: true,
         },
     },
