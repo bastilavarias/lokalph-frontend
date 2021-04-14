@@ -13,6 +13,11 @@ const shopRepository = {
         const response = await axiosService.get(url);
         return response.data;
     },
+
+    async getShopDetailsBySlug(slug) {
+        const response = await axiosService.get(`/shop/slug/${slug}`);
+        return response.data;
+    },
 };
 
 export default shopRepository;
