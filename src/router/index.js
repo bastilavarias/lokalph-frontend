@@ -284,6 +284,26 @@ const routes = [
                             roles: ["customer", "seller", "admin"],
                         },
                     },
+
+                    {
+                        path: "product",
+                        name: "shop-product-view",
+                        component: () => import("@/views/shop/Product"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
+
+                    {
+                        path: "review",
+                        name: "shop-review-view",
+                        component: () => import("@/views/shop/Review"),
+                        meta: {
+                            requiresAuth: false,
+                            roles: ["customer", "seller", "admin"],
+                        },
+                    },
                 ],
             },
         ],

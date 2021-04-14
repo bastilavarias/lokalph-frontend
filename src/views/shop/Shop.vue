@@ -158,7 +158,7 @@
                 </div>
                 <v-tabs fixed-tabs v-model="tab">
                     <template v-for="(tab, index) in tabs">
-                        <v-tab :key="index">
+                        <v-tab :key="index" :to="tab.to" exact>
                             <v-icon class="mr-1">{{ tab.icon }}</v-icon>
                             <span class="text-capitalize">{{ tab.text }}</span>
                         </v-tab>
@@ -197,16 +197,25 @@ export default {
                 {
                     text: "Home",
                     icon: "mdi-storefront-outline",
+                    to: { name: "shop-view", params: { slug: this.shop.slug } },
                 },
 
                 {
                     text: "Product",
                     icon: "mdi-cart-outline",
+                    to: {
+                        name: "shop-product-view",
+                        params: { slug: this.shop.slug },
+                    },
                 },
 
                 {
                     text: "Review",
                     icon: "mdi-comment-quote-outline",
+                    to: {
+                        name: "shop-review-view",
+                        params: { slug: this.shop.slug },
+                    },
                 },
             ];
         },
