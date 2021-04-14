@@ -666,16 +666,19 @@
                                             <product-post-view-inquiry-card-component
                                                 :product-id="inquiry.product.id"
                                                 :inquiry-id="inquiry.id"
-                                                :first-name="
+                                                :account-first-name="
                                                     inquiry.account.profile
                                                         .first_name
                                                 "
-                                                :created-at="inquiry.created_at"
-                                                :message="inquiry.message"
-                                                :image-url="
+                                                :account-image-url="
                                                     inquiry.account.profile
                                                         .image_url
                                                 "
+                                                :account-email="
+                                                    inquiry.account.email
+                                                "
+                                                :created-at="inquiry.created_at"
+                                                :message="inquiry.message"
                                                 :owner-id="
                                                     product.shop.account.id
                                                 "
