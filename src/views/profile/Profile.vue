@@ -101,12 +101,6 @@ export default {
                     icon: "mdi-cart-outline",
                     to: { name: "profile-product-view" },
                 },
-
-                {
-                    text: "Review",
-                    icon: "mdi-comment-quote-outline",
-                    to: { name: "profile-review-view" },
-                },
             ];
         },
     },

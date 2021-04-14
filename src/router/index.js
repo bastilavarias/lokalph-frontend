@@ -49,16 +49,6 @@ const routes = [
                             roles: ["customer", "seller", "admin"],
                         },
                     },
-
-                    {
-                        path: "review",
-                        name: "profile-review-view",
-                        component: () => import("@/views/profile/Review"),
-                        meta: {
-                            requiresAuth: false,
-                            roles: ["customer", "seller", "admin"],
-                        },
-                    },
                 ],
             },
         ],

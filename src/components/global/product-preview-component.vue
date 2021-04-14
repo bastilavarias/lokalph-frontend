@@ -125,7 +125,7 @@ import commonUtility from "@/common/utility";
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
-    name: "global-product-mini-preview-component",
+    name: "global-product-preview-component",
     components: { CustomRouterLinkComponent },
     mixins: [commonUtility],
 
