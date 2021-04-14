@@ -170,6 +170,10 @@
                                     color="primary"
                                     class="text-capitalize"
                                     depressed
+                                    :to="{
+                                        name: 'shop-view',
+                                        params: { slug: product.shop.slug },
+                                    }"
                                     >Visit</v-btn
                                 >
                             </v-list-item-action>
