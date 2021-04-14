@@ -528,18 +528,21 @@
                                         >
                                             <v-col cols="12" :key="index">
                                                 <product-post-view-review-card-component
-                                                    :first-name="
+                                                    :account-first-name="
                                                         review.account.profile
                                                             .first_name
+                                                    "
+                                                    :account-email="
+                                                        review.account.email
+                                                    "
+                                                    :account-image-url="
+                                                        review.account.profile
+                                                            .image_url
                                                     "
                                                     :created-at="
                                                         review.created_at
                                                     "
                                                     :message="review.text"
-                                                    :image-url="
-                                                        review.account.profile
-                                                            .image_url
-                                                    "
                                                     :rating="review.rating"
                                                     :images="review.images"
                                                 ></product-post-view-review-card-component>
@@ -569,6 +572,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn
+                                    :disabled="isGetProductReviewsStart"
                                     depressed
                                     color="primary"
                                     class="text-capitalize"

@@ -2,7 +2,7 @@
     <v-card outlined class="rounded-xl py-5 px-4">
         <div class="d-flex align-start justify-space-between mb-2">
             <v-avatar>
-                <v-img :src="imageUrl"></v-img>
+                <v-img :src="accountImageUrl"></v-img>
             </v-avatar>
             <div class="mr-2 text-content flex-grow-1">
                 <div class="pl-4">
@@ -11,9 +11,18 @@
                             <div
                                 class="d-flex align-content-center align-center"
                             >
-                                <span class="text-capitalize subtitle-1">
-                                    {{ firstName }}
-                                </span>
+                                <custom-router-link-component
+                                    :to="{
+                                        name: 'profile-view',
+                                        params: { email: accountEmail },
+                                    }"
+                                >
+                                    <span
+                                        class="black--text text-capitalize subtitle-1"
+                                    >
+                                        {{ accountFirstName }}
+                                    </span>
+                                </custom-router-link-component>
                                 <span class="mx-1"> · </span>
                                 <span class="caption">
                                     {{ formatRelativeTime(createdAt) }}
@@ -67,14 +76,15 @@
 <script>
 import commonUtility from "@/common/utility";
 import GlobalReviewRatingChipComponent from "@/components/global/review-rating-chip-component";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
     name: "product-post-view-review-card-component",
-    components: { GlobalReviewRatingChipComponent },
+    components: { CustomRouterLinkComponent, GlobalReviewRatingChipComponent },
     mixins: [commonUtility],
 
     props: {
-        firstName: {
+        accountFirstName: {
             type: String,
             required: true,
         },
@@ -89,7 +99,7 @@ export default {
             required: true,
         },
 
-        imageUrl: {
+        accountImageUrl: {
             type: String,
             required: true,
         },
@@ -101,6 +111,11 @@ export default {
 
         images: {
             type: Array,
+            required: true,
+        },
+
+        accountEmail: {
+            type: String,
             required: true,
         },
     },
