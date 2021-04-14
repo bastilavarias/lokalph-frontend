@@ -150,17 +150,12 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-
-                <v-card-title>About Shop</v-card-title>
-                <v-card-text>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Magni mollitia perferendis recusandae? Aut minima modi
-                    placeat quidem ut. Amet autem delectus eius est eveniet
-                    inventore iste nam, necessitatibus, officiis omnis quaerat
-                    quidem repellendus sint vitae voluptate. Assumenda
-                    consectetur deleniti, dolore eveniet ex facere incidunt odio
-                    pariatur quae, sed ut voluptas.
-                </v-card-text>
+                <div v-if="shop.introduction">
+                    <v-card-title>About Shop</v-card-title>
+                    <v-card-text>
+                        {{ shop.introduction }}
+                    </v-card-text>
+                </div>
                 <v-tabs fixed-tabs v-model="tab">
                     <template v-for="(tab, index) in tabs">
                         <v-tab :key="index">
