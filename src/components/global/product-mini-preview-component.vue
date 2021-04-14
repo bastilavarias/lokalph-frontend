@@ -4,7 +4,7 @@
         :style="{ textDecoration: 'none' }"
     >
         <v-hover v-slot="{ hover }">
-            <v-card outlined height="565" :elevation="hover ? 10 : 0">
+            <v-card outlined height="450" :elevation="hover ? 10 : 0">
                 <div :style="{ position: 'relative' }">
                     <v-img
                         :src="preview.url"
@@ -16,11 +16,12 @@
                             category.label
                         }}</v-chip>
                     </div>
-                    <div class="floating-heart-button">
-                        <v-btn fab small>
-                            <v-icon color="grey">mdi-heart</v-icon>
-                        </v-btn>
-                    </div>
+                    <!--                    <div class="floating-heart-button">-->
+                    <!--                        <v-btn fab small>-->
+                    <!--                            <v-icon color="grey">mdi-heart</v-icon>-->
+                    <!--                        </v-btn>-->
+                    <!--                    </div>-->
+                    <!--                  -->
                 </div>
                 <v-list-item two-line>
                     <v-list-item-content>
@@ -36,19 +37,20 @@
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
-                <v-card-text :style="{ height: '130px' }">
-                    <div
-                        v-html="
-                            truncateHTML(description, 50).length >= 50
-                                ? truncateHTML(description, 50)
-                                : description
-                        "
-                        class="mb-1"
-                    ></div>
-                    <span v-if="truncateHTML(description, 50).length >= 50"
-                        >Read more...</span
-                    >
-                </v-card-text>
+                <!--                <v-card-text :style="{ height: '130px' }">-->
+                <!--                    <div-->
+                <!--                        v-html="-->
+                <!--                            truncateHTML(description, 50).length >= 50-->
+                <!--                                ? truncateHTML(description, 50)-->
+                <!--                                : description-->
+                <!--                        "-->
+                <!--                        class="mb-1"-->
+                <!--                    ></div>-->
+                <!--                    <span v-if="truncateHTML(description, 50).length >= 50"-->
+                <!--                        >Read more...</span-->
+                <!--                    >-->
+                <!--                </v-card-text>-->
+                <!--              -->
                 <v-divider></v-divider>
                 <v-list-item three-line>
                     <v-list-item-avatar :size="40">
@@ -58,8 +60,17 @@
                         ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-subtitle class="font-weight-bold">
-                            {{ shop.name }}
+                        <v-list-item-subtitle>
+                            <custom-router-link-component
+                                :to="{
+                                    name: 'shop-view',
+                                    params: { slug: shop.slug },
+                                }"
+                            >
+                                <span class="font-weight-bold black--text">
+                                    {{ shop.name }}
+                                </span>
+                            </custom-router-link-component>
                         </v-list-item-subtitle>
                         <v-list-item-subtitle>
                             <div class="d-flex align-center">
@@ -70,10 +81,7 @@
                                     <span class="caption">{{ stock }}</span>
                                 </span>
                                 <span class="mx-1">·</span>
-                                <span
-                                    class="d-flex align-center"
-                                    title="Hearts"
-                                >
+                                <span class="d-flex align-center" title="Likes">
                                     <v-icon size="small" class="mr-1"
                                         >mdi-heart-outline</v-icon
                                     >
@@ -114,10 +122,11 @@
 
 <script>
 import commonUtility from "@/common/utility";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
     name: "global-product-mini-preview-component",
-
+    components: { CustomRouterLinkComponent },
     mixins: [commonUtility],
 
     props: {
