@@ -232,7 +232,6 @@ export default {
                 GET_SHOP_DETAILS_BY_SLUG,
                 this.shopSlug
             );
-            console.log(data);
             this.shop = Object.assign({}, data);
             this.isGetShopDetailsStart = false;
         },

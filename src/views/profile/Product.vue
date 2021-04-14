@@ -3,13 +3,13 @@
         <v-card-title>
             <div>
                 <span>Products</span>
-                <v-menu offset-y>
+                <v-menu offset-y v-if="hasShops">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                             text
                             v-bind="attrs"
                             v-on="on"
-                            :loading="!hasShops || isGetShopsStart"
+                            :loading="isGetShopsStart"
                             small
                         >
                             <span
@@ -208,7 +208,7 @@ export default {
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
-            if (!this.selectedShop) {
+            if (!this.selectedShop && this.hasShops) {
                 const shop = this.shops[0];
                 this.selectedShop = Object.assign({}, shop);
             }
@@ -226,7 +226,6 @@ export default {
                 payload
             );
             const products = data.products;
-            console.log(products);
             if (products.length === this.scrollOptions.perPage) {
                 this.products = [...this.products, ...products];
                 this.scrollOptions.page += 1;
