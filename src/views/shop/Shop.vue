@@ -25,17 +25,21 @@
                                     <v-list-item two-line>
                                         <v-list-item-avatar :size="100">
                                             <v-img
-                                                src="http://www.clker.com/cliparts/S/e/P/6/M/t/shop-front-icon.svg"
+                                                :src="shop.image_url"
                                             ></v-img>
                                         </v-list-item-avatar>
                                         <v-list-item-content>
-                                            <v-list-item-title class="headline"
-                                                >Expee</v-list-item-title
+                                            <v-list-item-title
+                                                class="headline"
+                                                >{{
+                                                    shop.name
+                                                }}</v-list-item-title
                                             >
-                                            <v-list-item-subtitle
-                                                >Created a year
-                                                ago</v-list-item-subtitle
-                                            >
+                                            <v-list-item-subtitle>{{
+                                                formatRelativeTime(
+                                                    shop.created_at
+                                                )
+                                            }}</v-list-item-subtitle>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </div>
@@ -90,8 +94,10 @@
                                             <v-icon class="mr-1"
                                                 >mdi-map-marker-outline</v-icon
                                             >
-                                            <span class="text-truncate"
-                                                >406 Santa Fe Tondo Manila</span
+                                            <span
+                                                class="text-truncate"
+                                                :title="shop.address.value"
+                                                >{{ shop.address.value }}</span
                                             >
                                         </v-list-item-icon>
                                     </v-list-item>
@@ -100,19 +106,43 @@
                                             <v-icon class="mr-1"
                                                 >mdi-phone-outline</v-icon
                                             >
-                                            <span class="text-truncate"
-                                                >09212709683</span
+                                            <span
+                                                class="text-truncate"
+                                                :title="shop.contact_number"
+                                                >{{ shop.contact_number }}</span
                                             >
                                         </v-list-item-icon>
                                     </v-list-item>
-                                    <v-list-item dense>
+                                    <v-list-item
+                                        dense
+                                        class="align-content-center align-center"
+                                    >
                                         <v-list-item-icon>
                                             <v-icon class="mr-1"
                                                 >mdi-account-outline</v-icon
                                             >
-                                            <span class="text-truncate"
-                                                >Sebastian Curtis Lavarias</span
+                                            <custom-router-link-component
+                                                :to="{
+                                                    name: 'profile-view',
+                                                    params: {
+                                                        email:
+                                                            shop.account.email,
+                                                    },
+                                                }"
                                             >
+                                                <span
+                                                    class="primary--text font-weight-bold text-truncate"
+                                                    :title="`${shop.account.profile.first_name} ${shop.account.profile.last_name}`"
+                                                    >{{
+                                                        shop.account.profile
+                                                            .first_name
+                                                    }}
+                                                    {{
+                                                        shop.account.profile
+                                                            .last_name
+                                                    }}</span
+                                                >
+                                            </custom-router-link-component>
                                         </v-list-item-icon>
                                     </v-list-item>
                                 </v-col>
@@ -150,9 +180,12 @@
 <script>
 import { GET_SHOP_DETAILS_BY_SLUG } from "@/store/types/shop-store-type";
 import ShopViewTabsSkeletonLoader from "@/components/views/shop/tabs-skeleton-loader";
+import commonUtility from "@/common/utility";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
-    components: { ShopViewTabsSkeletonLoader },
+    components: { CustomRouterLinkComponent, ShopViewTabsSkeletonLoader },
+
     data() {
         return {
             tab: null,
@@ -160,6 +193,8 @@ export default {
             shop: null,
         };
     },
+
+    mixins: [commonUtility],
 
     computed: {
         tabs() {
@@ -193,6 +228,7 @@ export default {
                 GET_SHOP_DETAILS_BY_SLUG,
                 this.shopSlug
             );
+            console.log(data);
             this.shop = Object.assign({}, data);
             this.isGetShopDetailsStart = false;
         },
