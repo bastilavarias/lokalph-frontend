@@ -44,17 +44,19 @@
                 <v-list-item two-line>
                     <v-list-item-avatar>
                         <v-img
-                            src="http://www.clker.com/cliparts/S/e/P/6/M/t/shop-front-icon.svg"
+                            src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
                         ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title class="font-weight-bold"
-                            >Expee</v-list-item-title
-                        >
+                        <v-list-item-title class="font-weight-bold">
+                            <span title="Samsung Galaxy S10"
+                                >Samsung Galaxy s10</span
+                            >
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            <span title="Expee" class="black--text">Expee</span>
+                        </v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-list-item-action>
-                        <v-btn color="primary" small depressed> Visit </v-btn>
-                    </v-list-item-action>
                 </v-list-item>
                 <v-divider></v-divider>
                 <div
@@ -175,13 +177,7 @@ export default {
     },
 
     methods: {
-        scrollToElement() {
-            const element = this.$refs.messages;
-            if (element) element.scrollIntoView({ behavior: "smooth" });
-        },
-
         sendChat() {
-            console.log(this.isFormValid);
             if (this.isFormValid) {
                 this.chats = [
                     ...this.chats,
@@ -197,8 +193,21 @@ export default {
                     },
                 ];
                 this.message = null;
+                this.scrollToBottom();
             }
         },
+
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const element = this.$refs.messages;
+                this.$refs.messages.scrollTop =
+                    element.scrollHeight - element.clientHeight;
+            });
+        },
+    },
+
+    created() {
+        this.scrollToBottom();
     },
 };
 </script>
