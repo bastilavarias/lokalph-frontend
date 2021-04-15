@@ -82,7 +82,7 @@
             <v-row dense>
                 <v-col cols="12">
                     <v-card flat>
-                        <v-card-subtitle>From the same Shop</v-card-subtitle>
+                        <v-card-subtitle>New Products</v-card-subtitle>
                     </v-card>
                 </v-col>
             </v-row>
