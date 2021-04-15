@@ -1,6 +1,7 @@
 import {
     CREATE_REVIEW,
     GET_PRODUCT_REVIEWS,
+    GET_SHOP_REVIEWS,
 } from "@/store/types/review-store-type";
 import reviewRepository from "@/repositories/review-repository";
 
@@ -42,6 +43,20 @@ const reviewStoreModule = {
                     search,
                 };
                 return await reviewRepository.getProductReviews(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_SHOP_REVIEWS](_, { shopId, page, perPage, search }) {
+            try {
+                const payload = {
+                    shopId,
+                    page,
+                    perPage,
+                    search,
+                };
+                return await reviewRepository.getShopReviews(payload);
             } catch (error) {
                 return error.response.data;
             }

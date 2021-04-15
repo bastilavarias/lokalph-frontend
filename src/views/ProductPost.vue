@@ -937,6 +937,7 @@ export default {
                     await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
                 await this.getProductLikes();
                 await this.getProductViews();
+                await this.getProductReviews();
                 this.shouldShowProductViewsAndLikes = true;
             }
         },
@@ -1109,7 +1110,6 @@ export default {
     async created() {
         this.shouldShowProductViewsAndLikes = false;
         await this.getProductDetails();
-        await this.getProductReviews();
     },
 };
 </script>
