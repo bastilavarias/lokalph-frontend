@@ -59,31 +59,27 @@
                 <v-divider></v-divider>
                 <v-card-text>
                     <div :style="{ height: '400px', overflow: 'auto' }">
-                        <div class="d-flex">
-                            <v-card
-                                class="my-1"
-                                color="#E4E6EB"
-                                shaped
-                                width="50%"
-                                flat
-                            >
+                        <div :style="{ maxWidth: '75%' }" class="d-flex">
+                            <v-avatar :size="25" class="mr-2">
+                                <v-img
+                                    src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                ></v-img>
+                            </v-avatar>
+                            <v-card class="my-1" color="#E4E6EB" shaped flat>
                                 <v-card-text class="black--text">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit. Adipisci, in.
+                                    Lorem ipsum dolor sit amet.
                                 </v-card-text>
                             </v-card>
                         </div>
-                        <div class="d-flex">
-                            <div class="flex-grow-1"></div>
+                        <div class="d-flex justify-space-between">
+                            <v-spacer></v-spacer>
                             <v-card
                                 color="secondary lighten--5"
-                                shaped
-                                width="50%"
                                 flat
+                                max-width="75%"
                             >
                                 <v-card-text class="white--text">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit. Adipisci, in.
+                                    tt
                                 </v-card-text>
                             </v-card>
                         </div>
