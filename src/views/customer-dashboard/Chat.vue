@@ -81,9 +81,9 @@
                                                 <!--Implement truncate here-->
                                                 <span
                                                     class="caption"
-                                                    title="Sebastian Curtis Lavarias"
+                                                    title="Expee"
                                                 >
-                                                    Sebastian Curtis Lavarias
+                                                    Expee
                                                 </span>
                                                 <v-card
                                                     class="my-1"
