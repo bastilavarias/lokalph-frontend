@@ -58,7 +58,7 @@
                 </v-list-item>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <div :style="{ height: '400px', overflow: 'auto' }">
+                    <div :style="{ height: '450px', overflow: 'auto' }">
                         <div :style="{ maxWidth: '75%' }" class="d-flex">
                             <v-avatar :size="25" class="mr-2">
                                 <v-img
@@ -66,7 +66,13 @@
                                 ></v-img>
                             </v-avatar>
                             <div>
-                                <span class="caption">Sebastian</span>
+                                <!--Implement truncate here-->
+                                <span
+                                    class="caption"
+                                    title="Sebastian Curtis Lavarias"
+                                >
+                                    Sebastian Curtis Lavarias
+                                </span>
                                 <v-card
                                     class="my-1"
                                     color="#E4E6EB"
@@ -92,6 +98,25 @@
                             </v-card>
                         </div>
                     </div>
+                    <v-textarea
+                        outlined
+                        height="80"
+                        color="secondary"
+                        placeholder="Type your message here..."
+                        no-resize
+                    >
+                        <template v-slot:append-outer>
+                            <v-btn
+                                color="secondary"
+                                fab
+                                small
+                                depressed
+                                class="align-self-center"
+                            >
+                                <v-icon>mdi-send</v-icon>
+                            </v-btn>
+                        </template>
+                    </v-textarea>
                 </v-card-text>
             </v-col>
         </v-row>

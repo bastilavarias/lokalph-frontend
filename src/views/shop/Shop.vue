@@ -18,7 +18,7 @@
                                     dark
                                 >
                                     <div
-                                        class="name-card-background custom-black-overlay"
+                                        class="name-card-background"
                                         :style="{
                                             backgroundImage: `url(${require('@/assets/images/red-background-hero.webp')})`,
                                         }"
