@@ -65,11 +65,19 @@
                                     src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
                                 ></v-img>
                             </v-avatar>
-                            <v-card class="my-1" color="#E4E6EB" shaped flat>
-                                <v-card-text class="black--text">
-                                    Lorem ipsum dolor sit amet.
-                                </v-card-text>
-                            </v-card>
+                            <div>
+                                <span class="caption">Sebastian</span>
+                                <v-card
+                                    class="my-1"
+                                    color="#E4E6EB"
+                                    shaped
+                                    flat
+                                >
+                                    <v-card-text class="black--text">
+                                        Lorem ipsum dolor sit amet.
+                                    </v-card-text>
+                                </v-card>
+                            </div>
                         </div>
                         <div class="d-flex justify-space-between">
                             <v-spacer></v-spacer>
@@ -79,7 +87,7 @@
                                 max-width="75%"
                             >
                                 <v-card-text class="white--text">
-                                    tt
+                                    test
                                 </v-card-text>
                             </v-card>
                         </div>
