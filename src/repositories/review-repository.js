@@ -13,6 +13,14 @@ const reviewRepository = {
         const result = await axiosService.get(url);
         return result.data;
     },
+
+    async getShopReviews({ shopId, page, perPage, search }) {
+        const url = `/review/shop/${shopId}?page=${page}${
+            perPage ? `&per_page=${perPage}` : ""
+        }${search ? `&search=${search}` : ""}`;
+        const result = await axiosService.get(url);
+        return result.data;
+    },
 };
 
 export default reviewRepository;

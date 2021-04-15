@@ -49,16 +49,6 @@ const routes = [
                             roles: ["customer", "seller", "admin"],
                         },
                     },
-
-                    {
-                        path: "review",
-                        name: "profile-review-view",
-                        component: () => import("@/views/profile/Review"),
-                        meta: {
-                            requiresAuth: false,
-                            roles: ["customer", "seller", "admin"],
-                        },
-                    },
                 ],
             },
         ],
@@ -289,16 +279,6 @@ const routes = [
                         path: "product",
                         name: "shop-product-view",
                         component: () => import("@/views/shop/Product"),
-                        meta: {
-                            requiresAuth: false,
-                            roles: ["customer", "seller", "admin"],
-                        },
-                    },
-
-                    {
-                        path: "review",
-                        name: "shop-review-view",
-                        component: () => import("@/views/shop/Review"),
                         meta: {
                             requiresAuth: false,
                             roles: ["customer", "seller", "admin"],

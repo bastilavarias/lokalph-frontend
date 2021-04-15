@@ -170,6 +170,10 @@
                                     color="primary"
                                     class="text-capitalize"
                                     depressed
+                                    :to="{
+                                        name: 'shop-view',
+                                        params: { slug: product.shop.slug },
+                                    }"
                                     >Visit</v-btn
                                 >
                             </v-list-item-action>
@@ -528,18 +532,21 @@
                                         >
                                             <v-col cols="12" :key="index">
                                                 <product-post-view-review-card-component
-                                                    :first-name="
+                                                    :account-first-name="
                                                         review.account.profile
                                                             .first_name
+                                                    "
+                                                    :account-email="
+                                                        review.account.email
+                                                    "
+                                                    :account-image-url="
+                                                        review.account.profile
+                                                            .image_url
                                                     "
                                                     :created-at="
                                                         review.created_at
                                                     "
                                                     :message="review.text"
-                                                    :image-url="
-                                                        review.account.profile
-                                                            .image_url
-                                                    "
                                                     :rating="review.rating"
                                                     :images="review.images"
                                                 ></product-post-view-review-card-component>
@@ -569,6 +576,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn
+                                    :disabled="isGetProductReviewsStart"
                                     depressed
                                     color="primary"
                                     class="text-capitalize"
@@ -658,16 +666,19 @@
                                             <product-post-view-inquiry-card-component
                                                 :product-id="inquiry.product.id"
                                                 :inquiry-id="inquiry.id"
-                                                :first-name="
+                                                :account-first-name="
                                                     inquiry.account.profile
                                                         .first_name
                                                 "
-                                                :created-at="inquiry.created_at"
-                                                :message="inquiry.message"
-                                                :image-url="
+                                                :account-image-url="
                                                     inquiry.account.profile
                                                         .image_url
                                                 "
+                                                :account-email="
+                                                    inquiry.account.email
+                                                "
+                                                :created-at="inquiry.created_at"
+                                                :message="inquiry.message"
                                                 :owner-id="
                                                     product.shop.account.id
                                                 "
@@ -926,6 +937,7 @@ export default {
                     await this.$store.dispatch(CREATE_PRODUCT_VIEW, value.id);
                 await this.getProductLikes();
                 await this.getProductViews();
+                await this.getProductReviews();
                 this.shouldShowProductViewsAndLikes = true;
             }
         },
@@ -1098,7 +1110,6 @@ export default {
     async created() {
         this.shouldShowProductViewsAndLikes = false;
         await this.getProductDetails();
-        await this.getProductReviews();
     },
 };
 </script>

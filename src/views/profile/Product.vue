@@ -3,13 +3,13 @@
         <v-card-title>
             <div>
                 <span>Products</span>
-                <v-menu offset-y>
+                <v-menu offset-y v-if="hasShops">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                             text
                             v-bind="attrs"
                             v-on="on"
-                            :loading="!hasShops || isGetShopsStart"
+                            :loading="isGetShopsStart"
                             small
                         >
                             <span
@@ -71,7 +71,7 @@
             <v-row dense>
                 <template v-for="(product, index) in products">
                     <v-col cols="12" md="4" :key="index">
-                        <global-product-mini-preview-component
+                        <global-product-preview-component
                             :shop-id="product.shop.id"
                             :category="product.category"
                             :preview="product.images[0]"
@@ -82,7 +82,7 @@
                             :shop="product.shop"
                             :stock="product.stock"
                             :slug="product.slug"
-                        ></global-product-mini-preview-component>
+                        ></global-product-preview-component>
                     </v-col>
                 </template>
             </v-row>
@@ -113,17 +113,17 @@
     </v-card>
 </template>
 <script>
-import GlobalProductMiniPreviewComponent from "@/components/global/product-mini-preview-component";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 import { GET_SHOP_PRODUCTS } from "@/store/types/product-store-type";
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { debounce } from "@/common/utility";
+import GlobalProductPreviewComponent from "@/components/global/product-preview-component";
 
 export default {
     components: {
+        GlobalProductPreviewComponent,
         CustomLoadingSpinnerComponent,
-        GlobalProductMiniPreviewComponent,
     },
 
     data() {
@@ -208,7 +208,7 @@ export default {
             );
             this.isGetShopsStart = false;
             this.shops = data.shops;
-            if (!this.selectedShop) {
+            if (!this.selectedShop && this.hasShops) {
                 const shop = this.shops[0];
                 this.selectedShop = Object.assign({}, shop);
             }

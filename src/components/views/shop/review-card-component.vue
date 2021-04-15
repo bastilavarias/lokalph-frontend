@@ -35,36 +35,12 @@
                             </div>
                         </v-col>
                         <v-col cols="12">
-                            <v-row dense>
-                                <v-col cols="12">
-                                    <div
-                                        class="subtitle-1 text-justify mb-2"
-                                        :style="{ wordBreak: 'break-all' }"
-                                    >
-                                        {{ message }}
-                                    </div>
-                                </v-col>
-                                <v-col cols="12" v-if="images.length > 0">
-                                    <v-row dense>
-                                        <template
-                                            v-for="(image, index) in images"
-                                        >
-                                            <v-col
-                                                cols="12"
-                                                md="4"
-                                                :key="index"
-                                            >
-                                                <v-img
-                                                    width="auto"
-                                                    height="100"
-                                                    :src="image.url"
-                                                    position="center"
-                                                ></v-img>
-                                            </v-col>
-                                        </template>
-                                    </v-row>
-                                </v-col>
-                            </v-row>
+                            <div
+                                class="subtitle-1 text-justify mb-2"
+                                :style="{ wordBreak: 'break-all' }"
+                            >
+                                {{ message }}
+                            </div>
                         </v-col>
                     </v-row>
                 </div>
@@ -79,7 +55,7 @@ import GlobalReviewRatingChipComponent from "@/components/global/review-rating-c
 import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
-    name: "product-post-view-review-card-component",
+    name: "shop-view-review-card-component",
     components: { CustomRouterLinkComponent, GlobalReviewRatingChipComponent },
     mixins: [commonUtility],
 
@@ -106,11 +82,6 @@ export default {
 
         rating: {
             type: Number,
-            required: true,
-        },
-
-        images: {
-            type: Array,
             required: true,
         },
 
