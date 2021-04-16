@@ -33,6 +33,9 @@
                             :contact-number="shop.contact_number"
                             :store-owner="shop.account"
                             :slug="shop.slug"
+                            :total-products="shop.total_products_count"
+                            :total-orders="shop.total_orders_count"
+                            :rating="shop.rating"
                         ></global-shop-preview-component>
                     </v-col>
                 </template>
@@ -136,6 +139,7 @@ export default {
                 payload
             );
             const shops = data.shops;
+            console.log(shops[0]);
             if (shops.length === this.scrollOptions.perPage) {
                 this.shops = [...this.shops, ...shops];
                 $state.loaded();
