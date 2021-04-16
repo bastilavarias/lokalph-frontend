@@ -55,11 +55,105 @@
                         </v-list-item-title>
                         <v-list-item-subtitle>
                             Product:
-                            <span
-                                title="Samsung Galaxy S10"
-                                class="black--text font-weight-bold"
-                                >Samsung Galaxy S10</span
-                            >
+                            <v-menu offset-y open-on-hover>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span
+                                        title="Samsung Galaxy S10"
+                                        class="black--text font-weight-bold"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        >Samsung Galaxy S10</span
+                                    >
+                                </template>
+                                <v-card width="250">
+                                    <v-img
+                                        height="200"
+                                        width="auto"
+                                        src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                    ></v-img>
+                                    <v-card-text>
+                                        <v-row dense>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-cart</v-icon
+                                                    >
+                                                    <span
+                                                        title="Name"
+                                                        class="font-weight-bold"
+                                                    >
+                                                        Samsung Galaxy S10
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-shape</v-icon
+                                                    >
+                                                    <span title="Category">
+                                                        Mobile Phones & Tablet
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-file-table-box-multiple</v-icon
+                                                    >
+                                                    <span
+                                                        title="Available Stock"
+                                                    >
+                                                        99 pcs available
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-heart</v-icon
+                                                    >
+                                                    <span title="Likes">
+                                                        99 Likes
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-eye</v-icon
+                                                    >
+                                                    <span title="Views">
+                                                        99 Views
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-clock</v-icon
+                                                    >
+                                                    <span title="Created At">
+                                                        Created 2 days ago
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                            </v-menu>
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
