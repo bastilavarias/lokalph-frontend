@@ -59,7 +59,9 @@
                                                 <span
                                                     ><span
                                                         class="font-weight-bold primary--text"
-                                                        >99</span
+                                                        >{{
+                                                            shop.total_products_count
+                                                        }}</span
                                                     >
                                                     Products</span
                                                 >
@@ -75,7 +77,9 @@
                                                 <span
                                                     ><span
                                                         class="font-weight-bold primary--text"
-                                                        >99</span
+                                                        >{{
+                                                            shop.total_orders_count
+                                                        }}</span
                                                     >
                                                     Orders</span
                                                 >
@@ -90,7 +94,11 @@
                                                 >
                                                 <span
                                                     class="font-weight-bold primary--text"
-                                                    >5 Star</span
+                                                    >{{
+                                                        shop.rating > 1
+                                                            ? `${shop.rating} Stars Rating`
+                                                            : `${shop.rating} Star Rating`
+                                                    }}</span
                                                 >
                                             </v-list-item-icon>
                                         </v-list-item>
