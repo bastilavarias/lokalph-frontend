@@ -13,9 +13,9 @@
                                         two-line
                                         active-class="black--text"
                                     >
-                                        <v-list-item-avatar :size="35" tile>
+                                        <v-list-item-avatar :size="35">
                                             <v-img
-                                                src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                                src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
                                             ></v-img>
                                         </v-list-item-avatar>
                                         <v-list-item-content>
@@ -23,7 +23,7 @@
                                                 <span
                                                     title="Samsung Galaxy S10"
                                                 >
-                                                    Samsung Galaxy S10
+                                                    Sebastian Curtis Lavarias
                                                 </span>
                                             </v-list-item-title>
                                             <v-list-item-subtitle>
@@ -44,22 +44,116 @@
                 <v-list-item two-line>
                     <v-list-item-avatar>
                         <v-img
-                            src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                            src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
                         ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="font-weight-bold">
-                            <span title="Samsung Galaxy S10"
-                                >Samsung Galaxy s10</span
+                            <span title="Sebastian Curtis Lavarias"
+                                >Sebastian Curtis Lavarias</span
                             >
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            Shop:
-                            <span
-                                title="Expee"
-                                class="black--text font-weight-bold"
-                                >Expee</span
-                            >
+                            Product:
+                            <v-menu offset-y open-on-hover>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span
+                                        title="Samsung Galaxy S10"
+                                        class="black--text font-weight-bold"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        >Samsung Galaxy S10</span
+                                    >
+                                </template>
+                                <v-card width="250">
+                                    <v-img
+                                        height="200"
+                                        width="auto"
+                                        src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                    ></v-img>
+                                    <v-card-text>
+                                        <v-row dense>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-cart</v-icon
+                                                    >
+                                                    <span
+                                                        title="Name"
+                                                        class="font-weight-bold"
+                                                    >
+                                                        Samsung Galaxy S10
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-shape</v-icon
+                                                    >
+                                                    <span title="Category">
+                                                        Mobile Phones & Tablet
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-file-table-box-multiple</v-icon
+                                                    >
+                                                    <span
+                                                        title="Available Stock"
+                                                    >
+                                                        99 pcs available
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-heart</v-icon
+                                                    >
+                                                    <span title="Likes">
+                                                        99 Likes
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-eye</v-icon
+                                                    >
+                                                    <span title="Views">
+                                                        99 Views
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <div
+                                                    class="d-flex align-content-center align-center"
+                                                >
+                                                    <v-icon class="mr-1" small
+                                                        >mdi-clock</v-icon
+                                                    >
+                                                    <span title="Created At">
+                                                        Created 2 days ago
+                                                    </span>
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                            </v-menu>
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
@@ -79,16 +173,16 @@
                                         >
                                             <v-avatar :size="25" class="mr-2">
                                                 <v-img
-                                                    src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                                    src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
                                                 ></v-img>
                                             </v-avatar>
                                             <div>
                                                 <!--Implement truncate here-->
                                                 <span
                                                     class="caption"
-                                                    title="Expee"
+                                                    title="Sebastian"
                                                 >
-                                                    Expee
+                                                    Sebastian
                                                 </span>
                                                 <v-card
                                                     class="my-1"
