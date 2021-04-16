@@ -47,6 +47,12 @@ export default {
                 },
 
                 {
+                    text: "Chats",
+                    icon: "mdi-message",
+                    to: { name: "seller-dashboard-chat" },
+                },
+
+                {
                     text: "Offers",
                     icon: "mdi-offer",
                     to: { name: "seller-dashboard-offer" },

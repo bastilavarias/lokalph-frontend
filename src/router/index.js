@@ -150,9 +150,7 @@ const routes = [
                                 path: "",
                                 name: "seller-dashboard-offer",
                                 component: () =>
-                                    import(
-                                        "@/views/seller-dashboard/offer/Table"
-                                    ),
+                                    import("@/views/seller-dashboard/Offer"),
                                 meta: {
                                     requiresAuth: true,
                                     roles: ["seller"],
@@ -170,8 +168,29 @@ const routes = [
                                 name: "seller-dashboard-transaction",
                                 component: () =>
                                     import(
-                                        "@/views/seller-dashboard/transaction/Table"
+                                        "@/views/seller-dashboard/Transaction"
                                     ),
+                                meta: {
+                                    requiresAuth: true,
+                                    roles: ["seller"],
+                                },
+                            },
+                        ],
+                    },
+
+                    {
+                        path: "chat",
+                        component: () => import("@/layouts/router-view-layout"),
+                        meta: {
+                            requiresAuth: true,
+                            roles: ["seller"],
+                        },
+                        children: [
+                            {
+                                path: "",
+                                name: "seller-dashboard-chat",
+                                component: () =>
+                                    import("@/views/seller-dashboard/Chat"),
                                 meta: {
                                     requiresAuth: true,
                                     roles: ["seller"],

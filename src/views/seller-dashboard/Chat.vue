@@ -13,9 +13,9 @@
                                         two-line
                                         active-class="black--text"
                                     >
-                                        <v-list-item-avatar :size="35" tile>
+                                        <v-list-item-avatar :size="35">
                                             <v-img
-                                                src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                                src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
                                             ></v-img>
                                         </v-list-item-avatar>
                                         <v-list-item-content>
@@ -23,7 +23,7 @@
                                                 <span
                                                     title="Samsung Galaxy S10"
                                                 >
-                                                    Samsung Galaxy S10
+                                                    Sebastian Curtis Lavarias
                                                 </span>
                                             </v-list-item-title>
                                             <v-list-item-subtitle>
@@ -44,21 +44,21 @@
                 <v-list-item two-line>
                     <v-list-item-avatar>
                         <v-img
-                            src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                            src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
                         ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="font-weight-bold">
-                            <span title="Samsung Galaxy S10"
-                                >Samsung Galaxy s10</span
+                            <span title="Sebastian Curtis Lavarias"
+                                >Sebastian Curtis Lavarias</span
                             >
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            Shop:
+                            Product:
                             <span
-                                title="Expee"
+                                title="Samsung Galaxy S10"
                                 class="black--text font-weight-bold"
-                                >Expee</span
+                                >Samsung Galaxy S10</span
                             >
                         </v-list-item-subtitle>
                     </v-list-item-content>
@@ -79,16 +79,16 @@
                                         >
                                             <v-avatar :size="25" class="mr-2">
                                                 <v-img
-                                                    src="https://res.cloudinary.com/deqllunb9/image/upload/v1618281994/lokal-ph-development/products/5f903103e5300231c292e547a17c4918_ht2bux.jpg"
+                                                    src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
                                                 ></v-img>
                                             </v-avatar>
                                             <div>
                                                 <!--Implement truncate here-->
                                                 <span
                                                     class="caption"
-                                                    title="Expee"
+                                                    title="Sebastian"
                                                 >
-                                                    Expee
+                                                    Sebastian
                                                 </span>
                                                 <v-card
                                                     class="my-1"
