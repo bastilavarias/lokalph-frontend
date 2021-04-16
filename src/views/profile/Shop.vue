@@ -139,7 +139,6 @@ export default {
                 payload
             );
             const shops = data.shops;
-            console.log(shops[0]);
             if (shops.length === this.scrollOptions.perPage) {
                 this.shops = [...this.shops, ...shops];
                 $state.loaded();

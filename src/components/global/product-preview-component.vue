@@ -16,12 +16,6 @@
                             category.label
                         }}</v-chip>
                     </div>
-                    <!--                    <div class="floating-heart-button">-->
-                    <!--                        <v-btn fab small>-->
-                    <!--                            <v-icon color="grey">mdi-heart</v-icon>-->
-                    <!--                        </v-btn>-->
-                    <!--                    </div>-->
-                    <!--                  -->
                 </div>
                 <v-list-item two-line>
                     <v-list-item-content>
@@ -37,20 +31,7 @@
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
-                <!--                <v-card-text :style="{ height: '130px' }">-->
-                <!--                    <div-->
-                <!--                        v-html="-->
-                <!--                            truncateHTML(description, 50).length >= 50-->
-                <!--                                ? truncateHTML(description, 50)-->
-                <!--                                : description-->
-                <!--                        "-->
-                <!--                        class="mb-1"-->
-                <!--                    ></div>-->
-                <!--                    <span v-if="truncateHTML(description, 50).length >= 50"-->
-                <!--                        >Read more...</span-->
-                <!--                    >-->
-                <!--                </v-card-text>-->
-                <!--              -->
+
                 <v-divider></v-divider>
                 <v-list-item three-line>
                     <v-list-item-avatar :size="40">
@@ -85,7 +66,9 @@
                                     <v-icon size="small" class="mr-1"
                                         >mdi-heart-outline</v-icon
                                     >
-                                    <span class="caption">99</span>
+                                    <span class="caption">{{
+                                        totalLikes
+                                    }}</span>
                                 </span>
                             </div>
                         </v-list-item-subtitle>
@@ -109,7 +92,9 @@
                                     <v-icon size="small" class="mr-1"
                                         >mdi-eye-outline</v-icon
                                     >
-                                    <span class="caption">4</span>
+                                    <span class="caption">{{
+                                        totalViews
+                                    }}</span>
                                 </div>
                             </div>
                         </v-list-item-subtitle>
@@ -176,6 +161,16 @@ export default {
 
         slug: {
             type: String,
+            required: true,
+        },
+
+        totalLikes: {
+            type: Number,
+            required: true,
+        },
+
+        totalViews: {
+            type: Number,
             required: true,
         },
     },

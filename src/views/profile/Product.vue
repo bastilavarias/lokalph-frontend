@@ -82,6 +82,8 @@
                             :shop="product.shop"
                             :stock="product.stock"
                             :slug="product.slug"
+                            :total-likes="product.likes"
+                            :total-views="product.views"
                         ></global-product-preview-component>
                     </v-col>
                 </template>
