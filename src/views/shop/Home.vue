@@ -153,7 +153,7 @@ export default {
                 GET_SHOP_REVIEWS,
                 payload
             );
-            const reviews = data.product_review;
+            const reviews = data.shop_review;
             this.reviewsPaginationOptions.totalCount = data.total_count || 0;
             if (reviews.length === this.reviewsPaginationOptions.perPage) {
                 this.reviews = [...this.reviews, ...reviews];
