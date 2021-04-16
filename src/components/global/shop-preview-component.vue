@@ -29,9 +29,9 @@
                                 <v-icon small color="primary" class="mr-1"
                                     >mdi-cart-outline</v-icon
                                 >
-                                <span class="primary--text font-weight-bold"
-                                    >99</span
-                                >
+                                <span class="primary--text font-weight-bold">{{
+                                    totalProducts
+                                }}</span>
                             </div>
                             <div class="d-flex justify-center align-center">
                                 <span>Products</span>
@@ -42,9 +42,9 @@
                                 <v-icon small color="primary" class="mr-1"
                                     >mdi-shopping-outline</v-icon
                                 >
-                                <span class="primary--text font-weight-bold"
-                                    >99</span
-                                >
+                                <span class="primary--text font-weight-bold">{{
+                                    totalOrders
+                                }}</span>
                             </div>
                             <div class="d-flex justify-center align-center">
                                 <span>Orders</span>
@@ -55,9 +55,9 @@
                                 <v-icon small color="primary" class="mr-1"
                                     >mdi-star-outline</v-icon
                                 >
-                                <span class="primary--text font-weight-bold"
-                                    >4.5</span
-                                >
+                                <span class="primary--text font-weight-bold">{{
+                                    rating
+                                }}</span>
                             </div>
                             <div class="d-flex justify-center align-center">
                                 <span>Ratings</span>
@@ -140,6 +140,21 @@ export default {
 
         slug: {
             type: String,
+            required: true,
+        },
+
+        totalProducts: {
+            type: Number,
+            required: true,
+        },
+
+        totalOrders: {
+            type: Number,
+            required: true,
+        },
+
+        rating: {
+            type: Number,
             required: true,
         },
     },
