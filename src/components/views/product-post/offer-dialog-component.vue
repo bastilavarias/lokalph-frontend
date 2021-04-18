@@ -136,20 +136,20 @@
                             :counter="200"
                         ></v-textarea>
                     </v-col>
-                    <v-col cols="12">
-                        <v-btn
-                            color="primary"
-                            block
-                            depressed
-                            class="text-capitalize"
-                            @click="createOffer"
-                            :disabled="!isFormValid"
-                            :loading="isCreateOfferStart"
-                            >Send
-                        </v-btn>
-                    </v-col>
                 </v-row>
             </v-card-text>
+            <v-card-actions>
+                <v-btn
+                    color="primary"
+                    block
+                    depressed
+                    class="text-capitalize"
+                    @click="createOffer"
+                    :disabled="!isFormValid"
+                    :loading="isCreateOfferStart"
+                    >Send
+                </v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>

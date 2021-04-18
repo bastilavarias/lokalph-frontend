@@ -100,6 +100,19 @@
                     </v-col>
                 </v-row>
             </v-card-text>
+            <v-card-text>
+                <v-row dense>
+                    <v-col cols="12">
+                        <v-textarea outlined label="Message"></v-textarea>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn color="primary" depressed block>
+                    <span class="text-capitalize mr-1">Send</span>
+                    <v-icon>mdi-send</v-icon>
+                </v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
