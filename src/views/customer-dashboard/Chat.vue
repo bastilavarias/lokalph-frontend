@@ -150,9 +150,20 @@
                                 depressed
                                 class="align-self-center"
                                 :disabled="!isFormValid"
+                                v-if="!isMessageNull"
                                 @click="sendChat"
                             >
                                 <v-icon>mdi-send</v-icon>
+                            </v-btn>
+                            <v-btn
+                                color="secondary"
+                                fab
+                                small
+                                depressed
+                                class="align-self-center"
+                                v-if="isMessageNull"
+                            >
+                                <v-icon>mdi-image</v-icon>
                             </v-btn>
                         </template>
                     </v-textarea>
@@ -178,6 +189,10 @@ export default {
             return message
                 ? message.length >= 2 && message.length <= 200
                 : !!message;
+        },
+
+        isMessageNull() {
+            return this.message === null || this.message === "";
         },
     },
 
