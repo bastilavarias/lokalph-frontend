@@ -103,14 +103,37 @@
             <v-card-text>
                 <v-row dense>
                     <v-col cols="12">
-                        <v-textarea outlined label="Message"></v-textarea>
+                        <div class="-center">
+                            <template v-for="(text, index) in messages">
+                                <v-chip
+                                    color="primary"
+                                    class="mr-1"
+                                    :key="index"
+                                    @click="message = text"
+                                    >{{ text }}</v-chip
+                                >
+                            </template>
+                        </div>
+                    </v-col>
+                    <v-col cols="12"></v-col>
+                    <v-col cols="12">
+                        <v-textarea
+                            outlined
+                            label="Message"
+                            v-model="message"
+                        ></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="primary" depressed block>
-                    <span class="text-capitalize mr-1">Send</span>
-                    <v-icon>mdi-send</v-icon>
+                <v-btn
+                    color="primary"
+                    depressed
+                    block
+                    class="text-capitalize"
+                    :disabled="!isFormValid"
+                >
+                    Send
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -169,7 +192,18 @@ export default {
     data() {
         return {
             isOpenLocal: this.isOpen,
+            messages: [
+                "Hi, is this available?",
+                "Hi, is the price negotiable?",
+            ],
+            message: null,
         };
+    },
+
+    computed: {
+        isFormValid() {
+            return !!this.message;
+        },
     },
 
     watch: {
