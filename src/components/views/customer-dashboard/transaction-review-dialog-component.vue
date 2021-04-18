@@ -215,7 +215,6 @@ export default {
             };
             const { data } = await this.$store.dispatch(CREATE_REVIEW, payload);
             if (data) {
-                console.log(data);
                 this.isOpenLocal = false;
                 this.form = Object.assign({}, this.defaultForm);
                 this.transactionIsReviewedLocal = true;
