@@ -203,6 +203,7 @@
                                         block
                                         large
                                         :disabled="!doesHaveStock"
+                                        @click="isChatDialogOpen = true"
                                     >
                                         <v-icon class="mr-1"
                                             >mdi-chat-outline</v-icon
@@ -738,6 +739,17 @@
             :shop-id="product.shop.id"
             v-if="product"
         ></product-post-view-offer-dialog-component>
+        <product-post-view-chat-dialog-component
+            :is-open.sync="isChatDialogOpen"
+            :product-preview="product.images[0]"
+            :product-name="product.name"
+            :product-created-at="product.created_at"
+            :product-condition="product.condition"
+            :product-stock="product.stock"
+            :product-price="product.price"
+            :product-category="product.category"
+            v-if="product"
+        ></product-post-view-chat-dialog-component>
     </section>
 </template>
 
@@ -767,9 +779,11 @@ import ProductPostViewOfferDialogComponent from "@/components/views/product-post
 import ProductPostViewSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
 import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
 import ProductPostViewReviewCardComponent from "@/components/views/product-post/review-card-component";
+import ProductPostViewChatDialogComponent from "@/components/views/product-post/chat-dialog-component";
 
 export default {
     components: {
+        ProductPostViewChatDialogComponent,
         ProductPostViewReviewCardComponent,
         ProductPostViewSkeletonLoadersComponent,
         ProductPostViewOfferDialogComponent,
@@ -814,6 +828,7 @@ export default {
                 totalCount: 0,
             },
             isGetProductReviewsStart: false,
+            isChatDialogOpen: false,
         };
     },
 
