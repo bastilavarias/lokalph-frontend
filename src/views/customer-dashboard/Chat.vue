@@ -161,10 +161,18 @@
                                 small
                                 depressed
                                 class="align-self-center"
+                                @click="openFileExplorer"
                                 v-if="isMessageNull"
                             >
                                 <v-icon>mdi-image</v-icon>
                             </v-btn>
+                            <input
+                                ref="uploader"
+                                class="d-none"
+                                type="file"
+                                accept="image/*"
+                                @change="selectFile"
+                            />
                         </template>
                     </v-textarea>
                 </v-card-text>
@@ -197,6 +205,15 @@ export default {
     },
 
     methods: {
+        openFileExplorer() {
+            window.addEventListener("focus", () => {}, { once: true });
+            this.$refs.uploader.click();
+        },
+        selectFile(e) {
+            const file = e.target.files[0];
+            console.log(file);
+        },
+
         sendChat() {
             if (this.isFormValid) {
                 this.chats = [
