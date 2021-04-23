@@ -132,6 +132,8 @@
                     block
                     class="text-capitalize"
                     :disabled="!isFormValid"
+                    :loading="isSendChatStart"
+                    @click="sendChat"
                 >
                     Send
                 </v-btn>
@@ -142,6 +144,7 @@
 
 <script>
 import commonUtility from "@/common/utility";
+import { INITIATE_CHAT } from "@/store/types/chat-store-type";
 
 export default {
     name: "product-post-view-chat-dialog-component",
@@ -151,6 +154,11 @@ export default {
     props: {
         isOpen: {
             type: Boolean,
+            required: true,
+        },
+
+        productId: {
+            type: Number,
             required: true,
         },
 
@@ -187,6 +195,11 @@ export default {
             type: Object,
             required: true,
         },
+
+        shopId: {
+            type: Number,
+            required: true,
+        },
     },
 
     data() {
@@ -197,12 +210,17 @@ export default {
                 "Hi, is the price negotiable?",
             ],
             message: null,
+            isSendChatStart: false,
         };
     },
 
     computed: {
         isFormValid() {
             return !!this.message;
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
         },
     },
 
@@ -213,6 +231,30 @@ export default {
 
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
+        },
+    },
+
+    methods: {
+        async sendChat() {
+            this.isSendChatStart = true;
+            const payload = {
+                shopId: this.shopId,
+                accountId: this.user.id,
+                message: this.message,
+                productId: this.productId,
+                image: null,
+            };
+            const { success, data } = await this.$store.dispatch(
+                INITIATE_CHAT,
+                payload
+            );
+            if (success) {
+                this.message = null;
+                this.isOpenLocal = false;
+                this.isSendChatStart = false;
+                return;
+            }
+            this.isSendChatStart = false;
         },
     },
 };

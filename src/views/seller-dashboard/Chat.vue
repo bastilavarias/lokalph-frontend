@@ -32,12 +32,7 @@
                         <template v-for="(shop, index) in shops">
                             <v-list-item
                                 :key="index"
-                                @click="
-                                    setRouteQueries(
-                                        shop.id,
-                                        selectedDatePresetValue
-                                    )
-                                "
+                                @click="setRouteQueries(shop.id)"
                                 :disabled="selectedShopId === shop.id"
                                 >{{ shop.name }}</v-list-item
                             >
@@ -54,28 +49,70 @@
                     <div :style="{ height: '633px', overflow: 'auto' }">
                         <v-list dense rounded>
                             <v-list-item-group v-model="room" color="secondary">
-                                <template v-for="n in 50">
+                                <template
+                                    v-for="(chatRoom, index) in chatRooms"
+                                >
                                     <v-list-item
-                                        :key="n"
+                                        :key="index"
                                         two-line
                                         active-class="black--text"
                                     >
                                         <v-list-item-avatar :size="35">
                                             <v-img
-                                                src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
+                                                :src="
+                                                    chatRoom.room.account
+                                                        .profile.image_url
+                                                "
                                             ></v-img>
                                         </v-list-item-avatar>
                                         <v-list-item-content>
                                             <v-list-item-title>
                                                 <span
-                                                    title="Samsung Galaxy S10"
+                                                    :title="
+                                                        chatRoom.room.account
+                                                            .profile.first_name
+                                                    "
                                                 >
-                                                    Sebastian Curtis Lavarias
+                                                    {{
+                                                        chatRoom.room.account
+                                                            .profile.first_name
+                                                    }}
+                                                    {{
+                                                        chatRoom.room.account
+                                                            .profile.last_name
+                                                    }}
                                                 </span>
                                             </v-list-item-title>
                                             <v-list-item-subtitle>
-                                                <span title="30 minutes ago">
-                                                    30 minutes ago
+                                                <span
+                                                    :title="
+                                                        chatRoom.last_chat
+                                                            .message
+                                                    "
+                                                >
+                                                    {{
+                                                        truncateString(
+                                                            chatRoom.last_chat
+                                                                .message,
+                                                            15
+                                                        )
+                                                    }}
+                                                </span>
+                                                <span> · </span>
+                                                <span
+                                                    :title="
+                                                        formatRelativeTime(
+                                                            chatRoom.room
+                                                                .updated_at
+                                                        )
+                                                    "
+                                                >
+                                                    {{
+                                                        formatRelativeTime(
+                                                            chatRoom.room
+                                                                .updated_at
+                                                        )
+                                                    }}
                                                 </span>
                                             </v-list-item-subtitle>
                                         </v-list-item-content>
@@ -325,8 +362,11 @@
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import pusherService from "@/services/pusher-service";
+import commonUtility from "@/common/utility";
 
 export default {
+    mixins: [commonUtility],
+
     data() {
         return {
             room: null,
@@ -336,6 +376,7 @@ export default {
             account: null,
             isGetAccountDetailsStart: false,
             isGetShopsStart: false,
+            chatRooms: [],
         };
     },
 
@@ -453,7 +494,14 @@ export default {
                 `shop-${this.selectedShopId}`
             );
             subscription.bind("new-room", (chatRoom) => {
+                this.chatRooms = [chatRoom, ...this.chatRooms];
+            });
+            subscription.bind("room", (chatRoom) => {
                 console.log(chatRoom);
+                this.chatRooms = this.chatRooms.filter(
+                    (_chatRoom) => _chatRoom.room.id !== chatRoom.room.id
+                );
+                this.chatRooms = [chatRoom, ...this.chatRooms];
             });
         },
 

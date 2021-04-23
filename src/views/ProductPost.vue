@@ -741,6 +741,7 @@
         ></product-post-view-offer-dialog-component>
         <product-post-view-chat-dialog-component
             :is-open.sync="isChatDialogOpen"
+            :product-id="product.id"
             :product-preview="product.images[0]"
             :product-name="product.name"
             :product-created-at="product.created_at"
@@ -748,6 +749,7 @@
             :product-stock="product.stock"
             :product-price="product.price"
             :product-category="product.category"
+            :shop-id="product.shop.id"
             v-if="product"
         ></product-post-view-chat-dialog-component>
     </section>
