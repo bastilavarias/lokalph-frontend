@@ -1,5 +1,16 @@
 <template>
-    <v-list-item two-line active-class="black--text">
+    <v-list-item
+        two-line
+        exact-active-class="black--text"
+        exact
+        :to="{
+            name: 'seller-dashboard-chat',
+            query: {
+                shop_id: shopId,
+                room_id: roomId,
+            },
+        }"
+    >
         <v-list-item-avatar :size="35">
             <v-img :src="imageUrl"></v-img>
         </v-list-item-avatar>
@@ -74,6 +85,16 @@ export default {
 
         isSeen: {
             type: Boolean,
+            required: true,
+        },
+
+        roomId: {
+            type: Number,
+            required: true,
+        },
+
+        shopId: {
+            type: Number,
             required: true,
         },
     },

@@ -76,6 +76,8 @@
                                                     : 'is_seen_by_shop'
                                             ]
                                         "
+                                        :room-id="chatRoom.room.id"
+                                        :shop-id="selectedShopId"
                                     ></global-chat-room-list-item>
                                 </template>
                             </v-list-item-group>
@@ -459,7 +461,6 @@ export default {
                 this.chatRooms = [chatRoom, ...this.chatRooms];
             });
             subscription.bind("room", (chatRoom) => {
-                console.log(chatRoom);
                 this.chatRooms = this.chatRooms.filter(
                     (_chatRoom) => _chatRoom.room.id !== chatRoom.room.id
                 );
