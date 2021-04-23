@@ -121,6 +121,7 @@
                             outlined
                             label="Message"
                             v-model="message"
+                            :counter="200"
                         ></v-textarea>
                     </v-col>
                 </v-row>
@@ -216,7 +217,10 @@ export default {
 
     computed: {
         isFormValid() {
-            return !!this.message;
+            const message = this.message ? this.message.trim() : null;
+            return message
+                ? message.length >= 2 && message.length <= 200
+                : !!message;
         },
 
         user() {
