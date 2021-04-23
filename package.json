@@ -15,6 +15,7 @@
     "hooper": "^0.3.4",
     "moment": "^2.29.1",
     "places.js": "^1.19.0",
+    "pusher-js": "^7.0.3",
     "truncate-html": "^1.0.3",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",

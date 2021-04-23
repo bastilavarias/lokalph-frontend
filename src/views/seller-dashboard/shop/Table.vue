@@ -99,7 +99,7 @@ export default {
             await this.getShops();
         },
 
-        async "pagination.perPage"(value) {
+        async "pagination.perPage"() {
             await this.getShops();
         },
     },

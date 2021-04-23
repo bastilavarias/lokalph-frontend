@@ -1,6 +1,53 @@
 <template>
     <v-card outlined height="700px">
-        <v-card-title>Chats</v-card-title>
+        <v-card-title>
+            <div class="d-flex align-center">
+                <span class="mr-1">Offers</span>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            text
+                            v-bind="attrs"
+                            v-on="on"
+                            :loading="!selectedShopId || isGetShopsStart"
+                            small
+                        >
+                            <span
+                                class="mr-1 font-weight-bold"
+                                v-if="selectedShop"
+                                >{{ selectedShop.name }}</span
+                            >
+                            <v-badge
+                                color="primary"
+                                dot
+                                v-if="!selectedShop"
+                                class="mr-2 text-capitalize font-italic"
+                            >
+                                Select Shop
+                            </v-badge>
+                            <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <template v-for="(shop, index) in shops">
+                            <v-list-item
+                                :key="index"
+                                @click="
+                                    setRouteQueries(
+                                        shop.id,
+                                        selectedDatePresetValue
+                                    )
+                                "
+                                :disabled="selectedShopId === shop.id"
+                                >{{ shop.name }}</v-list-item
+                            >
+                        </template>
+                    </v-list>
+                </v-menu>
+            </div>
+            <v-spacer></v-spacer>
+        </v-card-title>
+
         <v-row no-gutters>
             <v-col cols="12" md="5">
                 <div :style="{ height: '635px' }" class="rooms-border">
@@ -257,12 +304,20 @@
 </template>
 
 <script>
+import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
+import pusherService from "@/services/pusher-service";
+
 export default {
     data() {
         return {
             room: null,
             chats: [],
             message: null,
+            shops: [],
+            account: null,
+            isGetAccountDetailsStart: false,
+            isGetShopsStart: false,
         };
     },
 
@@ -272,6 +327,28 @@ export default {
             return message
                 ? message.length >= 2 && message.length <= 200
                 : !!message;
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
+        },
+
+        selectedShopId() {
+            const shopId = this.$route.query.shop_id;
+            return parseInt(shopId) || null;
+        },
+
+        selectedShop() {
+            if (!this.selectedShopId) return null;
+            return this.shops.find((shop) => shop.id === this.selectedShopId);
+        },
+    },
+
+    watch: {
+        async selectedShopId(value) {
+            if (value) {
+                await this.subscribeShop();
+            }
         },
     },
 
@@ -303,10 +380,70 @@ export default {
                     element.scrollHeight - element.clientHeight;
             });
         },
+
+        async getAccountDetails() {
+            const email = this.user.email || null;
+            if (!email) return this.$router.go(-1);
+            this.isGetAccountDetailsStart = true;
+            const { success, data, error } = await this.$store.dispatch(
+                GET_ACCOUNT_DETAILS_BY_EMAIL,
+                email
+            );
+            this.isGetAccountDetailsStart = false;
+            if (error) return this.$router.go(-1);
+            if (success) {
+                this.account = Object.assign({}, data);
+            }
+        },
+
+        async getShops() {
+            const payload = {
+                accountId: this.account.id,
+                perPage: 999,
+            };
+            this.isGetShopsStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_ACCOUNT_SHOPS,
+                payload
+            );
+            this.isGetShopsStart = false;
+            this.shops = data.shops;
+            if (!this.selectedShop) {
+                const shop = this.shops[0];
+                await this.setRouteQueries(shop.id);
+            }
+        },
+
+        async setRouteQueries(shopId) {
+            await this.$router.push({
+                name: "seller-dashboard-chat",
+                query: { shop_id: shopId },
+            });
+        },
+
+        async subscribeShop() {
+            const subscription = pusherService.subscribe(
+                `shop-${this.selectedShopId}`
+            );
+            subscription.bind("new-room", (chatRoom) => {
+                console.log(chatRoom);
+            });
+        },
+
+        unsubscribeShop() {
+            pusherService.unsubscribe(`shop-${this.selectedShopId}`);
+        },
     },
 
-    created() {
+    async created() {
+        if (this.selectedShopId) await this.subscribeShop();
+        await this.getAccountDetails();
+        await this.getShops();
         this.scrollToBottom();
+    },
+
+    destroyed() {
+        this.unsubscribeShop();
     },
 };
 </script>
