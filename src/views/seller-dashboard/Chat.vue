@@ -2,7 +2,7 @@
     <v-card outlined height="700px">
         <v-card-title>
             <div class="d-flex align-center">
-                <span class="mr-1">Offers</span>
+                <span class="mr-1">Chats</span>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
