@@ -244,7 +244,7 @@ export default {
                 productId: this.productId,
                 image: null,
             };
-            const { success, data } = await this.$store.dispatch(
+            const { success } = await this.$store.dispatch(
                 INITIATE_CHAT,
                 payload
             );

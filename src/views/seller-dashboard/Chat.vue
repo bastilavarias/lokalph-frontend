@@ -52,71 +52,31 @@
                                 <template
                                     v-for="(chatRoom, index) in chatRooms"
                                 >
-                                    <v-list-item
+                                    <global-chat-room-list-item
                                         :key="index"
-                                        two-line
-                                        active-class="black--text"
-                                    >
-                                        <v-list-item-avatar :size="35">
-                                            <v-img
-                                                :src="
-                                                    chatRoom.room.account
-                                                        .profile.image_url
-                                                "
-                                            ></v-img>
-                                        </v-list-item-avatar>
-                                        <v-list-item-content>
-                                            <v-list-item-title>
-                                                <span
-                                                    :title="
-                                                        chatRoom.room.account
-                                                            .profile.first_name
-                                                    "
-                                                >
-                                                    {{
-                                                        chatRoom.room.account
-                                                            .profile.first_name
-                                                    }}
-                                                    {{
-                                                        chatRoom.room.account
-                                                            .profile.last_name
-                                                    }}
-                                                </span>
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle>
-                                                <span
-                                                    :title="
-                                                        chatRoom.last_chat
-                                                            .message
-                                                    "
-                                                >
-                                                    {{
-                                                        truncateString(
-                                                            chatRoom.last_chat
-                                                                .message,
-                                                            15
-                                                        )
-                                                    }}
-                                                </span>
-                                                <span> · </span>
-                                                <span
-                                                    :title="
-                                                        formatRelativeTime(
-                                                            chatRoom.room
-                                                                .updated_at
-                                                        )
-                                                    "
-                                                >
-                                                    {{
-                                                        formatRelativeTime(
-                                                            chatRoom.room
-                                                                .updated_at
-                                                        )
-                                                    }}
-                                                </span>
-                                            </v-list-item-subtitle>
-                                        </v-list-item-content>
-                                    </v-list-item>
+                                        :first-name="
+                                            chatRoom.room.account.profile
+                                                .first_name
+                                        "
+                                        :last-name="
+                                            chatRoom.room.account.profile
+                                                .last_name
+                                        "
+                                        :image-url="
+                                            chatRoom.room.account.profile
+                                                .image_url
+                                        "
+                                        :message="chatRoom.last_chat.message"
+                                        :updated-at="chatRoom.room.updated_at"
+                                        :is-seen="
+                                            chatRoom.last_chat[
+                                                chatRoom.last_chat
+                                                    .is_sent_by === 'customer'
+                                                    ? 'is_seen_by_customer'
+                                                    : 'is_seen_by_shop'
+                                            ]
+                                        "
+                                    ></global-chat-room-list-item>
                                 </template>
                             </v-list-item-group>
                         </v-list>
@@ -363,8 +323,10 @@ import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
 import pusherService from "@/services/pusher-service";
 import commonUtility from "@/common/utility";
+import GlobalChatRoomListItem from "@/components/global/chat-room-list-item";
 
 export default {
+    components: { GlobalChatRoomListItem },
     mixins: [commonUtility],
 
     data() {

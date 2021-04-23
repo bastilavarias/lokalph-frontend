@@ -13,6 +13,7 @@ const chatStoreModule = {
                 formData.append("shop_id", shopId);
                 formData.append("account_id", accountId);
                 formData.append("product_id", productId);
+                formData.append("is_sent_by", "customer");
                 if (image) formData.append("image", image);
                 return await chatRepository.initiateChat(formData);
             } catch (error) {
