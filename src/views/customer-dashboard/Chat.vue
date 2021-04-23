@@ -171,7 +171,6 @@
                                 class="d-none"
                                 type="file"
                                 accept="image/*"
-                                @change="selectFile"
                             />
                         </template>
                     </v-textarea>
@@ -208,10 +207,6 @@ export default {
         openFileExplorer() {
             window.addEventListener("focus", () => {}, { once: true });
             this.$refs.uploader.click();
-        },
-        selectFile(e) {
-            const file = e.target.files[0];
-            console.log(file);
         },
 
         sendChat() {
