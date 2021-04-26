@@ -323,7 +323,6 @@
 <script>
 import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
 import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
-import pusherService from "@/services/pusher-service";
 import commonUtility from "@/common/utility";
 import GlobalChatRoomListItem from "@/components/global/chat-room-list-item";
 
@@ -454,7 +453,7 @@ export default {
         },
 
         async subscribeShop() {
-            const subscription = pusherService.subscribe(
+            const subscription = this.$pusher.subscribe(
                 `shop-${this.selectedShopId}`
             );
             subscription.bind("new-room", (chatRoom) => {
@@ -469,7 +468,7 @@ export default {
         },
 
         unsubscribeShop() {
-            pusherService.unsubscribe(`shop-${this.selectedShopId}`);
+            this.$pusher.unsubscribe(`shop-${this.selectedShopId}`);
         },
     },
 
