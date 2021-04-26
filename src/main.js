@@ -21,6 +21,7 @@ Vue.use(VuetifyAlgoliaPlaces, {
 });
 Vue.use(InfiniteLoading);
 Vue.use(CKEditor);
+console.log(process.env.VUE_APP_PUSHER_APP_KEY);
 Vue.use(pusher, {
     api_key: process.env.VUE_APP_PUSHER_APP_KEY,
     options: {
