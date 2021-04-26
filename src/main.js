@@ -8,6 +8,7 @@ import VueMeta from "vue-meta";
 import VuetifyAlgoliaPlaces from "vuetify-algolia-places";
 import InfiniteLoading from "vue-infinite-loading";
 import CKEditor from "ckeditor4-vue";
+import pusher from "vue-pusher";
 
 Vue.config.productionTip = false;
 axiosService.init();
@@ -20,6 +21,12 @@ Vue.use(VuetifyAlgoliaPlaces, {
 });
 Vue.use(InfiniteLoading);
 Vue.use(CKEditor);
+Vue.use(pusher, {
+    api_key: process.env.VUE_APP_PUSHER_APP_KEY,
+    options: {
+        cluster: process.env.VUE_APP_PUSHER_CLUSTER,
+    },
+});
 
 new Vue({
     router,

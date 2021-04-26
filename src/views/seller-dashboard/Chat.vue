@@ -1,38 +1,84 @@
 <template>
     <v-card outlined height="700px">
-        <v-card-title>Chats</v-card-title>
+        <v-card-title>
+            <div class="d-flex align-center">
+                <span class="mr-1">Chats</span>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            text
+                            v-bind="attrs"
+                            v-on="on"
+                            :loading="!selectedShopId || isGetShopsStart"
+                            small
+                        >
+                            <span
+                                class="mr-1 font-weight-bold"
+                                v-if="selectedShop"
+                                >{{ selectedShop.name }}</span
+                            >
+                            <v-badge
+                                color="primary"
+                                dot
+                                v-if="!selectedShop"
+                                class="mr-2 text-capitalize font-italic"
+                            >
+                                Select Shop
+                            </v-badge>
+                            <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <template v-for="(shop, index) in shops">
+                            <v-list-item
+                                :key="index"
+                                @click="setRouteQueries(shop.id)"
+                                :disabled="selectedShopId === shop.id"
+                                >{{ shop.name }}</v-list-item
+                            >
+                        </template>
+                    </v-list>
+                </v-menu>
+            </div>
+            <v-spacer></v-spacer>
+        </v-card-title>
+
         <v-row no-gutters>
             <v-col cols="12" md="5">
                 <div :style="{ height: '635px' }" class="rooms-border">
                     <div :style="{ height: '633px', overflow: 'auto' }">
                         <v-list dense rounded>
                             <v-list-item-group v-model="room" color="secondary">
-                                <template v-for="n in 50">
-                                    <v-list-item
-                                        :key="n"
-                                        two-line
-                                        active-class="black--text"
-                                    >
-                                        <v-list-item-avatar :size="35">
-                                            <v-img
-                                                src="https://i.pinimg.com/originals/8d/ec/f9/8decf9caed777b8d0d698e01270ce308.png"
-                                            ></v-img>
-                                        </v-list-item-avatar>
-                                        <v-list-item-content>
-                                            <v-list-item-title>
-                                                <span
-                                                    title="Samsung Galaxy S10"
-                                                >
-                                                    Sebastian Curtis Lavarias
-                                                </span>
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle>
-                                                <span title="30 minutes ago">
-                                                    30 minutes ago
-                                                </span>
-                                            </v-list-item-subtitle>
-                                        </v-list-item-content>
-                                    </v-list-item>
+                                <template
+                                    v-for="(chatRoom, index) in chatRooms"
+                                >
+                                    <global-chat-room-list-item
+                                        :key="index"
+                                        :first-name="
+                                            chatRoom.room.account.profile
+                                                .first_name
+                                        "
+                                        :last-name="
+                                            chatRoom.room.account.profile
+                                                .last_name
+                                        "
+                                        :image-url="
+                                            chatRoom.room.account.profile
+                                                .image_url
+                                        "
+                                        :message="chatRoom.last_chat.message"
+                                        :updated-at="chatRoom.room.updated_at"
+                                        :is-seen="
+                                            chatRoom.last_chat[
+                                                chatRoom.last_chat
+                                                    .is_sent_by === 'customer'
+                                                    ? 'is_seen_by_customer'
+                                                    : 'is_seen_by_shop'
+                                            ]
+                                        "
+                                        :room-id="chatRoom.room.id"
+                                        :shop-id="selectedShopId"
+                                    ></global-chat-room-list-item>
                                 </template>
                             </v-list-item-group>
                         </v-list>
@@ -244,10 +290,28 @@
                                 depressed
                                 class="align-self-center"
                                 :disabled="!isFormValid"
+                                v-if="!isMessageNull"
                                 @click="sendChat"
                             >
                                 <v-icon>mdi-send</v-icon>
                             </v-btn>
+                            <v-btn
+                                color="secondary"
+                                fab
+                                small
+                                depressed
+                                class="align-self-center"
+                                @click="openFileExplorer"
+                                v-if="isMessageNull"
+                            >
+                                <v-icon>mdi-image</v-icon>
+                            </v-btn>
+                            <input
+                                ref="uploader"
+                                class="d-none"
+                                type="file"
+                                accept="image/*"
+                            />
                         </template>
                     </v-textarea>
                 </v-card-text>
@@ -257,12 +321,25 @@
 </template>
 
 <script>
+import { GET_ACCOUNT_SHOPS } from "@/store/types/shop-store-type";
+import { GET_ACCOUNT_DETAILS_BY_EMAIL } from "@/store/types/account-store-type";
+import commonUtility from "@/common/utility";
+import GlobalChatRoomListItem from "@/components/global/chat-room-list-item";
+
 export default {
+    components: { GlobalChatRoomListItem },
+    mixins: [commonUtility],
+
     data() {
         return {
             room: null,
             chats: [],
             message: null,
+            shops: [],
+            account: null,
+            isGetAccountDetailsStart: false,
+            isGetShopsStart: false,
+            chatRooms: [],
         };
     },
 
@@ -273,9 +350,40 @@ export default {
                 ? message.length >= 2 && message.length <= 200
                 : !!message;
         },
+
+        isMessageNull() {
+            return this.message === null || this.message === "";
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
+        },
+
+        selectedShopId() {
+            const shopId = this.$route.query.shop_id;
+            return parseInt(shopId) || null;
+        },
+
+        selectedShop() {
+            if (!this.selectedShopId) return null;
+            return this.shops.find((shop) => shop.id === this.selectedShopId);
+        },
+    },
+
+    watch: {
+        async selectedShopId(value) {
+            if (value) {
+                await this.subscribeShop();
+            }
+        },
     },
 
     methods: {
+        openFileExplorer() {
+            window.addEventListener("focus", () => {}, { once: true });
+            this.$refs.uploader.click();
+        },
+
         sendChat() {
             if (this.isFormValid) {
                 this.chats = [
@@ -303,10 +411,76 @@ export default {
                     element.scrollHeight - element.clientHeight;
             });
         },
+
+        async getAccountDetails() {
+            const email = this.user.email || null;
+            if (!email) return this.$router.go(-1);
+            this.isGetAccountDetailsStart = true;
+            const { success, data, error } = await this.$store.dispatch(
+                GET_ACCOUNT_DETAILS_BY_EMAIL,
+                email
+            );
+            this.isGetAccountDetailsStart = false;
+            if (error) return this.$router.go(-1);
+            if (success) {
+                this.account = Object.assign({}, data);
+            }
+        },
+
+        async getShops() {
+            const payload = {
+                accountId: this.account.id,
+                perPage: 999,
+            };
+            this.isGetShopsStart = true;
+            const { data } = await this.$store.dispatch(
+                GET_ACCOUNT_SHOPS,
+                payload
+            );
+            this.isGetShopsStart = false;
+            this.shops = data.shops;
+            if (!this.selectedShop) {
+                const shop = this.shops[0];
+                await this.setRouteQueries(shop.id);
+            }
+        },
+
+        async setRouteQueries(shopId) {
+            await this.$router.push({
+                name: "seller-dashboard-chat",
+                query: { shop_id: shopId },
+            });
+        },
+
+        async subscribeShop() {
+            const subscription = this.$pusher.subscribe(
+                `shop-${this.selectedShopId}`
+            );
+            subscription.bind("new-room", (chatRoom) => {
+                this.chatRooms = [chatRoom, ...this.chatRooms];
+            });
+            subscription.bind("room", (chatRoom) => {
+                this.chatRooms = this.chatRooms.filter(
+                    (_chatRoom) => _chatRoom.room.id !== chatRoom.room.id
+                );
+                this.chatRooms = [chatRoom, ...this.chatRooms];
+            });
+        },
+
+        unsubscribeShop() {
+            this.$pusher.unsubscribe(`shop-${this.selectedShopId}`);
+        },
     },
 
-    created() {
+    async created() {
+        if (this.selectedShopId) await this.subscribeShop();
+        await this.getAccountDetails();
+        await this.getShops();
         this.scrollToBottom();
+    },
+
+    destroyed() {
+        this.unsubscribeShop();
     },
 };
 </script>

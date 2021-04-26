@@ -8,6 +8,7 @@ import productStoreModule from "@/store/modules/product-store-module";
 import offerStoreModule from "@/store/modules/offer-store-module";
 import transactionStoreModule from "@/store/modules/transaction-store-module";
 import reviewStoreModule from "@/store/modules/review-store-module";
+import chatStoreModule from "@/store/modules/chat-store-module";
 
 Vue.use(Vuex);
 
@@ -21,5 +22,6 @@ export default new Vuex.Store({
         offer: offerStoreModule,
         transaction: transactionStoreModule,
         review: reviewStoreModule,
+        chat: chatStoreModule,
     },
 });

@@ -2,7 +2,7 @@
     <v-dialog width="500" persistent v-model="isOpenLocal">
         <v-card>
             <v-card-title>
-                <span>Send an Offer</span>
+                <span>Send a Chat</span>
                 <v-spacer> </v-spacer>
                 <v-btn icon @click="isOpenLocal = false">
                     <v-icon>mdi-close</v-icon>
@@ -63,8 +63,8 @@
                                     >
                                     <span
                                         class="subtitle-1"
-                                        :title="`This item is tagged as ${productCondition.label}`"
-                                        >{{ productCondition.label }}</span
+                                        :title="`This item is tagged as ${productCategory.label}`"
+                                        >{{ productCategory.label }}</span
                                     >
                                 </div>
                             </v-col>
@@ -103,38 +103,24 @@
             <v-card-text>
                 <v-row dense>
                     <v-col cols="12">
-                        <v-text-field
-                            :label="`Offer Total Price (${formatMoney(
-                                'PHP',
-                                form.totalPrice
-                            )})`"
-                            outlined
-                            v-model="form.totalPrice"
-                        ></v-text-field>
+                        <div class="-center">
+                            <template v-for="(text, index) in messages">
+                                <v-chip
+                                    color="primary"
+                                    class="mr-1"
+                                    :key="index"
+                                    @click="message = text"
+                                    >{{ text }}</v-chip
+                                >
+                            </template>
+                        </div>
                     </v-col>
-                    <v-col cols="12">
-                        <custom-stock-input-component
-                            :stock.sync="form.quantity"
-                            label="Quantity *"
-                            limit
-                            :limit-value="productStock"
-                        ></custom-stock-input-component>
-                    </v-col>
-                    <v-col cols="12">
-                        <v-select
-                            outlined
-                            label="Preferred Shipping Method *"
-                            :items="productShippingMethods"
-                            item-value="id"
-                            item-text="label"
-                            v-model="form.shippingMethodId"
-                        ></v-select>
-                    </v-col>
+                    <v-col cols="12"></v-col>
                     <v-col cols="12">
                         <v-textarea
                             outlined
-                            label="Note"
-                            v-model="form.note"
+                            label="Message"
+                            v-model="message"
                             :counter="200"
                         ></v-textarea>
                     </v-col>
@@ -143,13 +129,14 @@
             <v-card-actions>
                 <v-btn
                     color="primary"
-                    block
                     depressed
+                    block
                     class="text-capitalize"
-                    @click="createOffer"
                     :disabled="!isFormValid"
-                    :loading="isCreateOfferStart"
-                    >Send
+                    :loading="isSendChatStart"
+                    @click="sendChat"
+                >
+                    Send
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -158,25 +145,21 @@
 
 <script>
 import commonUtility from "@/common/utility";
-import CustomStockInputComponent from "@/components/custom/stock-input-component";
-import { GLOBAL_SET_SNACKBAR_CONFIGS } from "@/store/types/global-store-type";
-import { CREATE_OFFER } from "@/store/types/offer-store-type";
-
-const defaultForm = {
-    quantity: 1,
-    shippingMethodId: null,
-    note: null,
-    totalPrice: 0,
-};
+import { INITIATE_CHAT } from "@/store/types/chat-store-type";
 
 export default {
-    name: "product-post-view-offer-dialog-component",
-    components: { CustomStockInputComponent },
+    name: "product-post-view-chat-dialog-component",
+
     mixins: [commonUtility],
 
     props: {
         isOpen: {
             type: Boolean,
+            required: true,
+        },
+
+        productId: {
+            type: Number,
             required: true,
         },
 
@@ -209,11 +192,6 @@ export default {
             required: true,
         },
 
-        productShippingMethods: {
-            type: Array,
-            required: true,
-        },
-
         productCategory: {
             type: Object,
             required: true,
@@ -223,34 +201,30 @@ export default {
             type: Number,
             required: true,
         },
-
-        productId: {
-            type: Number,
-            required: true,
-        },
     },
 
     data() {
         return {
             isOpenLocal: this.isOpen,
-            isCreateOfferStart: false,
-            form: Object.assign({}, defaultForm),
-            defaultForm,
+            messages: [
+                "Hi, is this available?",
+                "Hi, is the price negotiable?",
+            ],
+            message: null,
+            isSendChatStart: false,
         };
     },
 
     computed: {
         isFormValid() {
-            const { shippingMethodId, quantity, note } = this.form;
-            const hasNote =
-                shippingMethodId &&
-                quantity &&
-                quantity > 0 &&
-                note &&
-                note.length >= 3 &&
-                note.length <= 200;
-            const noNote = shippingMethodId && quantity && quantity > 0;
-            return note ? hasNote : noNote;
+            const message = this.message ? this.message.trim() : null;
+            return message
+                ? message.length >= 2 && message.length <= 200
+                : !!message;
+        },
+
+        user() {
+            return this.$store.state.authentication.user;
         },
     },
 
@@ -262,51 +236,30 @@ export default {
         isOpenLocal(value) {
             this.$emit("update:isOpen", value);
         },
-
-        "form.quantity"(value) {
-            if (value && value > 0) {
-                this.form.totalPrice = this.productPrice * value;
-            }
-        },
     },
 
     methods: {
-        async createOffer() {
-            this.isCreateOfferStart = true;
+        async sendChat() {
+            this.isSendChatStart = true;
             const payload = {
                 shopId: this.shopId,
+                accountId: this.user.id,
+                message: this.message,
                 productId: this.productId,
-                quantity: this.form.quantity,
-                totalPrice: this.form.totalPrice,
-                note: this.form.note,
-                shippingMethodId: this.form.shippingMethodId,
+                image: null,
             };
-            const { data } = await this.$store.dispatch(CREATE_OFFER, payload);
-            if (data) {
-                this.isCreateOfferStart = false;
+            const { success } = await this.$store.dispatch(
+                INITIATE_CHAT,
+                payload
+            );
+            if (success) {
+                this.message = null;
                 this.isOpenLocal = false;
-                this.form = Object.assign(
-                    {},
-                    {
-                        quantity: 1,
-                        shippingMethodId: null,
-                        note: null,
-                        totalPrice: this.price * 1,
-                    }
-                );
-                this.$store.commit(GLOBAL_SET_SNACKBAR_CONFIGS, {
-                    isOpen: true,
-                    text: "Your offer sent!",
-                    color: "success",
-                });
+                this.isSendChatStart = false;
                 return;
             }
-            this.isCreateOfferStart = false;
+            this.isSendChatStart = false;
         },
-    },
-
-    created() {
-        this.form.totalPrice = this.productPrice * this.form.quantity;
     },
 };
 </script>

@@ -203,6 +203,7 @@
                                         block
                                         large
                                         :disabled="!doesHaveStock"
+                                        @click="isChatDialogOpen = true"
                                     >
                                         <v-icon class="mr-1"
                                             >mdi-chat-outline</v-icon
@@ -726,18 +727,31 @@
         </v-row>
         <product-post-view-offer-dialog-component
             :is-open.sync="isOfferDialogOpen"
-            :preview="product.images[0]"
-            :name="product.name"
-            :created-at="product.created_at"
-            :condition="product.condition"
-            :stock="product.stock"
-            :price="product.price"
-            :shipping-methods="product.shipping_methods"
-            :category="product.category"
+            :product-preview="product.images[0]"
+            :product-name="product.name"
+            :product-created-at="product.created_at"
+            :product-condition="product.condition"
+            :product-stock="product.stock"
+            :product-price="product.price"
+            :product-shipping-methods="product.shipping_methods"
+            :product-category="product.category"
             :product-id="product.id"
             :shop-id="product.shop.id"
             v-if="product"
         ></product-post-view-offer-dialog-component>
+        <product-post-view-chat-dialog-component
+            :is-open.sync="isChatDialogOpen"
+            :product-id="product.id"
+            :product-preview="product.images[0]"
+            :product-name="product.name"
+            :product-created-at="product.created_at"
+            :product-condition="product.condition"
+            :product-stock="product.stock"
+            :product-price="product.price"
+            :product-category="product.category"
+            :shop-id="product.shop.id"
+            v-if="product"
+        ></product-post-view-chat-dialog-component>
     </section>
 </template>
 
@@ -767,9 +781,11 @@ import ProductPostViewOfferDialogComponent from "@/components/views/product-post
 import ProductPostViewSkeletonLoadersComponent from "@/components/views/product-post/skeleton-loaders-component";
 import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
 import ProductPostViewReviewCardComponent from "@/components/views/product-post/review-card-component";
+import ProductPostViewChatDialogComponent from "@/components/views/product-post/chat-dialog-component";
 
 export default {
     components: {
+        ProductPostViewChatDialogComponent,
         ProductPostViewReviewCardComponent,
         ProductPostViewSkeletonLoadersComponent,
         ProductPostViewOfferDialogComponent,
@@ -814,6 +830,7 @@ export default {
                 totalCount: 0,
             },
             isGetProductReviewsStart: false,
+            isChatDialogOpen: false,
         };
     },
 
