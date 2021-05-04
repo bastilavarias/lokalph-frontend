@@ -15,9 +15,7 @@
                             >{{ search }}</span
                         >"</v-card-subtitle
                     >
-                    <custom-loading-spinner-component
-                        v-if="isGetShopsStart"
-                    ></custom-loading-spinner-component>
+
                     <v-card-text v-if="!isGetShopsStart">
                         <v-row dense>
                             <template v-for="(shop, index) in shops">
@@ -40,6 +38,9 @@
                             </template>
                         </v-row>
                     </v-card-text>
+                    <custom-loading-spinner-component
+                        v-if="isGetShopsStart"
+                    ></custom-loading-spinner-component>
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
