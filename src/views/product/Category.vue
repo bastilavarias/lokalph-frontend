@@ -8,7 +8,7 @@
                         v-if="isGetCategoriesStart"
                     ></custom-loading-spinner-component>
                     <v-list-item-group
-                        v-model="selectedCategory"
+                        v-model="selectedCategoryIndex"
                         color="primary"
                         mandatory
                     >
@@ -27,7 +27,12 @@
                     </v-list-item-group>
                 </v-list>
             </v-col>
-            <v-col cols="3" md="9"></v-col>
+            <v-col cols="3" md="9">
+                <v-card-title
+                    >Results for
+                    <span class="primary--text font-weight-bold"></span
+                ></v-card-title>
+            </v-col>
         </v-row>
     </section>
 </template>
@@ -41,7 +46,7 @@ export default {
 
     data() {
         return {
-            selectedCategory: 0,
+            selectedCategoryIndex: 0,
             categories: [],
             isGetCategoriesStart: false,
         };
@@ -60,7 +65,7 @@ export default {
                     .map((category) => category.name)
                     .indexOf(this.category);
                 if (categoryIndex < 1) return this.$router.go(-1);
-                this.selectedCategory = categoryIndex;
+                this.selectedCategoryIndex = categoryIndex;
             }
         },
     },
@@ -69,7 +74,6 @@ export default {
         async getCategories() {
             this.isGetCategoriesStart = true;
             const { data } = await this.$store.dispatch(GET_PRODUCT_CATEGORIES);
-            console.log(data);
             this.categories = data;
             this.isGetCategoriesStart = false;
         },

@@ -3,20 +3,19 @@
         <v-row dense>
             <v-col cols="12">
                 <v-card flat>
-                    <v-card-subtitle v-if="!isGetShopsStart && hasShops"
+                    <v-card-title v-if="noResults">
+                        No results for "<span
+                            class="primary--text font-weight-bold"
+                            >{{ search }}</span
+                        >"
+                    </v-card-title>
+                    <v-card-title v-if="!isGetShopsStart && hasShops"
                         >Shops related to "<span
                             class="primary--text font-weight-bold"
                             >{{ search }}</span
-                        >"</v-card-subtitle
+                        >"</v-card-title
                     >
-                    <v-card-subtitle v-if="!isGetShopsStart && !hasShops"
-                        >No shops related to "<span
-                            class="primary--text font-weight-bold"
-                            >{{ search }}</span
-                        >"</v-card-subtitle
-                    >
-
-                    <v-card-text>
+                    <v-card-text v-if="hasShops">
                         <v-row dense>
                             <template v-for="(shop, index) in shops">
                                 <v-col cols="12" :key="index">
@@ -41,7 +40,7 @@
                     <custom-loading-spinner-component
                         v-if="isGetShopsStart"
                     ></custom-loading-spinner-component>
-                    <v-card-actions>
+                    <v-card-actions v-if="hasShops">
                         <v-spacer></v-spacer>
                         <v-btn
                             color="primary"
@@ -53,21 +52,12 @@
                             >See More</v-btn
                         >
                     </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col cols="12">
-                <v-card flat>
-                    <v-card-subtitle v-if="!isGetProductsStart && hasProducts"
+
+                    <v-card-title v-if="!isGetProductsStart && hasProducts"
                         >Products related to "<span
                             class="primary--text font-weight-bold"
                             >{{ search }}</span
-                        >"</v-card-subtitle
-                    >
-                    <v-card-subtitle v-if="!isGetProductsStart && !hasProducts"
-                        >No products related to "<span
-                            class="primary--text font-weight-bold"
-                            >{{ search }}</span
-                        >"</v-card-subtitle
+                        >"</v-card-title
                     >
                     <v-card-text>
                         <v-row dense>
@@ -167,6 +157,15 @@ export default {
             return (
                 !this.isGetProductsStart &&
                 this.products.length < this.productsPaginationOptions.totalCount
+            );
+        },
+
+        noResults() {
+            return (
+                !this.isGetShopsStart &&
+                !this.isGetProductsStart &&
+                !this.hasShops &&
+                !this.hasProducts
             );
         },
     },
