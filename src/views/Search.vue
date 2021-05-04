@@ -131,7 +131,7 @@ export default {
             shops: [],
             productsPaginationOptions: {
                 page: 1,
-                perPage: 3,
+                perPage: 6,
                 totalCount: 0,
             },
             isGetProductsStart: false,
