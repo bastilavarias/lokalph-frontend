@@ -46,7 +46,7 @@
                             color="primary"
                             class="text-capitalize"
                             depressed
-                            v-if="isSeeMoreShopsEnable"
+                            v-if="isSeeMoreShopsButtonEnable"
                             >See More</v-btn
                         >
                     </v-card-actions>
@@ -86,7 +86,7 @@ export default {
             return this.shops.length > 0;
         },
 
-        isSeeMoreShopsEnable() {
+        isSeeMoreShopsButtonEnable() {
             return this.shops.length === 5;
         },
     },
