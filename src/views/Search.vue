@@ -149,7 +149,10 @@ export default {
         },
 
         isSeeMoreShopsButtonEnable() {
-            return this.shops.length === 5;
+            return (
+                !this.isGetShopsStart &&
+                this.shops.length < this.shopsPaginationOptions.totalCount
+            );
         },
 
         hasProducts() {
@@ -157,7 +160,10 @@ export default {
         },
 
         isSeeMoreProductsButtonEnable() {
-            return this.products.length === 5;
+            return (
+                !this.isGetProductsStart &&
+                this.products.length < this.productsPaginationOptions.totalCount
+            );
         },
     },
 
