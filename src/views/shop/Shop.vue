@@ -96,8 +96,12 @@
                                                     class="font-weight-bold primary--text"
                                                     >{{
                                                         shop.rating > 1
-                                                            ? `${shop.rating} Stars Rating`
-                                                            : `${shop.rating} Star Rating`
+                                                            ? `${shop.rating.toFixed(
+                                                                  1
+                                                              )} Stars Rating`
+                                                            : `${shop.rating.toFixed(
+                                                                  1
+                                                              )} Star Rating`
                                                     }}</span
                                                 >
                                             </v-list-item-icon>

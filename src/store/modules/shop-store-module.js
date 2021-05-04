@@ -2,6 +2,7 @@ import {
     SHOP_CREATE,
     GET_ACCOUNT_SHOPS,
     GET_SHOP_DETAILS_BY_SLUG,
+    SEARCH_SHOPS,
 } from "@/store/types/shop-store-type";
 import shopRepository from "@/repositories/shop-repository";
 
@@ -62,6 +63,19 @@ const shopStoreModule = {
         async [GET_SHOP_DETAILS_BY_SLUG](_, slug) {
             try {
                 return await shopRepository.getShopDetailsBySlug(slug);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [SEARCH_SHOPS](_, { page, perPage, search }) {
+            try {
+                const payload = {
+                    page,
+                    per_page: perPage,
+                    search,
+                };
+                return await shopRepository.searchShops(payload);
             } catch (error) {
                 return error.response.data;
             }

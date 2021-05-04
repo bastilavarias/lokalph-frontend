@@ -56,7 +56,7 @@
                                     >mdi-star-outline</v-icon
                                 >
                                 <span class="primary--text font-weight-bold">{{
-                                    rating
+                                    rating.toFixed(1)
                                 }}</span>
                             </div>
                             <div class="d-flex justify-center align-center">

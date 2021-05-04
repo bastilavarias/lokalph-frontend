@@ -307,6 +307,22 @@ const routes = [
             },
         ],
     },
+
+    {
+        path: "/search",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                name: "search-view",
+                component: () => import("@/views/Search"),
+                meta: {
+                    requiresAuth: false,
+                    roles: ["customer", "seller", "admin"],
+                },
+            },
+        ],
+    },
 ];
 
 const router = new VueRouter({

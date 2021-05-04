@@ -32,6 +32,12 @@ const axiosService = {
     async delete(route, body) {
         return await Vue.axios.delete(route, body);
     },
+
+    joinQuerySpace(query) {
+        const split = query.split(" ");
+        if (split.length === 1) return query;
+        return split.join("%");
+    },
 };
 
 export default axiosService;

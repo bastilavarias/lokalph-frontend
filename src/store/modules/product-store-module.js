@@ -15,6 +15,7 @@ import {
     CREATE_PRODUCT_LIKE,
     GET_PRODUCT_LIKES,
     DELETE_PRODUCT_LIKE,
+    SEARCH_PRODUCTS,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -211,6 +212,19 @@ const productStoreModule = {
         async [DELETE_PRODUCT_LIKE](_, productId) {
             try {
                 return await productRepository.deleteProductLike(productId);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [SEARCH_PRODUCTS](_, { search, page, perPage }) {
+            try {
+                const payload = {
+                    search,
+                    page,
+                    per_page: perPage,
+                };
+                return await productRepository.searchProducts(payload);
             } catch (error) {
                 return error.response.data;
             }
