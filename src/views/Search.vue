@@ -16,7 +16,7 @@
                         >"</v-card-subtitle
                     >
 
-                    <v-card-text v-if="!isGetShopsStart">
+                    <v-card-text>
                         <v-row dense>
                             <template v-for="(shop, index) in shops">
                                 <v-col cols="12" :key="index">
@@ -48,6 +48,7 @@
                             class="text-capitalize"
                             depressed
                             v-if="isSeeMoreShopsButtonEnable"
+                            @click="getShops"
                             >See More</v-btn
                         >
                     </v-card-actions>
