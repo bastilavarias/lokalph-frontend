@@ -3,13 +3,22 @@
         <v-row dense>
             <v-col cols="12">
                 <v-card flat>
-                    <v-card-subtitle
+                    <v-card-subtitle v-if="!isGetShopsStart && hasShops"
                         >Shops related to "<span
                             class="primary--text font-weight-bold"
                             >{{ search }}</span
                         >"</v-card-subtitle
                     >
-                    <v-card-text>
+                    <v-card-subtitle v-if="!isGetShopsStart && !hasShops"
+                        >No shops related to "<span
+                            class="primary--text font-weight-bold"
+                            >{{ search }}</span
+                        >"</v-card-subtitle
+                    >
+                    <custom-loading-spinner-component
+                        v-if="isGetShopsStart"
+                    ></custom-loading-spinner-component>
+                    <v-card-text v-if="!isGetShopsStart">
                         <v-row dense>
                             <template v-for="(shop, index) in shops">
                                 <v-col cols="12" :key="index">
@@ -33,7 +42,11 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" class="text-capitalize" depressed
+                        <v-btn
+                            color="primary"
+                            class="text-capitalize"
+                            depressed
+                            v-if="isSeeMoreShopsEnable"
                             >See More</v-btn
                         >
                     </v-card-actions>
@@ -44,10 +57,13 @@
 </template>
 <script>
 import GlobalShopSearchPreviewComponent from "@/components/global/shop-search-preview-component";
-import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
 import { SEARCH_SHOPS } from "@/store/types/shop-store-type";
+import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 export default {
-    components: { GlobalShopSearchPreviewComponent },
+    components: {
+        CustomLoadingSpinnerComponent,
+        GlobalShopSearchPreviewComponent,
+    },
 
     data() {
         return {
@@ -64,6 +80,23 @@ export default {
     computed: {
         search() {
             return this.$route.query.search;
+        },
+
+        hasShops() {
+            return this.shops.length > 0;
+        },
+
+        isSeeMoreShopsEnable() {
+            return this.shops.length === 5;
+        },
+    },
+
+    watch: {
+        async search(value) {
+            if (value) {
+                this.shops = [];
+                await this.getShops();
+            }
         },
     },
 
