@@ -22,7 +22,7 @@ const shopRepository = {
     async searchShops({ page, per_page, search }) {
         const url = `/shop/search?page=${page}${
             per_page ? `&per_page=${per_page}` : ""
-        }${search ? `&search=${search}` : ""}`;
+        }${search ? `&search=${axiosService.joinQuerySpace(search)}` : ""}`;
         const response = await axiosService.get(url);
         return response.data;
     },

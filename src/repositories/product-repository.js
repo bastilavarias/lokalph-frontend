@@ -94,7 +94,7 @@ const shopRepository = {
     async searchProducts({ page, per_page, search }) {
         const url = `/product/search?page=${page}${
             per_page ? `&per_page=${per_page}` : ""
-        }${search ? `&search=${search}` : ""}`;
+        }${search ? `&search=${axiosService.joinQuerySpace(search)}` : ""}`;
         const response = await axiosService.get(url);
         return response.data;
     },
