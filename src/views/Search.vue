@@ -31,7 +31,54 @@
 </template>
 <script>
 import GlobalShopSearchPreviewComponent from "@/components/global/shop-search-preview-component";
+import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
+import { SEARCH_SHOPS } from "@/store/types/shop-store-type";
 export default {
     components: { GlobalShopSearchPreviewComponent },
+
+    data() {
+        return {
+            shopsPaginationOptions: {
+                page: 1,
+                perPage: 3,
+                totalCount: 0,
+            },
+            isGetShopsStart: false,
+            shops: [],
+        };
+    },
+
+    computed: {
+        search() {
+            return this.$route.query.search;
+        },
+    },
+
+    methods: {
+        async getShops() {
+            this.isGetShopsStart = true;
+            const payload = {
+                page: this.shopsPaginationOptions.page,
+                perPage: this.shopsPaginationOptions.perPage,
+                search: this.search,
+            };
+            const { data } = await this.$store.dispatch(SEARCH_SHOPS, payload);
+            const shops = data.shops;
+            this.shopsPaginationOptions.totalCount = data.total_count || 0;
+            if (shops.length === this.shopsPaginationOptions.perPage) {
+                this.shops = [...this.shops, ...shops];
+                this.shopsPaginationOptions.page += 1;
+                this.isGetShopsStart = false;
+                return;
+            }
+            this.shops = [...this.shops, ...shops];
+            this.isGetShopsStart = false;
+        },
+    },
+
+    async created() {
+        if (!this.search) await this.$router.go(-1);
+        await this.getShops();
+    },
 };
 </script>
