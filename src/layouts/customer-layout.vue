@@ -147,6 +147,8 @@
                         rounded
                         filled
                         append-icon="mdi-magnify"
+                        @keyup.enter="goToSearchView"
+                        v-model="search"
                     >
                     </v-text-field>
                     <v-spacer></v-spacer>
@@ -194,6 +196,12 @@ export default {
         GlobalLoginDialogComponent,
     },
 
+    data() {
+        return {
+            search: null,
+        };
+    },
+
     computed: {
         isAuthenticated() {
             return this.$store.state.authentication.isAuthenticated;
@@ -225,6 +233,15 @@ export default {
             if (this.$route.meta.requiresAuth)
                 await this.$router.push({ name: "home-view" });
             this.$store.commit(AUTHENTICATION_SET_LOGOUT);
+        },
+
+        async goToSearchView() {
+            if (this.search) {
+                await this.$router.push({
+                    name: "search-view",
+                    query: { search: this.search },
+                });
+            }
         },
     },
 };

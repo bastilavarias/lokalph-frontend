@@ -6,7 +6,7 @@
                     <v-card-subtitle
                         >Shops related to "<span
                             class="primary--text font-weight-bold"
-                            >Query</span
+                            >{{ search }}</span
                         >"</v-card-subtitle
                     >
                     <v-card-text>
