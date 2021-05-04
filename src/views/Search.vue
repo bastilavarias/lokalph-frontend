@@ -49,6 +49,7 @@
                             depressed
                             v-if="isSeeMoreShopsButtonEnable"
                             @click="getShops"
+                            :loading="isGetProductsStart"
                             >See More</v-btn
                         >
                     </v-card-actions>
@@ -68,7 +69,7 @@
                             >{{ search }}</span
                         >"</v-card-subtitle
                     >
-                    <v-card-text v-if="!isGetProductsStart">
+                    <v-card-text>
                         <v-row dense>
                             <template v-for="(product, index) in products">
                                 <v-col cols="12" md="4" :key="index">
@@ -100,6 +101,8 @@
                             class="text-capitalize"
                             depressed
                             v-if="isSeeMoreProductsButtonEnable"
+                            :loading="isGetProductsStart"
+                            @click="getProducts"
                             >See More</v-btn
                         >
                     </v-card-actions>
@@ -171,6 +174,22 @@ export default {
     watch: {
         async search(value) {
             if (value) {
+                this.shopsPaginationOptions = Object.assign(
+                    {},
+                    {
+                        page: 1,
+                        perPage: 3,
+                        totalCount: 0,
+                    }
+                );
+                this.productsPaginationOptions = Object.assign(
+                    {},
+                    {
+                        page: 1,
+                        perPage: 6,
+                        totalCount: 0,
+                    }
+                );
                 this.shops = [];
                 this.products = [];
                 await this.getShops();
