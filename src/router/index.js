@@ -210,7 +210,7 @@ const routes = [
             {
                 path: "",
                 name: "product-post-view",
-                component: () => import("@/views/ProductPost"),
+                component: () => import("@/views/product/Post"),
                 meta: {
                     requiresAuth: false,
                     roles: ["customer", "seller", "admin"],
@@ -314,8 +314,24 @@ const routes = [
         children: [
             {
                 path: "",
-                name: "search-view",
-                component: () => import("@/views/Search"),
+                name: "product-search-view",
+                component: () => import("@/views/product/Search"),
+                meta: {
+                    requiresAuth: false,
+                    roles: ["customer", "seller", "admin"],
+                },
+            },
+        ],
+    },
+
+    {
+        path: "/category/:name",
+        component: () => import("@/layouts/customer-layout"),
+        children: [
+            {
+                path: "",
+                name: "product-category-view",
+                component: () => import("@/views/product/Category"),
                 meta: {
                     requiresAuth: false,
                     roles: ["customer", "seller", "admin"],
