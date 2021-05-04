@@ -27,11 +27,13 @@
                     </v-list-item-group>
                 </v-list>
             </v-col>
-            <v-col cols="3" md="9">
-                <v-card-title
-                    >Results for
-                    <span class="primary--text font-weight-bold"></span
-                ></v-card-title>
+            <v-col cols="3" md="8">
+                <v-card-title v-if="selectedCategory"
+                    >Results for "<span
+                        class="primary--text font-weight-bold"
+                        >{{ selectedCategory.label }}</span
+                    >"</v-card-title
+                >
             </v-col>
         </v-row>
     </section>
@@ -55,6 +57,13 @@ export default {
     computed: {
         category() {
             return this.$route.params.name;
+        },
+
+        selectedCategory() {
+            if (this.categories.length === 0) return null;
+            return this.categories.find(
+                (_, index) => index === this.selectedCategoryIndex
+            );
         },
     },
 
