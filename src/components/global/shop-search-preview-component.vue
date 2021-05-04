@@ -5,25 +5,23 @@
                 <v-col cols="12" md="6">
                     <v-list-item three-line>
                         <v-list-item-avatar :size="65">
-                            <v-img
-                                src="http://www.clker.com/cliparts/S/e/P/6/M/t/shop-front-icon.svg"
-                            ></v-img>
+                            <v-img :src="imageUrl"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title class="font-weight-bold"
-                                >Shop Name</v-list-item-title
-                            >
+                            <v-list-item-title class="font-weight-bold">{{
+                                name
+                            }}</v-list-item-title>
                             <v-list-item-subtitle>
                                 <v-icon small class="mr-1"
                                     >mdi-map-marker-outline</v-icon
                                 >
-                                <span>406 Sta Fe St. Tondo, Manila</span>
+                                <span>{{ address }}</span>
                             </v-list-item-subtitle>
                             <v-list-item-subtitle>
                                 <v-icon small class="mr-1"
                                     >mdi-phone-outline</v-icon
                                 >
-                                <span>09212709683</span>
+                                <span>{{ contactNumber }}</span>
                             </v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
@@ -37,9 +35,9 @@
                                 >mdi-cart-outline</v-icon
                             >
                             <span class="d-block"
-                                ><span class="font-weight-bold primary--text"
-                                    >3</span
-                                >
+                                ><span class="font-weight-bold primary--text">{{
+                                    totalProducts
+                                }}</span>
                                 Products</span
                             >
                         </div>
@@ -48,9 +46,9 @@
                                 >mdi-shopping-outline</v-icon
                             >
                             <span class="d-block"
-                                ><span class="font-weight-bold primary--text"
-                                    >3</span
-                                >
+                                ><span class="font-weight-bold primary--text">{{
+                                    totalOrders
+                                }}</span>
                                 Orders</span
                             >
                         </div>
@@ -59,9 +57,9 @@
                                 >mdi-star-outline</v-icon
                             >
                             <span class="d-block"
-                                ><span class="font-weight-bold primary--text"
-                                    >4.1</span
-                                >
+                                ><span class="font-weight-bold primary--text">{{
+                                    rating.toFixed(1)
+                                }}</span>
                                 Ratings</span
                             >
                         </div>
@@ -75,5 +73,57 @@
 <script>
 export default {
     name: "global-shop-search-preview-component",
+
+    props: {
+        imageUrl: {
+            type: String,
+            required: true,
+        },
+
+        name: {
+            type: String,
+            required: true,
+        },
+
+        createdAt: {
+            type: String,
+            required: true,
+        },
+
+        address: {
+            type: String,
+            required: true,
+        },
+
+        contactNumber: {
+            type: String,
+            required: true,
+        },
+
+        storeOwner: {
+            type: Object,
+            required: true,
+        },
+
+        slug: {
+            type: String,
+            required: true,
+        },
+
+        totalProducts: {
+            type: Number,
+            required: true,
+        },
+
+        totalOrders: {
+            type: Number,
+            required: true,
+        },
+
+        rating: {
+            type: Number,
+            required: true,
+        },
+    },
 };
 </script>

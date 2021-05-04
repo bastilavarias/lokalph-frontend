@@ -11,9 +11,22 @@
                     >
                     <v-card-text>
                         <v-row dense>
-                            <template v-for="n in 3">
-                                <v-col cols="12" :key="n">
-                                    <global-shop-search-preview-component></global-shop-search-preview-component>
+                            <template v-for="(shop, index) in shops">
+                                <v-col cols="12" :key="index">
+                                    <global-shop-search-preview-component
+                                        :image-url="shop.image_url"
+                                        :name="shop.name"
+                                        :created-at="shop.created_at"
+                                        :address="shop.address.value"
+                                        :contact-number="shop.contact_number"
+                                        :store-owner="shop.account"
+                                        :slug="shop.slug"
+                                        :total-products="
+                                            shop.total_products_count
+                                        "
+                                        :total-orders="shop.total_orders_count"
+                                        :rating="shop.rating"
+                                    ></global-shop-search-preview-component>
                                 </v-col>
                             </template>
                         </v-row>
