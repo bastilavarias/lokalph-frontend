@@ -30,6 +30,21 @@
                 </v-list>
             </v-col>
             <v-col cols="3" md="8">
+                <v-card-title v-if="noResults && selectedCategory">
+                    No results for "<span
+                        class="primary--text font-weight-bold"
+                        >{{ selectedCategory.label }}</span
+                    >"
+                </v-card-title>
+                <v-card-title
+                    v-if="
+                        !isGetProductsStart && hasProducts && selectedCategory
+                    "
+                    >Products related to "<span
+                        class="primary--text font-weight-bold"
+                        >{{ selectedCategory.label }}</span
+                    >"</v-card-title
+                >
                 <!--                <v-card-title v-if="selectedCategory"-->
                 <!--                    >Results for "<span-->
                 <!--                        class="primary&#45;&#45;text font-weight-bold"-->
@@ -127,6 +142,13 @@ export default {
 
         noResults() {
             return !this.isGetProductsStart && !this.hasProducts;
+        },
+
+        selectedCategory() {
+            if (!this.category) return null;
+            return this.categories.find(
+                (category) => category.name === this.category
+            );
         },
     },
 
