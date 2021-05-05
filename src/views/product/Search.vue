@@ -36,10 +36,10 @@
                                 </v-col>
                             </template>
                         </v-row>
+                        <custom-loading-spinner-component
+                            v-if="isGetShopsStart"
+                        ></custom-loading-spinner-component>
                     </v-card-text>
-                    <custom-loading-spinner-component
-                        v-if="isGetShopsStart"
-                    ></custom-loading-spinner-component>
                     <v-card-actions v-if="hasShops">
                         <v-spacer></v-spacer>
                         <v-btn
@@ -80,10 +80,10 @@
                                 </v-col>
                             </template>
                         </v-row>
+                        <custom-loading-spinner-component
+                            v-if="isGetProductsStart"
+                        ></custom-loading-spinner-component>
                     </v-card-text>
-                    <custom-loading-spinner-component
-                        v-if="isGetProductsStart"
-                    ></custom-loading-spinner-component>
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn

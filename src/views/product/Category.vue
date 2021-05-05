@@ -36,6 +36,45 @@
                 <!--                        >{{ selectedCategory.label }}</span-->
                 <!--                    >"</v-card-title-->
                 <!--                >-->
+                <v-card flat>
+                    <v-card-text>
+                        <v-row dense>
+                            <template v-for="(product, index) in products">
+                                <v-col cols="12" md="6" :key="index">
+                                    <global-product-preview-component
+                                        :shop-id="product.shop.id"
+                                        :category="product.category"
+                                        :preview="product.images[0]"
+                                        :price="product.price"
+                                        :name="product.name"
+                                        :description="product.description"
+                                        :created-at="product.created_at"
+                                        :shop="product.shop"
+                                        :stock="product.stock"
+                                        :slug="product.slug"
+                                        :total-likes="product.likes"
+                                        :total-views="product.views"
+                                    ></global-product-preview-component>
+                                </v-col>
+                            </template>
+                        </v-row>
+                        <custom-loading-spinner-component
+                            v-if="isGetProductsStart"
+                        ></custom-loading-spinner-component>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary"
+                            class="text-capitalize"
+                            depressed
+                            v-if="isSeeMoreProductsButtonEnable"
+                            :loading="isGetProductsStart"
+                            @click="getProducts"
+                            >See More</v-btn
+                        >
+                    </v-card-actions>
+                </v-card>
             </v-col>
         </v-row>
     </section>
@@ -48,9 +87,13 @@ import {
     SEARCH_PRODUCTS,
 } from "@/store/types/product-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
+import GlobalProductPreviewComponent from "@/components/global/product-preview-component";
 
 export default {
-    components: { CustomLoadingSpinnerComponent },
+    components: {
+        GlobalProductPreviewComponent,
+        CustomLoadingSpinnerComponent,
+    },
 
     data() {
         return {
@@ -69,6 +112,21 @@ export default {
     computed: {
         category() {
             return this.$route.params.name;
+        },
+
+        hasProducts() {
+            return this.products.length > 0;
+        },
+
+        isSeeMoreProductsButtonEnable() {
+            return (
+                !this.isGetProductsStart &&
+                this.products.length < this.paginationOptions.totalCount
+            );
+        },
+
+        noResults() {
+            return !this.isGetProductsStart && !this.hasProducts;
         },
     },
 
@@ -109,7 +167,6 @@ export default {
                 payload
             );
             const products = data.products;
-            console.log(products);
             this.paginationOptions.totalCount = data.total_count || 0;
             if (products.length === this.paginationOptions.perPage) {
                 this.products = [...this.products, ...products];
