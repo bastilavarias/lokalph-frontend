@@ -12,9 +12,15 @@
                         height="280"
                     ></v-img>
                     <div class="floating-product-meta">
-                        <v-chip small color="secondary">{{
-                            category.label
-                        }}</v-chip>
+                        <v-chip
+                            small
+                            color="secondary"
+                            :to="{
+                                name: 'product-category-view',
+                                params: { name: category.name },
+                            }"
+                            >{{ category.label }}</v-chip
+                        >
                     </div>
                 </div>
                 <v-list-item two-line>
