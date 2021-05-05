@@ -253,9 +253,26 @@
                                                 class="subtitle-1"
                                                 :title="`Product Category: ${product.category.label}`"
                                                 >Category:
-                                                <span class="font-weight-bold">
-                                                    {{ product.category.label }}
-                                                </span>
+                                                <custom-router-link-component
+                                                    :to="{
+                                                        name:
+                                                            'product-category-view',
+                                                        params: {
+                                                            name:
+                                                                product.category
+                                                                    .name,
+                                                        },
+                                                    }"
+                                                >
+                                                    <span
+                                                        class="black--text font-weight-bold"
+                                                    >
+                                                        {{
+                                                            product.category
+                                                                .label
+                                                        }}
+                                                    </span>
+                                                </custom-router-link-component>
                                             </span>
                                         </div>
                                     </v-col>
@@ -782,9 +799,11 @@ import ProductPostViewSkeletonLoadersComponent from "@/components/views/product-
 import { GET_PRODUCT_REVIEWS } from "@/store/types/review-store-type";
 import ProductPostViewReviewCardComponent from "@/components/views/product-post/review-card-component";
 import ProductPostViewChatDialogComponent from "@/components/views/product-post/chat-dialog-component";
+import CustomRouterLinkComponent from "@/components/custom/router-link-component";
 
 export default {
     components: {
+        CustomRouterLinkComponent,
         ProductPostViewChatDialogComponent,
         ProductPostViewReviewCardComponent,
         ProductPostViewSkeletonLoadersComponent,
