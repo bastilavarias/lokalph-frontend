@@ -16,6 +16,7 @@ import {
     GET_PRODUCT_LIKES,
     DELETE_PRODUCT_LIKE,
     SEARCH_PRODUCTS,
+    GET_PRODUCTS_BY_CATEGORY,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -225,6 +226,19 @@ const productStoreModule = {
                     per_page: perPage,
                 };
                 return await productRepository.searchProducts(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_PRODUCTS_BY_CATEGORY](_, { name, page, perPage }) {
+            try {
+                const payload = {
+                    name,
+                    page,
+                    per_page: perPage,
+                };
+                return await productRepository.getProductsByCategory(payload);
             } catch (error) {
                 return error.response.data;
             }

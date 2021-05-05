@@ -98,6 +98,14 @@ const shopRepository = {
         const response = await axiosService.get(url);
         return response.data;
     },
+
+    async getProductsByCategory({ name, page, per_page }) {
+        const url = `/product/products/category/${name}?page=${page}${
+            per_page ? `&per_page=${per_page}` : ""
+        }`;
+        const response = await axiosService.get(url);
+        return response.data;
+    },
 };
 
 export default shopRepository;

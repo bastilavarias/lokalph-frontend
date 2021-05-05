@@ -16,3 +16,4 @@ export const CREATE_PRODUCT_LIKE = "product/create-product-like";
 export const GET_PRODUCT_LIKES = "product/get-product-likes";
 export const DELETE_PRODUCT_LIKE = "product/delete-product-like";
 export const SEARCH_PRODUCTS = "product/search";
+export const GET_PRODUCTS_BY_CATEGORY = "product/get-by-category";

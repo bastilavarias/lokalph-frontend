@@ -13,7 +13,13 @@
                         mandatory
                     >
                         <template v-for="(category, index) in categories">
-                            <v-list-item :key="index">
+                            <v-list-item
+                                :key="index"
+                                :to="{
+                                    name: 'product-category-view',
+                                    params: { name: category.name },
+                                }"
+                            >
                                 <v-list-item-avatar :size="25">
                                     <v-img :src="category.image_url"></v-img>
                                 </v-list-item-avatar>
@@ -40,7 +46,11 @@
 </template>
 
 <script>
-import { GET_PRODUCT_CATEGORIES } from "@/store/types/product-store-type";
+import {
+    GET_PRODUCT_CATEGORIES,
+    GET_PRODUCTS_BY_CATEGORY,
+    SEARCH_PRODUCTS,
+} from "@/store/types/product-store-type";
 import CustomLoadingSpinnerComponent from "@/components/custom/loading-spinner-component";
 
 export default {
@@ -51,6 +61,13 @@ export default {
             selectedCategoryIndex: 0,
             categories: [],
             isGetCategoriesStart: false,
+            paginationOptions: {
+                page: 1,
+                perPage: 6,
+                totalCount: 0,
+            },
+            isGetProductsStart: false,
+            products: [],
         };
     },
 
@@ -86,10 +103,36 @@ export default {
             this.categories = data;
             this.isGetCategoriesStart = false;
         },
+
+        async getProducts() {
+            this.isGetProductsStart = true;
+            const payload = {
+                page: this.paginationOptions.page,
+                perPage: this.paginationOptions.perPage,
+                name: this.category,
+            };
+            const { data } = await this.$store.dispatch(
+                GET_PRODUCTS_BY_CATEGORY,
+                payload
+            );
+            const products = data.products;
+            console.log(products);
+            this.paginationOptions.totalCount = data.total_count || 0;
+            if (products.length === this.paginationOptions.perPage) {
+                this.products = [...this.products, ...products];
+                this.paginationOptions.page += 1;
+                this.isGetProductsStart = false;
+                return;
+            }
+            this.products = [...this.products, ...products];
+            this.isGetProductsStart = false;
+        },
     },
 
     async created() {
+        if (!this.category) return this.$router.go(-1);
         await this.getCategories();
+        await this.getProducts();
     },
 };
 </script>
