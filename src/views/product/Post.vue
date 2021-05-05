@@ -882,7 +882,7 @@ export default {
                 {
                     text: this.product.category.label,
                     disabled: false,
-                    href: "/",
+                    href: `/category/${this.product.category.name}`,
                 },
                 {
                     text: this.product.name,
