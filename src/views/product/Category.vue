@@ -7,11 +7,7 @@
                     <custom-loading-spinner-component
                         v-if="isGetCategoriesStart"
                     ></custom-loading-spinner-component>
-                    <v-list-item-group
-                        v-model="selectedCategoryIndex"
-                        color="primary"
-                        mandatory
-                    >
+                    <v-list-item-group color="primary" mandatory>
                         <template v-for="(category, index) in categories">
                             <v-list-item
                                 :key="index"
@@ -34,12 +30,12 @@
                 </v-list>
             </v-col>
             <v-col cols="3" md="8">
-                <v-card-title v-if="selectedCategory"
-                    >Results for "<span
-                        class="primary--text font-weight-bold"
-                        >{{ selectedCategory.label }}</span
-                    >"</v-card-title
-                >
+                <!--                <v-card-title v-if="selectedCategory"-->
+                <!--                    >Results for "<span-->
+                <!--                        class="primary&#45;&#45;text font-weight-bold"-->
+                <!--                        >{{ selectedCategory.label }}</span-->
+                <!--                    >"</v-card-title-->
+                <!--                >-->
             </v-col>
         </v-row>
     </section>
@@ -58,7 +54,6 @@ export default {
 
     data() {
         return {
-            selectedCategoryIndex: 0,
             categories: [],
             isGetCategoriesStart: false,
             paginationOptions: {
@@ -75,23 +70,21 @@ export default {
         category() {
             return this.$route.params.name;
         },
-
-        selectedCategory() {
-            if (this.categories.length === 0) return null;
-            return this.categories.find(
-                (_, index) => index === this.selectedCategoryIndex
-            );
-        },
     },
 
     watch: {
-        categories(value) {
-            if (value.length > 0) {
-                const categoryIndex = value
-                    .map((category) => category.name)
-                    .indexOf(this.category);
-                if (categoryIndex < 1) return this.$router.go(-1);
-                this.selectedCategoryIndex = categoryIndex;
+        async category(value) {
+            if (value) {
+                this.paginationOptions = Object.assign(
+                    {},
+                    {
+                        page: 1,
+                        perPage: 6,
+                        totalCount: 0,
+                    }
+                );
+                this.products = [];
+                await this.getProducts();
             }
         },
     },
