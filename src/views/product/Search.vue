@@ -3,20 +3,19 @@
         <v-row dense>
             <v-col cols="12">
                 <v-card flat>
-                    <v-card-subtitle v-if="!isGetShopsStart && hasShops"
+                    <v-card-title v-if="noResults">
+                        No results for "<span
+                            class="primary--text font-weight-bold"
+                            >{{ search }}</span
+                        >"
+                    </v-card-title>
+                    <v-card-title v-if="!isGetShopsStart && hasShops"
                         >Shops related to "<span
                             class="primary--text font-weight-bold"
                             >{{ search }}</span
-                        >"</v-card-subtitle
+                        >"</v-card-title
                     >
-                    <v-card-subtitle v-if="!isGetShopsStart && !hasShops"
-                        >No shops related to "<span
-                            class="primary--text font-weight-bold"
-                            >{{ search }}</span
-                        >"</v-card-subtitle
-                    >
-
-                    <v-card-text v-if="!isGetShopsStart">
+                    <v-card-text v-if="hasShops">
                         <v-row dense>
                             <template v-for="(shop, index) in shops">
                                 <v-col cols="12" :key="index">
@@ -37,37 +36,30 @@
                                 </v-col>
                             </template>
                         </v-row>
+                        <custom-loading-spinner-component
+                            v-if="isGetShopsStart"
+                        ></custom-loading-spinner-component>
                     </v-card-text>
-                    <custom-loading-spinner-component
-                        v-if="isGetShopsStart"
-                    ></custom-loading-spinner-component>
-                    <v-card-actions>
+                    <v-card-actions v-if="hasShops">
                         <v-spacer></v-spacer>
                         <v-btn
                             color="primary"
                             class="text-capitalize"
                             depressed
                             v-if="isSeeMoreShopsButtonEnable"
+                            @click="getShops"
+                            :loading="isGetProductsStart"
                             >See More</v-btn
                         >
                     </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col cols="12">
-                <v-card flat>
-                    <v-card-subtitle v-if="!isGetProductsStart && hasProducts"
+
+                    <v-card-title v-if="!isGetProductsStart && hasProducts"
                         >Products related to "<span
                             class="primary--text font-weight-bold"
                             >{{ search }}</span
-                        >"</v-card-subtitle
+                        >"</v-card-title
                     >
-                    <v-card-subtitle v-if="!isGetProductsStart && !hasProducts"
-                        >No products related to "<span
-                            class="primary--text font-weight-bold"
-                            >{{ search }}</span
-                        >"</v-card-subtitle
-                    >
-                    <v-card-text v-if="!isGetProductsStart">
+                    <v-card-text>
                         <v-row dense>
                             <template v-for="(product, index) in products">
                                 <v-col cols="12" md="4" :key="index">
@@ -88,10 +80,10 @@
                                 </v-col>
                             </template>
                         </v-row>
+                        <custom-loading-spinner-component
+                            v-if="isGetProductsStart"
+                        ></custom-loading-spinner-component>
                     </v-card-text>
-                    <custom-loading-spinner-component
-                        v-if="isGetProductsStart"
-                    ></custom-loading-spinner-component>
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
@@ -99,6 +91,8 @@
                             class="text-capitalize"
                             depressed
                             v-if="isSeeMoreProductsButtonEnable"
+                            :loading="isGetProductsStart"
+                            @click="getProducts"
                             >See More</v-btn
                         >
                     </v-card-actions>
@@ -165,11 +159,36 @@ export default {
                 this.products.length < this.productsPaginationOptions.totalCount
             );
         },
+
+        noResults() {
+            return (
+                !this.isGetShopsStart &&
+                !this.isGetProductsStart &&
+                !this.hasShops &&
+                !this.hasProducts
+            );
+        },
     },
 
     watch: {
         async search(value) {
             if (value) {
+                this.shopsPaginationOptions = Object.assign(
+                    {},
+                    {
+                        page: 1,
+                        perPage: 3,
+                        totalCount: 0,
+                    }
+                );
+                this.productsPaginationOptions = Object.assign(
+                    {},
+                    {
+                        page: 1,
+                        perPage: 6,
+                        totalCount: 0,
+                    }
+                );
                 this.shops = [];
                 this.products = [];
                 await this.getShops();

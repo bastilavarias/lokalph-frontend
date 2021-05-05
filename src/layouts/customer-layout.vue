@@ -238,7 +238,7 @@ export default {
         async goToSearchView() {
             if (this.search) {
                 await this.$router.push({
-                    name: "search-view",
+                    name: "product-search-view",
                     query: { search: this.search },
                 });
             }
