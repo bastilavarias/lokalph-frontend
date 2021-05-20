@@ -4,6 +4,9 @@
             <v-col cols="12">
                 <v-card outlined min-height="280">
                     <v-card-title>Explore</v-card-title>
+                    <custom-loading-spinner-component
+                        v-if="isGetCategoriesStart"
+                    ></custom-loading-spinner-component>
                     <v-slide-group
                         v-model="currentSlideGroup"
                         class="pa-4"
