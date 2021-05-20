@@ -17,6 +17,8 @@ import {
     DELETE_PRODUCT_LIKE,
     SEARCH_PRODUCTS,
     GET_PRODUCTS_BY_CATEGORY,
+    GET_HOT_PRODUCTS,
+    GET_NEW_PRODUCTS,
 } from "@/store/types/product-store-type";
 
 const productStoreModule = {
@@ -239,6 +241,30 @@ const productStoreModule = {
                     per_page: perPage,
                 };
                 return await productRepository.getProductsByCategory(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_HOT_PRODUCTS](_, { page, perPage }) {
+            try {
+                const payload = {
+                    page,
+                    per_page: perPage,
+                };
+                return await productRepository.getHotProducts(payload);
+            } catch (error) {
+                return error.response.data;
+            }
+        },
+
+        async [GET_NEW_PRODUCTS](_, { page, perPage }) {
+            try {
+                const payload = {
+                    page,
+                    per_page: perPage,
+                };
+                return await productRepository.getNewProducts(payload);
             } catch (error) {
                 return error.response.data;
             }

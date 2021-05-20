@@ -106,6 +106,22 @@ const shopRepository = {
         const response = await axiosService.get(url);
         return response.data;
     },
+
+    async getHotProducts({ page, per_page }) {
+        const url = `/product/hot?page=${page}${
+            per_page ? `&per_page=${per_page}` : ""
+        }`;
+        const response = await axiosService.get(url);
+        return response.data;
+    },
+
+    async getNewProducts({ page, per_page }) {
+        const url = `/product/new?page=${page}${
+            per_page ? `&per_page=${per_page}` : ""
+        }`;
+        const response = await axiosService.get(url);
+        return response.data;
+    },
 };
 
 export default shopRepository;
