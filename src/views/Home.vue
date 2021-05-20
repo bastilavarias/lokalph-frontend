@@ -2,6 +2,31 @@
     <section>
         <v-row>
             <v-col cols="12">
+                <v-card flat min-height="395.55">
+                    <v-row dense>
+                        <v-col cols="12" md="8">
+                            <v-img
+                                src="https://images.pexels.com/photos/5956/gift-brown-shopping-market.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                            ></v-img>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-row dense>
+                                <v-col cols="12">
+                                    <v-img
+                                        src="https://images.pexels.com/photos/2253833/pexels-photo-2253833.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                                    ></v-img>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-img
+                                        src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                                    ></v-img>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                </v-card>
+            </v-col>
+            <v-col cols="12">
                 <v-card outlined min-height="280">
                     <v-card-title>Explore</v-card-title>
                     <custom-loading-spinner-component
