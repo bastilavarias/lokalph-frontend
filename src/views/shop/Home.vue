@@ -4,11 +4,6 @@
             <v-row dense>
                 <v-col cols="12">
                     <v-card outlined>
-                        <v-card-title>Top Selling</v-card-title>
-                    </v-card>
-                </v-col>
-                <v-col cols="12">
-                    <v-card outlined>
                         <v-card-title>Reviews from Customers</v-card-title>
                         <v-card-subtitle
                             >Showing {{ reviewsCount }} out of
